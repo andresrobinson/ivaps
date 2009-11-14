@@ -131,7 +131,6 @@ namespace Castellari.IVaPS.View
             lbl_dist.Text = stat.Distance.ToString("000") + " nm";
             lbl_maxHeight.Text = stat.MaxAltitude.ToString("000") + " ft";
             lbl_maxSpeed.Text = stat.MaxSpeed.ToString("000") + " kn";
-            lbl_callsign.Text = stat.Callsign;
             lbl_currFuel.Text = stat.CurrentFuel.ToString("0");
             lbl_fuelDep.Text = stat.DeparturenFuel.ToString("0");
             lbl_fuelArr.Text = stat.ArrivalFuel.ToString("0");

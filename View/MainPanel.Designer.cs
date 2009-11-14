@@ -43,8 +43,6 @@
             this.label18 = new System.Windows.Forms.Label();
             this.lbl_currFuel = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.lbl_callsign = new System.Windows.Forms.Label();
             this.lbl_route = new System.Windows.Forms.Label();
             this.lbl_arrIcao = new System.Windows.Forms.Label();
             this.lbl_depIcao = new System.Windows.Forms.Label();
@@ -155,8 +153,6 @@
             this.panel1.Controls.Add(this.label18);
             this.panel1.Controls.Add(this.lbl_currFuel);
             this.panel1.Controls.Add(this.label19);
-            this.panel1.Controls.Add(this.label16);
-            this.panel1.Controls.Add(this.lbl_callsign);
             this.panel1.Controls.Add(this.lbl_route);
             this.panel1.Controls.Add(this.lbl_arrIcao);
             this.panel1.Controls.Add(this.lbl_depIcao);
@@ -190,7 +186,7 @@
             // lbl_fuelArr
             // 
             this.lbl_fuelArr.AutoSize = true;
-            this.lbl_fuelArr.Location = new System.Drawing.Point(135, 82);
+            this.lbl_fuelArr.Location = new System.Drawing.Point(124, 55);
             this.lbl_fuelArr.Name = "lbl_fuelArr";
             this.lbl_fuelArr.Size = new System.Drawing.Size(10, 13);
             this.lbl_fuelArr.TabIndex = 32;
@@ -199,7 +195,7 @@
             // lbl_fuelDep
             // 
             this.lbl_fuelDep.AutoSize = true;
-            this.lbl_fuelDep.Location = new System.Drawing.Point(135, 64);
+            this.lbl_fuelDep.Location = new System.Drawing.Point(124, 38);
             this.lbl_fuelDep.Name = "lbl_fuelDep";
             this.lbl_fuelDep.Size = new System.Drawing.Size(10, 13);
             this.lbl_fuelDep.TabIndex = 31;
@@ -208,7 +204,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(119, 48);
+            this.label21.Location = new System.Drawing.Point(108, 21);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(17, 13);
             this.label21.TabIndex = 30;
@@ -217,7 +213,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(119, 82);
+            this.label20.Location = new System.Drawing.Point(108, 55);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(17, 13);
             this.label20.TabIndex = 29;
@@ -226,7 +222,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(119, 65);
+            this.label18.Location = new System.Drawing.Point(108, 38);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(18, 13);
             this.label18.TabIndex = 28;
@@ -235,7 +231,7 @@
             // lbl_currFuel
             // 
             this.lbl_currFuel.AutoSize = true;
-            this.lbl_currFuel.Location = new System.Drawing.Point(135, 48);
+            this.lbl_currFuel.Location = new System.Drawing.Point(124, 21);
             this.lbl_currFuel.Name = "lbl_currFuel";
             this.lbl_currFuel.Size = new System.Drawing.Size(10, 13);
             this.lbl_currFuel.TabIndex = 27;
@@ -244,30 +240,11 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(119, 32);
+            this.label19.Location = new System.Drawing.Point(108, 5);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(58, 13);
             this.label19.TabIndex = 26;
             this.label19.Text = "Fuel (Gal.):";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(119, 5);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(46, 13);
-            this.label16.TabIndex = 24;
-            this.label16.Text = "Callsign:";
-            // 
-            // lbl_callsign
-            // 
-            this.lbl_callsign.AutoSize = true;
-            this.lbl_callsign.ForeColor = System.Drawing.Color.Green;
-            this.lbl_callsign.Location = new System.Drawing.Point(119, 18);
-            this.lbl_callsign.Name = "lbl_callsign";
-            this.lbl_callsign.Size = new System.Drawing.Size(10, 13);
-            this.lbl_callsign.TabIndex = 25;
-            this.lbl_callsign.Text = "-";
             // 
             // lbl_route
             // 
@@ -633,8 +610,6 @@
         private System.Windows.Forms.Label lbl_arrIcao;
         private System.Windows.Forms.Label lbl_depIcao;
         private System.Windows.Forms.Label lbl_route;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label lbl_callsign;
         private System.Windows.Forms.Label label17;
         public System.Windows.Forms.TextBox txt_callsign;
         public System.Windows.Forms.TextBox txt_va;
