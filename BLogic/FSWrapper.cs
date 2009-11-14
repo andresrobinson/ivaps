@@ -183,7 +183,7 @@ namespace Castellari.IVaPS.BLogic
                 //altitude
                 pos.Altitude = (int)altitude.Value * 3.28d;
                 //heading
-                pos.Heading = (double)heading.Value * 360d / (65536d * 65536d);
+                pos.Heading = heading.Value * 360d / (65536d * 65536d);
                 if(pos.Heading < 0)
                     pos.Heading = 360 + pos.Heading;
 

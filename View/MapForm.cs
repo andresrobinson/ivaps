@@ -21,6 +21,7 @@ namespace Castellari.IVaPS.View
     public partial class MapForm : Form
     {
         private Point windowspos = Point.Empty;
+        private bool moved = false;
 
         public MapForm(Point initialPosition)
         {
@@ -47,7 +48,12 @@ namespace Castellari.IVaPS.View
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            this.Location = windowspos;
+            if (!moved)
+            {
+                this.Location = windowspos;
+                moved = true;
+            }
+            
         }
 
         private void btn_close_Click(object sender, EventArgs e)

@@ -85,7 +85,6 @@ namespace Castellari.IVaPS.View
         public void FillPirep(FlightStatus fs)
         {
             this.fs = fs;
-            //BeginInvoke(new DrawDelegate(this.ChangeTitle), new object[] { "loading..." });
             Text = "loading...";
             webBrowser1.Url = new Uri(IVAO_SITE_VA_PIREP_PAGE + fs.VirtualAirlineID);
         }
