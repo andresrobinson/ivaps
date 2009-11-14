@@ -18,9 +18,21 @@ namespace Castellari.IVaPS.Model
     /// </summary>
     public class AircraftPosition : GeoPosition
     {
+        /// <summary>
+        /// Heading, in gradi, della prua dell'aereomobile, 0=N, 90=E, 180=S, 270=O
+        /// </summary>
         public double Heading { get; set; }
+        /// <summary>
+        /// Velocità al suolo (ground speed) in nodi
+        /// </summary>
         public double Speed { get; set; }
+        /// <summary>
+        /// Istande del rilevamento della posizione
+        /// </summary>
         public DateTime Timestamp { get; set; }
+        /// <summary>
+        /// Carburante caricato a bordo nel momento del campionamento, espresso in Galloni
+        /// </summary>
         public double AvailableFuel { get; set; }
     }
 }

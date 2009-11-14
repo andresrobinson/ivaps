@@ -18,6 +18,9 @@ namespace Castellari.IVaPS.Model
     /// </summary>
     public class FSEvent
     {
+        /// <summary>
+        /// Timestamp di generazione dell'evento, ora del PC
+        /// </summary>
         public DateTime Timestamp { get; set; }
     }
 }

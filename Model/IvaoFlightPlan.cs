@@ -13,13 +13,22 @@ using System.Text;
 
 namespace Castellari.IVaPS.Model
 {
+    /// <summary>
+    /// Data Object che rappresenta un piano di volo, nell'accezione IVAO
+    /// </summary>
     public class IvaoFlightPlan
     {
         public string Route { get; set; }
         public Airport Departure { get; set; }
         public Airport Arrival { get; set; }
         public Airport Alternate { get; set; }
+        /// <summary>
+        /// V per VFR, I per IFR, etc.
+        /// </summary>
         public string FlightType { get; set; }
+        /// <summary>
+        /// Codice ICAO dell'aereomobile
+        /// </summary>
         public string Aircraft { get; set; }
     }
 }

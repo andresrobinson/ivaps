@@ -22,7 +22,15 @@ namespace Castellari.IVaPS.BLogic
     public class IPSUtils
     {
         private const double R = 3440;//miglia nautiche
+        private const string IVAO_FLIGHTPLANS_URL = "http://de.www.ivao.aero/whazzup.txt";
 
+        /// <summary>
+        /// Calcola la distanza in MIGLIA NAUTICHE (nm) tra due punti geografici. Il calcolo è svolto con la
+        /// formula di Aversine
+        /// </summary>
+        /// <param name="pos1">punto uno</param>
+        /// <param name="pos2">punto 2</param>
+        /// <returns>la distanza in miglia nautiche</returns>
         public static double CalulateDistance(GeoPosition pos1, GeoPosition pos2)
         { 
             double dLat = toRadian(pos2.Latitude - pos1.Latitude);
@@ -35,13 +43,21 @@ namespace Castellari.IVaPS.BLogic
             return d;
         }
 
+        /// <summary>
+        /// Reperisce il piano di volo dai server di IVAO
+        /// </summary>
+        /// <param name="ivaoCallsign">il callsign del pilota di cui scaricare il piano di volo</param>
+        /// <returns>il piano di volo richiesto se presente, null altrimenti</returns>
         public static IvaoFlightPlan RetrivePlan(String ivaoCallsign)
         {
+            //Istanzio le variabili che servono per la chiamata http
             WebClient client = new WebClient();
-            Stream data = client.OpenRead("http://de.www.ivao.aero/whazzup.txt");
+            Stream data = client.OpenRead(IVAO_FLIGHTPLANS_URL);
             StreamReader reader = new StreamReader(data);
             string str = "";
             string rightLine = null;
+
+            //sequenza di lettura: riga per riga si va alla ricerca di quella che inizia col callsign desiderato
             str = reader.ReadLine();
             while (str != null)
             {
@@ -53,6 +69,7 @@ namespace Castellari.IVaPS.BLogic
 
             if (rightLine != null)
             {
+                //trovata la linea vado a cercare le colonne che mi interessano
                 string[] tmp = rightLine.Split(':');
                 IvaoFlightPlan toBeRet = new IvaoFlightPlan();
                 toBeRet.Route = tmp[30];

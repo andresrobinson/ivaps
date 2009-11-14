@@ -14,7 +14,8 @@ using System.Text;
 namespace Castellari.IVaPS.Model
 {
     /// <summary>
-    /// Bean rappresentante un aereoporto
+    /// Data Object rappresentante un aereoporto. Ereditando da GeoPosition può avere anche una location
+    /// geografica
     /// </summary>
     public class Airport : GeoPosition
     {

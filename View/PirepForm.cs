@@ -20,6 +20,8 @@ namespace Castellari.IVaPS.View
 {
     public partial class PirepForm : Form
     {
+        private const string IVAO_SITE_VA_PIREP_PAGE = "http://www.ivao.aero/vasystem/admin/va_pirep.asp?Id=";
+
         private FlightStatus fs = null;
         private Point pos = Point.Empty;
 
@@ -50,18 +52,18 @@ namespace Castellari.IVaPS.View
                     webBrowser1.Document.All["ActDepTime"].SetAttribute("value", fs.DepartureTime.ToUniversalTime().Minute.ToString());
                     webBrowser1.Document.All["Land_Hour"].SetAttribute("value", fs.ArrivalTime.ToUniversalTime().Hour.ToString());
                     webBrowser1.Document.All["Land_Minute"].SetAttribute("value", fs.ArrivalTime.ToUniversalTime().Minute.ToString());
-                    webBrowser1.Document.All["Route"].SetAttribute("value", fs.FlightPlan);
-                    webBrowser1.Document.All["Type"].SetAttribute("value", fs.FlightType);
-                    if (fs.Departure != null) 
-                        webBrowser1.Document.All["DepAirport"].SetAttribute("value", fs.Departure.ICAOCode);
-                    if (fs.Arrival != null)
+                    webBrowser1.Document.All["Route"].SetAttribute("value", fs.FlightPlan.Route);
+                    webBrowser1.Document.All["Type"].SetAttribute("value", fs.FlightPlan.FlightType);
+                    if (fs.FlightPlan != null && fs.FlightPlan.Departure != null)
+                        webBrowser1.Document.All["DepAirport"].SetAttribute("value", fs.FlightPlan.Departure.ICAOCode);
+                    if (fs.FlightPlan != null && fs.FlightPlan.Arrival != null)
                     {
-                        webBrowser1.Document.All["DestAirport"].SetAttribute("value", fs.Arrival.ICAOCode);
-                        webBrowser1.Document.All["LandAirport"].SetAttribute("value", fs.Arrival.ICAOCode);
+                        webBrowser1.Document.All["DestAirport"].SetAttribute("value", fs.FlightPlan.Arrival.ICAOCode);
+                        webBrowser1.Document.All["LandAirport"].SetAttribute("value", fs.FlightPlan.Arrival.ICAOCode);
                     }
-                    if (fs.Alternate != null)
-                        webBrowser1.Document.All["AltAirport"].SetAttribute("value", fs.Alternate.ICAOCode);
-                    webBrowser1.Document.All["Aircraft"].SetAttribute("value", fs.Aircraft);
+                    if (fs.FlightPlan != null && fs.FlightPlan.Alternate != null)
+                        webBrowser1.Document.All["AltAirport"].SetAttribute("value", fs.FlightPlan.Alternate.ICAOCode);
+                    webBrowser1.Document.All["Aircraft"].SetAttribute("value", fs.FlightPlan.Aircraft);
                     webBrowser1.Document.All["Fuel_Qty"].SetAttribute("value", (fs.DeparturenFuel-fs.ArrivalFuel).ToString("0"));
                     BeginInvoke(new DrawDelegate(this.ChangeTitle), new object[] { "Verify data before sent!" });
                 }
@@ -73,7 +75,7 @@ namespace Castellari.IVaPS.View
             this.fs = fs;
             //BeginInvoke(new DrawDelegate(this.ChangeTitle), new object[] { "loading..." });
             Text = "loading...";
-            webBrowser1.Url = new Uri("http://www.ivao.aero/vasystem/admin/va_pirep.asp?Id=" + fs.VirtualAirlineID);
+            webBrowser1.Url = new Uri(IVAO_SITE_VA_PIREP_PAGE + fs.VirtualAirlineID);
         }
 
         private void webBrowser1_LocationChanged(object sender, EventArgs e)

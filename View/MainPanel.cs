@@ -44,7 +44,7 @@ namespace Castellari.IVaPS.View
 
         private void btn_rec_Click(object sender, EventArgs e)
         {
-            if (Controller.FetchFlightPlan())
+            if (Controller.FetchFlightPlan(txt_callsign.Text,txt_va.Text))
             {
                 Info("FP for " + model.Callsign + " loaded");
             }
@@ -136,25 +136,28 @@ namespace Castellari.IVaPS.View
             lbl_fuelDep.Text = stat.DeparturenFuel.ToString("0");
             lbl_fuelArr.Text = stat.ArrivalFuel.ToString("0");
 
-            if (stat.ArrivalTime != DateTime.MinValue)
-            {
-                lbl_arrTime.Text = stat.ArrivalTime.ToUniversalTime().ToShortTimeString();
-            }
-            if (stat.DepartureTime != DateTime.MinValue)
-            {
-                lbl_depTime.Text = stat.DepartureTime.ToUniversalTime().ToShortTimeString();
-            }
-            if (stat.Arrival != null)
-            {
-                lbl_arrIcao.Text = stat.Arrival.ICAOCode;
-            }
-            if (stat.Departure != null)
-            {
-                lbl_depIcao.Text = stat.Departure.ICAOCode;
-            }
             if (stat.FlightPlan != null)
             {
-                lbl_route.Text = stat.FlightPlan;
+                if (stat.ArrivalTime != DateTime.MinValue)
+                {
+                    lbl_arrTime.Text = stat.ArrivalTime.ToUniversalTime().ToShortTimeString();
+                }
+                if (stat.DepartureTime != DateTime.MinValue)
+                {
+                    lbl_depTime.Text = stat.DepartureTime.ToUniversalTime().ToShortTimeString();
+                }
+                if (stat.FlightPlan.Arrival != null)
+                {
+                    lbl_arrIcao.Text = stat.FlightPlan.Arrival.ICAOCode;
+                }
+                if (stat.FlightPlan.Departure != null)
+                {
+                    lbl_depIcao.Text = stat.FlightPlan.Departure.ICAOCode;
+                }
+                if (stat.FlightPlan.Route != null)
+                {
+                    lbl_route.Text = stat.FlightPlan.Route;
+                }
             }
 
             if (mf != null && mf.Visible && model != null && (lastMapUpdate.AddSeconds(MAP_AUTOUPDATE_DELAY_IN_SECONDS).CompareTo(DateTime.Now)<0))

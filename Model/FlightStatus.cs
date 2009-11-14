@@ -15,14 +15,21 @@ using Castellari.IVaPS.BLogic;
 namespace Castellari.IVaPS.Model
 {
     /// <summary>
-    /// Bean rappresentante un intero volo
+    /// Data Object rappresentante un intero volo. Si tratta dello stato vero e proprio dell'applicazione e vuole
+    /// rappresentare uno a uno un intero volo
     /// </summary>
     public class FlightStatus
     {
-        private const int INITIAL_FLIGHTLOG_CAPACITY = 10000;
+        private const int INITIAL_FLIGHTLOG_CAPACITY = 1000;
+     
+        /// <summary>
+        /// Posizione corrente dell'aereomobile
+        /// </summary>
         private AircraftPosition currentPosition = null;
+        /// <summary>
+        /// History delle posizioni assunte dall'aereomobile nel tempo. AD OGGI NON UTILIZZATO (NdF 20091114)
+        /// </summary>
         private List<AircraftPosition> flightLog = null;
-
         /// <summary>
         /// Distanza percorsa dall'inizio del recording espressa in nm
         /// </summary>
@@ -32,23 +39,44 @@ namespace Castellari.IVaPS.Model
         /// </summary>
         public double MaxAltitude { get; set; }
         /// <summary>
-        /// Velocità massima raggiunta durante il volo, espressa in nodi
+        /// Velocità massima (GS) raggiunta durante il volo, espressa in nodi
         /// </summary>
         public double MaxSpeed { get; set; }
-        public string FlightPlan { get; set; }
-        public Airport Departure { get; set; }
+        /// <summary>
+        /// Piano di volo
+        /// </summary>
+        public IvaoFlightPlan FlightPlan { get; set; }
+        /// <summary>
+        /// Ora di partenza REALE. Si tratta dell'ora in cui l'applicazione ha gestito l'ultimo TakeOffEvent
+        /// </summary>
         public DateTime DepartureTime { get; set; }
-        public Airport Arrival { get; set; }
+        /// <summary>
+        /// Ora di arrivo REALE. Si tratta dell'ora in cui l'applicazione ha gestito l'ultimo LandingEvent
+        /// </summary>
         public DateTime ArrivalTime { get; set; }
+        /// <summary>
+        /// Ora corrente nel tempo del simulatore
+        /// </summary>
         public DateTime CurrentSimTime { get; set; }
-        public Airport Alternate { get; set; }
-        public string FlightType { get; set; }
+        /// <summary>
+        /// Il callsign corrente del pilota
+        /// </summary>
         public string Callsign { get; set; }
+        /// <summary>
+        /// ID della virtal airlinecorrente
+        /// </summary>
         public string VirtualAirlineID { get; set; }
-        public string Aircraft { get; set; }
-        public int TotalFuelAllowed { get; set; }
+        /// <summary>
+        /// Carburante alla partenza in galloni
+        /// </summary>
         public double DeparturenFuel { get; set; }
+        /// <summary>
+        /// Carburante all'arrivo in galloni
+        /// </summary>
         public double ArrivalFuel { get; set; }
+        /// <summary>
+        /// Carburante corrente in galloni
+        /// </summary>
         public double CurrentFuel { get; set; }
 
         /// <summary>
@@ -79,6 +107,10 @@ namespace Castellari.IVaPS.Model
                 CurrentFuel = currentPosition.AvailableFuel;
             }
         }
+
+        /// <summary>
+        /// History delle posizioni assunte dall'aereomobile nel tempo. AD OGGI NON UTILIZZATO (NdF 20091114)
+        /// </summary>
         public List<AircraftPosition> FlightLog 
         {
             get
@@ -98,9 +130,7 @@ namespace Castellari.IVaPS.Model
             ArrivalTime = DateTime.MinValue;
             Callsign = "";
             VirtualAirlineID = "";
-            FlightPlan = "";
-            FlightType = "";
-            Aircraft = "";
+            FlightPlan = null;
         }
         #endregion
     }

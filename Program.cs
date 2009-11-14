@@ -20,17 +20,20 @@ namespace Castellari.IVaPS
     {
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
+        /// L'applicazione usa il classico paradigma MVC (Model-View-Control)
         /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Costruzione dei moduli principali dell'applicazione
+            //Costruzione dei moduli principali dell'applicazione:
+            //COstruzione della vista
             MainForm view = new MainForm();
+            //Corstruizione del modello
             IPSController controller = new IPSController(view);
             view.Controller = controller;
-            //via
+            //Avvio vero e proprio dell'applicazione
             Application.Run(view);
         }
     }
