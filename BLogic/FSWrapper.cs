@@ -15,16 +15,31 @@ using System.Timers;
 using FSUIPC;
 
 using Castellari.IVaPS.Control;
+using Castellari.IVaPS.Model;
 
-namespace Castellari.IVaPS.Model
+namespace Castellari.IVaPS.BLogic
 {
     /// <summary>
     /// Rappresenta il wrapping dell'intero Flight Simulator: quando l'applicazione necessita di colloquiare con FS
-    /// lo fa sempre e solo attraverso questa entità
+    /// lo fa sempre e solo attraverso questa entità.
+    /// 
+    /// Il principio di funzionamento è il seguente:
+    /// 1. una volta connesso faccio un pollingo ogni TIMER_ELAPSED_MILLISECONDS alle FSUIPC.dll
+    /// 2. i dati mi vengono scritti nella variabili di tipo Offset<> 
+    /// 3. leggo i dati da li, li monto in oggetti del dominio applicativo e sollevo gli eventi adeguati
+    /// 
+    /// Per aggiungere quindi un nuovo dato da leggere:
+    /// a. individuare il falore HEX dell'offset e metterlo nelle "costanti di OFFSET"
+    /// b. verificare dove e come inserire nelle classi di modello applicativo il nuovo dato
+    /// c. crea la variabile corrispondente di tipo Offset<>
+    /// d. nel metodo "TickHandle" metti il valore dell'Offset<>.Value nella variabile di oggetto applicativo
+    /// e. Solleva l'evento corrispondente.
     /// </summary>
     public class FSWrapper
     {
         private const double TIMER_ELAPSED_MILLISECONDS = 1000;
+
+        #region costanti di OFFSET di FSUIPC
         private const int OFFSET_GS = 0x02B4;
         private const int OFFSET_LAT = 0x0560;
         private const int OFFSET_LON = 0x0568;
@@ -54,11 +69,9 @@ namespace Castellari.IVaPS.Model
 
         private const int OFFSET_FUEL_CONTENT_RIGHTTIP = 0x0BA4;
         private const int OFFSET_FUEL_CAPACITY_RIGHTTIP = 0x0BA8;
+        #endregion
 
-
-        private bool connected = false;
-        private Timer timer = new Timer(TIMER_ELAPSED_MILLISECONDS);
-
+        #region Variabili di tipo Offset<>
         private Offset<int> airspeed = new Offset<int>(OFFSET_GS);
         private Offset<long> latitude = new Offset<long>(OFFSET_LAT);
         private Offset<long> longitude = new Offset<long>(OFFSET_LON);
@@ -82,14 +95,34 @@ namespace Castellari.IVaPS.Model
         private Offset<int> fuelQty5 = new Offset<int>(OFFSET_FUEL_CONTENT_RIGHTMAIN);
         private Offset<int> fuelQty6 = new Offset<int>(OFFSET_FUEL_CONTENT_RIGHTAUX);
         private Offset<int> fuelQty7 = new Offset<int>(OFFSET_FUEL_CONTENT_RIGHTTIP);
+        #endregion
 
+        /// <summary>
+        /// Flag per sapere se si è correntemente connessi o meno a FS
+        /// </summary>
+        private bool connected = false;
+
+        /// <summary>
+        /// Questo timer è quello che gestisce il watch-dog per il polling a FS
+        /// </summary>
+        private Timer timer = new Timer(TIMER_ELAPSED_MILLISECONDS);
+        /// <summary>
+        /// Flag che dice se in questo momento l'aereomobile è o meno in volo
+        /// </summary>
         private bool isAirborne = false;
 
 
         public delegate void FSEventHandler(FSEvent fsEvent);
-
+        /// <summary>
+        /// Evento a cui sottoscriversi per ricevere tutti gli eventi generati dall'applicazione a partire
+        /// dalle letture fatte sulle FSUIPC. Il listner designato a livello di progettazione è IPSController
+        /// </summary>
         public event FSEventHandler FlightSimEvent;
 
+        /// <summary>
+        /// Riferimento al controllo necessario unicamente per il logging. Questa deroga alla normale logica che
+        /// le librerie non loggano è dovuto al fatto che il thread è asincrono e le eccezioni andrebbero perse.
+        /// </summary>
         public IPSController Controller { get; set; }
         
         public void ConnectToFS()
