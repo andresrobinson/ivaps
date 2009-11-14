@@ -37,8 +37,6 @@ namespace Castellari.IVaPS.BLogic
     /// </summary>
     public class FSWrapper
     {
-        private const double TIMER_ELAPSED_MILLISECONDS = 1000;
-
         #region costanti di OFFSET di FSUIPC
         private const int OFFSET_GS = 0x02B4;
         private const int OFFSET_LAT = 0x0560;
@@ -105,7 +103,7 @@ namespace Castellari.IVaPS.BLogic
         /// <summary>
         /// Questo timer è quello che gestisce il watch-dog per il polling a FS
         /// </summary>
-        private Timer timer = new Timer(TIMER_ELAPSED_MILLISECONDS);
+        private Timer timer = new Timer(IPSConfiguration.TIMER_ELAPSED_MILLISECONDS);
         /// <summary>
         /// Flag che dice se in questo momento l'aereomobile è o meno in volo
         /// </summary>
@@ -175,17 +173,6 @@ namespace Castellari.IVaPS.BLogic
                 AircraftPosition pos = new AircraftPosition();
                 toBeRaised.Timestamp = DateTime.Now;
 
-                
-                /*Controller.Log("fuelTot: " + 
-                    (   fuelCap1.Value+
-                        fuelCap2.Value+
-                        fuelCap3.Value+
-                        fuelCap4.Value+
-                        fuelCap5.Value+
-                        fuelCap6.Value+
-                        fuelCap7.Value)
-                    );*/
-
                 FSUIPCConnection.Process();
                 //airspeed
                 pos.Speed = ((double)airspeed.Value / 65536d) * 1.943844492;//Knots
@@ -232,7 +219,6 @@ namespace Castellari.IVaPS.BLogic
                     FlightSimEvent(ldg);
                     isAirborne = false;
                 }
-                //Controller.Log("Tick (" + toBeRaised.Timestamp + ")");
             }
             catch (Exception ex)
             {

@@ -155,7 +155,17 @@ namespace Castellari.IVaPS.View
                 }
                 if (stat.FlightPlan.Route != null)
                 {
-                    lbl_route.Text = stat.FlightPlan.Route;
+                    //issue 17
+                    if (stat.FlightPlan.Route.Length > 23)
+                    {
+                        lbl_route.Text = stat.FlightPlan.Route.Substring(0,23) + "...";
+                        lbl_route_tooltip.SetToolTip(lbl_route, stat.FlightPlan.Route);
+                    }
+                    else
+                    {
+                        lbl_route.Text = stat.FlightPlan.Route;
+                        lbl_route_tooltip.SetToolTip(lbl_route, "");
+                    }
                 }
             }
 

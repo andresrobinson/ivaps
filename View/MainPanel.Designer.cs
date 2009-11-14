@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lbl_info = new System.Windows.Forms.Label();
             this.lbl_lon = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -75,6 +76,7 @@
             this.txt_callsign = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.txt_va = new System.Windows.Forms.TextBox();
+            this.lbl_route_tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -620,5 +622,6 @@
         private System.Windows.Forms.Label lbl_fuelDep;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label lbl_fuelArr;
+        private System.Windows.Forms.ToolTip lbl_route_tooltip;
     }
 }
