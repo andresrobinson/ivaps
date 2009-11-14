@@ -48,10 +48,10 @@ namespace Castellari.IVaPS.View
                     webBrowser1.Document.All["Distance"].SetAttribute("value", fs.Distance.ToString("0"));
                     webBrowser1.Document.All["Altitude"].SetAttribute("value", fs.MaxAltitude.ToString("0"));
                     webBrowser1.Document.All["TasCruise"].SetAttribute("value", fs.MaxSpeed.ToString("0"));
-                    webBrowser1.Document.All["DepTime"].SetAttribute("value", fs.DepartureTime.ToUniversalTime().Hour.ToString());
-                    webBrowser1.Document.All["ActDepTime"].SetAttribute("value", fs.DepartureTime.ToUniversalTime().Minute.ToString());
-                    webBrowser1.Document.All["Land_Hour"].SetAttribute("value", fs.ArrivalTime.ToUniversalTime().Hour.ToString());
-                    webBrowser1.Document.All["Land_Minute"].SetAttribute("value", fs.ArrivalTime.ToUniversalTime().Minute.ToString());
+                    webBrowser1.Document.All["DepTime"].SetAttribute("value", fs.DepartureTime.ToUniversalTime().Hour.ToString("00"));
+                    webBrowser1.Document.All["ActDepTime"].SetAttribute("value", fs.DepartureTime.ToUniversalTime().Minute.ToString("00"));
+                    webBrowser1.Document.All["Land_Hour"].SetAttribute("value", fs.ArrivalTime.ToUniversalTime().Hour.ToString("00"));
+                    webBrowser1.Document.All["Land_Minute"].SetAttribute("value", fs.ArrivalTime.ToUniversalTime().Minute.ToString("00"));
                     webBrowser1.Document.All["Route"].SetAttribute("value", fs.FlightPlan.Route);
                     webBrowser1.Document.All["Type"].SetAttribute("value", fs.FlightPlan.FlightType);
                     if (fs.FlightPlan != null && fs.FlightPlan.Departure != null)
