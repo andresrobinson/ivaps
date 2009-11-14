@@ -63,6 +63,7 @@
     <Compile Include="Model\FSEvent.cs" />
     <Compile Include="BLogic\FSWrapper.cs" />
     <Compile Include="Model\GeoPosition.cs" />
+    <Compile Include="Model\IPSConfiguration.cs" />
     <Compile Include="Model\IvaoFlightPlan.cs" />
     <Compile Include="Model\LandingEvent.cs" />
     <Compile Include="Model\PositioningEvent.cs" />
