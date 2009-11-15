@@ -36,7 +36,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btn_debug = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.black_panel = new System.Windows.Forms.Panel();
+            this.lbl_status = new System.Windows.Forms.Label();
             this.lbl_fuelArr = new System.Windows.Forms.Label();
             this.lbl_fuelDep = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -77,7 +78,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.txt_va = new System.Windows.Forms.TextBox();
             this.lbl_route_tooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.panel1.SuspendLayout();
+            this.black_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_info
@@ -144,46 +145,58 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Debug";
             // 
-            // panel1
+            // black_panel
             // 
-            this.panel1.BackColor = System.Drawing.Color.Black;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.lbl_fuelArr);
-            this.panel1.Controls.Add(this.lbl_fuelDep);
-            this.panel1.Controls.Add(this.label21);
-            this.panel1.Controls.Add(this.label20);
-            this.panel1.Controls.Add(this.label18);
-            this.panel1.Controls.Add(this.lbl_currFuel);
-            this.panel1.Controls.Add(this.label19);
-            this.panel1.Controls.Add(this.lbl_route);
-            this.panel1.Controls.Add(this.lbl_arrIcao);
-            this.panel1.Controls.Add(this.lbl_depIcao);
-            this.panel1.Controls.Add(this.lbl_arrTime);
-            this.panel1.Controls.Add(this.lbl_depTime);
-            this.panel1.Controls.Add(this.label15);
-            this.panel1.Controls.Add(this.label9);
-            this.panel1.Controls.Add(this.lbl_maxSpeed);
-            this.panel1.Controls.Add(this.label14);
-            this.panel1.Controls.Add(this.lbl_maxHeight);
-            this.panel1.Controls.Add(this.label13);
-            this.panel1.Controls.Add(this.lbl_dist);
-            this.panel1.Controls.Add(this.label12);
-            this.panel1.Controls.Add(this.lbl_hdg);
-            this.panel1.Controls.Add(this.label191);
-            this.panel1.Controls.Add(this.lbl_alt);
-            this.panel1.Controls.Add(this.label11);
-            this.panel1.Controls.Add(this.lbl_speed);
-            this.panel1.Controls.Add(this.label10);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.lbl_info);
-            this.panel1.Controls.Add(this.lbl_lat);
-            this.panel1.Controls.Add(this.lbl_lon);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.ForeColor = System.Drawing.Color.DarkGreen;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(190, 216);
-            this.panel1.TabIndex = 5;
+            this.black_panel.BackColor = System.Drawing.Color.Black;
+            this.black_panel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.black_panel.Controls.Add(this.lbl_status);
+            this.black_panel.Controls.Add(this.lbl_fuelArr);
+            this.black_panel.Controls.Add(this.lbl_fuelDep);
+            this.black_panel.Controls.Add(this.label21);
+            this.black_panel.Controls.Add(this.label20);
+            this.black_panel.Controls.Add(this.label18);
+            this.black_panel.Controls.Add(this.lbl_currFuel);
+            this.black_panel.Controls.Add(this.label19);
+            this.black_panel.Controls.Add(this.lbl_route);
+            this.black_panel.Controls.Add(this.lbl_arrIcao);
+            this.black_panel.Controls.Add(this.lbl_depIcao);
+            this.black_panel.Controls.Add(this.lbl_arrTime);
+            this.black_panel.Controls.Add(this.lbl_depTime);
+            this.black_panel.Controls.Add(this.label15);
+            this.black_panel.Controls.Add(this.label9);
+            this.black_panel.Controls.Add(this.lbl_maxSpeed);
+            this.black_panel.Controls.Add(this.label14);
+            this.black_panel.Controls.Add(this.lbl_maxHeight);
+            this.black_panel.Controls.Add(this.label13);
+            this.black_panel.Controls.Add(this.lbl_dist);
+            this.black_panel.Controls.Add(this.label12);
+            this.black_panel.Controls.Add(this.lbl_hdg);
+            this.black_panel.Controls.Add(this.label191);
+            this.black_panel.Controls.Add(this.lbl_alt);
+            this.black_panel.Controls.Add(this.label11);
+            this.black_panel.Controls.Add(this.lbl_speed);
+            this.black_panel.Controls.Add(this.label10);
+            this.black_panel.Controls.Add(this.label2);
+            this.black_panel.Controls.Add(this.lbl_info);
+            this.black_panel.Controls.Add(this.lbl_lat);
+            this.black_panel.Controls.Add(this.lbl_lon);
+            this.black_panel.Controls.Add(this.label3);
+            this.black_panel.ForeColor = System.Drawing.Color.DarkGreen;
+            this.black_panel.Location = new System.Drawing.Point(0, 0);
+            this.black_panel.Name = "black_panel";
+            this.black_panel.Size = new System.Drawing.Size(190, 216);
+            this.black_panel.TabIndex = 5;
+            // 
+            // lbl_status
+            // 
+            this.lbl_status.AutoSize = true;
+            this.lbl_status.ForeColor = System.Drawing.Color.Green;
+            this.lbl_status.Location = new System.Drawing.Point(124, 97);
+            this.lbl_status.Name = "lbl_status";
+            this.lbl_status.Size = new System.Drawing.Size(60, 13);
+            this.lbl_status.TabIndex = 33;
+            this.lbl_status.Text = "Status: n/a";
+            this.lbl_route_tooltip.SetToolTip(this.lbl_status, "Current flight phase");
             // 
             // lbl_fuelArr
             // 
@@ -193,6 +206,7 @@
             this.lbl_fuelArr.Size = new System.Drawing.Size(10, 13);
             this.lbl_fuelArr.TabIndex = 32;
             this.lbl_fuelArr.Text = "-";
+            this.lbl_route_tooltip.SetToolTip(this.lbl_fuelArr, "Arrival Fuel (Gal) available");
             // 
             // lbl_fuelDep
             // 
@@ -202,6 +216,7 @@
             this.lbl_fuelDep.Size = new System.Drawing.Size(10, 13);
             this.lbl_fuelDep.TabIndex = 31;
             this.lbl_fuelDep.Text = "-";
+            this.lbl_route_tooltip.SetToolTip(this.lbl_fuelDep, "Departure Fuel (Gal) available");
             // 
             // label21
             // 
@@ -238,6 +253,7 @@
             this.lbl_currFuel.Size = new System.Drawing.Size(10, 13);
             this.lbl_currFuel.TabIndex = 27;
             this.lbl_currFuel.Text = "-";
+            this.lbl_route_tooltip.SetToolTip(this.lbl_currFuel, "Fuel (Gal) currently available");
             // 
             // label19
             // 
@@ -256,6 +272,7 @@
             this.lbl_route.Size = new System.Drawing.Size(183, 25);
             this.lbl_route.TabIndex = 23;
             this.lbl_route.Text = "Route";
+            this.lbl_route_tooltip.SetToolTip(this.lbl_route, "Flight Plan currently not loaded");
             // 
             // lbl_arrIcao
             // 
@@ -473,6 +490,7 @@
             this.btn_ivaoFP.Name = "btn_ivaoFP";
             this.btn_ivaoFP.Size = new System.Drawing.Size(28, 16);
             this.btn_ivaoFP.TabIndex = 10;
+            this.lbl_route_tooltip.SetToolTip(this.btn_ivaoFP, "Download FP from IVAO with current callsign");
             this.btn_ivaoFP.UseVisualStyleBackColor = true;
             this.btn_ivaoFP.Click += new System.EventHandler(this.btn_rec_Click);
             // 
@@ -492,6 +510,7 @@
             this.btn_google.Name = "btn_google";
             this.btn_google.Size = new System.Drawing.Size(28, 16);
             this.btn_google.TabIndex = 12;
+            this.lbl_route_tooltip.SetToolTip(this.btn_google, "Display current position on Google Maps");
             this.btn_google.UseVisualStyleBackColor = true;
             this.btn_google.Click += new System.EventHandler(this.btn_google_Click);
             // 
@@ -511,6 +530,7 @@
             this.btn_pirep.Name = "btn_pirep";
             this.btn_pirep.Size = new System.Drawing.Size(28, 16);
             this.btn_pirep.TabIndex = 14;
+            this.lbl_route_tooltip.SetToolTip(this.btn_pirep, "Autofill pirep for current Callsign and Virtual Airline ID");
             this.btn_pirep.UseVisualStyleBackColor = true;
             this.btn_pirep.Click += new System.EventHandler(this.btn_pirep_Click);
             // 
@@ -560,14 +580,14 @@
             this.Controls.Add(this.btn_disconnect);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btn_connect);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.black_panel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_debug);
             this.Name = "MainPanel";
             this.Size = new System.Drawing.Size(189, 305);
             this.Load += new System.EventHandler(this.MainPanel_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.black_panel.ResumeLayout(false);
+            this.black_panel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -582,7 +602,7 @@
         private System.Windows.Forms.Label lbl_lat;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lbl_info;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel black_panel;
         private System.Windows.Forms.Button btn_connect;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btn_disconnect;
@@ -623,5 +643,6 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label lbl_fuelArr;
         private System.Windows.Forms.ToolTip lbl_route_tooltip;
+        private System.Windows.Forms.Label lbl_status;
     }
 }

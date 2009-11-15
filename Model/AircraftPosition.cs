@@ -34,5 +34,28 @@ namespace Castellari.IVaPS.Model
         /// Carburante caricato a bordo nel momento del campionamento, espresso in Galloni
         /// </summary>
         public double AvailableFuel { get; set; }
+        /// <summary>
+        /// Torna true se l'aereo è in volo
+        /// </summary>
+        public bool IsAirborne { get; set; }
+        /// <summary>
+        /// Torna true se almeno un motore dell'aereomobile è acceso
+        /// </summary>
+        public bool IsEngineStarted { get; set; }
+        /// <summary>
+        /// Torna true se l'aereomobile è in movimento
+        /// </summary>
+        public bool IsMoving
+        {
+            get 
+            {
+                if (Speed != double.NaN)
+                    return Speed > 0;
+                else
+                    return false;
+            }
+        }
+
+
     }
 }

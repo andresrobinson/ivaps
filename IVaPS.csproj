@@ -53,11 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLogic\FlightStates.cs" />
     <Compile Include="BLogic\IPSUtils.cs" />
     <Compile Include="BLogic\LogUtil.cs" />
     <Compile Include="Control\IPSController.cs" />
     <Compile Include="Model\AircraftPosition.cs" />
     <Compile Include="Model\Airport.cs" />
+    <Compile Include="Model\EndMovingEvent.cs" />
+    <Compile Include="Model\EngineShutDownEvent.cs" />
+    <Compile Include="Model\EngineStartUpEvent.cs" />
     <Compile Include="Model\FlightStatus.cs" />
     <Compile Include="Model\FSEvent.cs" />
     <Compile Include="BLogic\FSWrapper.cs" />
@@ -66,6 +70,7 @@
     <Compile Include="Model\IvaoFlightPlan.cs" />
     <Compile Include="Model\LandingEvent.cs" />
     <Compile Include="Model\PositioningEvent.cs" />
+    <Compile Include="Model\StartMovingEvent.cs" />
     <Compile Include="Model\TakeOffEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

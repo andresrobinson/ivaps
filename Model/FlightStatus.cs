@@ -31,6 +31,10 @@ namespace Castellari.IVaPS.Model
         /// </summary>
         private List<AircraftPosition> flightLog = null;
         /// <summary>
+        /// Stato corrente del volo, per i dettagli sulla sequenza vedere la documentazione della enum
+        /// </summary>
+        public FlightStates CurrentStatus { get; set; }
+        /// <summary>
         /// Distanza percorsa dall'inizio del recording espressa in nm
         /// </summary>
         public double Distance { get; set; }
@@ -69,7 +73,7 @@ namespace Castellari.IVaPS.Model
         /// <summary>
         /// Carburante alla partenza in galloni
         /// </summary>
-        public double DeparturenFuel { get; set; }
+        public double DepartureFuel { get; set; }
         /// <summary>
         /// Carburante all'arrivo in galloni
         /// </summary>
@@ -131,6 +135,7 @@ namespace Castellari.IVaPS.Model
             Callsign = "";
             VirtualAirlineID = "";
             FlightPlan = null;
+            CurrentStatus = FlightStates.Before_Departed;
         }
         #endregion
     }

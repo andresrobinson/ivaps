@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using Castellari.IVaPS.Control;
 using Castellari.IVaPS.Model;
 using System.Threading;
+using Castellari.IVaPS.BLogic;
 
 namespace Castellari.IVaPS.View
 {
@@ -35,6 +36,14 @@ namespace Castellari.IVaPS.View
         public MainPanel()
         {
             InitializeComponent();
+            black_panel.Paint += new PaintEventHandler(black_panel_Paint);
+        }
+
+        void black_panel_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawLine(Pens.DarkGreen, 0, 140, black_panel.Width, 140);
+            e.Graphics.DrawLine(Pens.DarkGreen, 0, 80, black_panel.Width, 80);
+            e.Graphics.DrawLine(Pens.DarkGreen, 105, 0, 105, 80);
         }
 
         private void btn_debug_Click(object sender, EventArgs e)
@@ -132,7 +141,7 @@ namespace Castellari.IVaPS.View
             lbl_maxHeight.Text = stat.MaxAltitude.ToString("000") + " ft";
             lbl_maxSpeed.Text = stat.MaxSpeed.ToString("000") + " kn";
             lbl_currFuel.Text = stat.CurrentFuel.ToString("0");
-            lbl_fuelDep.Text = stat.DeparturenFuel.ToString("0");
+            lbl_fuelDep.Text = stat.DepartureFuel.ToString("0");
             lbl_fuelArr.Text = stat.ArrivalFuel.ToString("0");
 
             if (stat.FlightPlan != null)
@@ -169,6 +178,26 @@ namespace Castellari.IVaPS.View
                 }
             }
 
+            //issue 29
+            switch (stat.CurrentStatus)
+            {
+                case FlightStates.Before_Departed:
+                    lbl_status.Text = "Parked"; break;
+                case FlightStates.Engine_Started:
+                    lbl_status.Text = "Engine ON"; break;
+                case FlightStates.TakeOffTaxi:
+                    lbl_status.Text = "Taxi"; break;
+                case FlightStates.Airborne:
+                    lbl_status.Text = "Airborne"; break;
+                case FlightStates.Landed:
+                    lbl_status.Text = "Landed"; break;
+                case FlightStates.OnBlocks:
+                    lbl_status.Text = "On blocks"; break;
+                case FlightStates.EngineOff:
+                    lbl_status.Text = "Engine OFF"; break;
+            }
+
+            //gestione della mappa, tutta da rivedere
             if (mf != null && mf.Visible && model != null && (lastMapUpdate.AddSeconds(MAP_AUTOUPDATE_DELAY_IN_SECONDS).CompareTo(DateTime.Now)<0))
             {
                 mf.GoToPosition(model.CurrentPosition);

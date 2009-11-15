@@ -20,7 +20,7 @@ using Castellari.IVaPS.Model;
 namespace Castellari.IVaPS.BLogic
 {
     /// <summary>
-    /// Rappresenta il wrapping dell'intero Flight Simulator: quando l'applicazione necessita di colloquiare con FS
+    /// Rappresenta il wrapper dell'intero Flight Simulator: quando l'applicazione necessita di colloquiare con FS
     /// lo fa sempre e solo attraverso questa entità.
     /// 
     /// Il principio di funzionamento è il seguente:
@@ -104,11 +104,25 @@ namespace Castellari.IVaPS.BLogic
         /// Questo timer è quello che gestisce il watch-dog per il polling a FS
         /// </summary>
         private Timer timer = new Timer(IPSConfiguration.TIMER_ELAPSED_MILLISECONDS);
-        /// <summary>
-        /// Flag che dice se in questo momento l'aereomobile è o meno in volo
-        /// </summary>
-        private bool isAirborne = false;
 
+        private AircraftPosition lastPosition = null;
+
+        /// <summary>
+        /// Costruttore
+        /// </summary>
+        public FSWrapper()
+        {
+            lastPosition = new AircraftPosition();
+            lastPosition.Altitude = double.NaN;
+            lastPosition.AvailableFuel = double.NaN; ;
+            lastPosition.Heading = double.NaN;
+            lastPosition.IsAirborne = false;
+            lastPosition.IsEngineStarted = false;
+            lastPosition.Latitude = double.NaN;
+            lastPosition.Longitude = double.NaN;
+            lastPosition.Speed = double.NaN;
+            lastPosition.Timestamp = DateTime.Now;
+        }
 
         public delegate void FSEventHandler(FSEvent fsEvent);
         /// <summary>
@@ -170,55 +184,83 @@ namespace Castellari.IVaPS.BLogic
             try
             {
                 PositioningEvent toBeRaised = new PositioningEvent();
-                AircraftPosition pos = new AircraftPosition();
-                toBeRaised.Timestamp = DateTime.Now;
+                AircraftPosition currentPosition = new AircraftPosition();
 
                 FSUIPCConnection.Process();
                 //airspeed
-                pos.Speed = ((double)airspeed.Value / 65536d) * 1.943844492;//Knots
+                currentPosition.Speed = ((double)airspeed.Value / 65536d) * 1.943844492;//Knots
                 //latitude
-                pos.Latitude = (double)latitude.Value * 90d / (10001750d * 65536d * 65536d);
+                currentPosition.Latitude = (double)latitude.Value * 90d / (10001750d * 65536d * 65536d);
                 //longitude
-                pos.Longitude = (double)longitude.Value * 360d / (65536d * 65536d * 65536d * 65536d);
+                currentPosition.Longitude = (double)longitude.Value * 360d / (65536d * 65536d * 65536d * 65536d);
                 //altitude
-                pos.Altitude = (int)altitude.Value * 3.28d;
+                currentPosition.Altitude = (int)altitude.Value * 3.28d;
                 //heading
-                pos.Heading = heading.Value * 360d / (65536d * 65536d);
-                if(pos.Heading < 0)
-                    pos.Heading = 360 + pos.Heading;
+                currentPosition.Heading = heading.Value * 360d / (65536d * 65536d);
+                if(currentPosition.Heading < 0)
+                    currentPosition.Heading = 360 + currentPosition.Heading;
 
                 //fuel
-                pos.AvailableFuel = 0;
-                pos.AvailableFuel += fuelCap1.Value * ((double)(fuelQty1.Value) / (128 * 65536));
-                pos.AvailableFuel += fuelCap2.Value * ((double)(fuelQty2.Value) / (128 * 65536));
-                pos.AvailableFuel += fuelCap3.Value * ((double)(fuelQty3.Value) / (128 * 65536));
-                pos.AvailableFuel += fuelCap4.Value * ((double)(fuelQty4.Value) / (128 * 65536));
-                pos.AvailableFuel += fuelCap5.Value * ((double)(fuelQty5.Value) / (128 * 65536));
-                pos.AvailableFuel += fuelCap6.Value * ((double)(fuelQty6.Value) / (128 * 65536));
-                pos.AvailableFuel += fuelCap7.Value * ((double)(fuelQty7.Value) / (128 * 65536));
+                currentPosition.AvailableFuel = 0;
+                currentPosition.AvailableFuel += fuelCap1.Value * ((double)(fuelQty1.Value) / (128 * 65536));
+                currentPosition.AvailableFuel += fuelCap2.Value * ((double)(fuelQty2.Value) / (128 * 65536));
+                currentPosition.AvailableFuel += fuelCap3.Value * ((double)(fuelQty3.Value) / (128 * 65536));
+                currentPosition.AvailableFuel += fuelCap4.Value * ((double)(fuelQty4.Value) / (128 * 65536));
+                currentPosition.AvailableFuel += fuelCap5.Value * ((double)(fuelQty5.Value) / (128 * 65536));
+                currentPosition.AvailableFuel += fuelCap6.Value * ((double)(fuelQty6.Value) / (128 * 65536));
+                currentPosition.AvailableFuel += fuelCap7.Value * ((double)(fuelQty7.Value) / (128 * 65536));
 
-                toBeRaised.Position = pos;
+                toBeRaised.Position = currentPosition;
                 //sollevo l'evento
                 FlightSimEvent(toBeRaised);
 
-                //airborne
-                bool isNowAirborne = (airborne.Value == 0);
-                if (!isAirborne && isNowAirborne)
+                //gestione stato airborne
+                currentPosition.IsAirborne = (airborne.Value == 0);
+                if (!lastPosition.IsAirborne && currentPosition.IsAirborne)
                 {
                     //decollato
                     FSEvent to = new TakeOffEvent();
-                    to.Timestamp = DateTime.Now;
                     FlightSimEvent(to);
-                    isAirborne = true;
                 }
-                else if (isAirborne && !isNowAirborne)
+                else if (lastPosition.IsAirborne && !currentPosition.IsAirborne)
                 {
                     //atterrato
                     FSEvent ldg = new LandingEvent();
-                    ldg.Timestamp = DateTime.Now;
                     FlightSimEvent(ldg);
-                    isAirborne = false;
                 }
+
+                //gestione dello stato del motore (ed invio eventi associati) issue 29
+                currentPosition.IsEngineStarted = currentPosition.AvailableFuel < lastPosition.AvailableFuel;//questa è tutta da verificare, NdF 20091115
+                if (!lastPosition.IsEngineStarted && currentPosition.IsEngineStarted)
+                {
+                    //il motore si è acceso
+                    FSEvent evt = new EngineStartUpEvent();
+                    FlightSimEvent(evt);
+
+                }
+                else if (lastPosition.IsEngineStarted && !currentPosition.IsEngineStarted)
+                {
+                    //il motore si è spento
+                    FSEvent evt = new EngineShutDownEvent();
+                    FlightSimEvent(evt);
+                }
+                
+                //gestione del movimento (ed invio eventi associati) issue 29
+                //l'1 invece dello 0 è dovuto a potenziali errori di arrotondamento nel calcolo della velocità
+                if (lastPosition.Speed <= 1 && currentPosition.Speed > 1)
+                { 
+                    //inizia a muoversi
+                    FSEvent evt = new StartMovingEvent();
+                    FlightSimEvent(evt);
+                }
+                else if (lastPosition.Speed >= 1 && currentPosition.Speed < 1)
+                {
+                    //si ferma
+                    FSEvent evt = new EndMovingEvent();
+                    FlightSimEvent(evt);
+                }
+
+                lastPosition = currentPosition;
             }
             catch (Exception ex)
             {

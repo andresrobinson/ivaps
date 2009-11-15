@@ -76,7 +76,7 @@ namespace Castellari.IVaPS.View
                     if (fs.FlightPlan != null && fs.FlightPlan.Alternate != null)
                         webBrowser1.Document.All["AltAirport"].SetAttribute("value", fs.FlightPlan.Alternate.ICAOCode);
                     webBrowser1.Document.All["Aircraft"].SetAttribute("value", fs.FlightPlan.Aircraft);
-                    webBrowser1.Document.All["Fuel_Qty"].SetAttribute("value", (fs.DeparturenFuel-fs.ArrivalFuel).ToString("0"));
+                    webBrowser1.Document.All["Fuel_Qty"].SetAttribute("value", (fs.DepartureFuel-fs.ArrivalFuel).ToString("0"));
                     BeginInvoke(new DrawDelegate(this.ChangeTitle), new object[] { "Verify data before sent!" });
                 }
             }

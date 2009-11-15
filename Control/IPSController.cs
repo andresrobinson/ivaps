@@ -239,22 +239,80 @@ namespace Castellari.IVaPS.Control
             {
                 PositioningEvent pe = (PositioningEvent)e;
                 status.CurrentPosition = pe.Position;
-                viewMainForm.mainPanel.DrawStatus(status);
             }
             else if (e is TakeOffEvent)
             {
-                status.DepartureTime = e.Timestamp;
-                status.DeparturenFuel = status.CurrentFuel;
-                viewMainForm.mainPanel.DrawStatus(status);
+                //se sono già airborne o atterrato vuol dire che è un touch 'n' go o un goaround, quindi non faccio nulla
+                if (status.CurrentStatus == FlightStates.TakeOffTaxi)
+                {
+                    status.DepartureTime = e.Timestamp;
+                }
+                status.CurrentStatus = FlightStates.Airborne;
             }
             else if (e is LandingEvent)
             {
-                status.ArrivalTime = e.Timestamp;
-                status.ArrivalFuel = status.CurrentFuel; 
-                viewMainForm.mainPanel.DrawStatus(status);
+                if (status.CurrentStatus == FlightStates.Airborne)
+                {
+                    status.CurrentStatus = FlightStates.Landed;
+                    status.ArrivalTime = e.Timestamp;
+                    //in questo modo l'ultimo atterraggio è sempre quello che fa fede per l'ora di arrivo
+                }
+            }
+            else if (e is EngineStartUpEvent)
+            {
+                //se è la prima accensione la considero come quella "buona"
+                if (status.CurrentStatus == FlightStates.Before_Departed)
+                {
+                    status.CurrentStatus = FlightStates.Engine_Started;
+                    status.DepartureFuel = status.CurrentFuel;
+                }
+            }
+            else if (e is EngineShutDownEvent)
+            {
+                if (status.CurrentStatus == FlightStates.OnBlocks)
+                {
+                    status.CurrentStatus = FlightStates.EngineOff;
+                    status.ArrivalFuel = status.CurrentFuel; 
+                }
+                else if(status.CurrentStatus == FlightStates.Engine_Started || status.CurrentStatus == FlightStates.TakeOffTaxi)
+                {
+                    status.CurrentStatus = FlightStates.Before_Departed;
+                }
+            }
+            else if (e is StartMovingEvent)
+            {
+                if (status.CurrentStatus == FlightStates.Before_Departed || status.CurrentStatus == FlightStates.Engine_Started)
+                {
+                    status.CurrentStatus = FlightStates.TakeOffTaxi;
+                }
+                else if (status.CurrentStatus == FlightStates.OnBlocks)
+                {
+                    //vuol dire che non ero realmente ai blocchi, ma che mi ero solo arrestato durante il taxi dopo l'atterraggio
+                    status.CurrentStatus = FlightStates.Landed;
+                }
+                //negli altri casi è un normale stop durante il rullaggio di partenza o di arrivo
+            }
+            else if (e is EndMovingEvent)
+            {
+                if (status.CurrentStatus == FlightStates.Landed || status.CurrentStatus == FlightStates.OnBlocks)
+                {
+                    //la seconda condizione è per evitare di avere problemi se mi fermo durante il taxi dopo l'atterraggio
+                    status.CurrentStatus = FlightStates.OnBlocks;
+                    //l'ultimo tra on-bock e shutdown motori determina l'ultimo calcolo di fuel
+                    status.ArrivalFuel = status.CurrentFuel; 
+                }
             }
             else
                 throw new InvalidOperationException("non implementato");
+
+            if (!(e is PositioningEvent))
+            {
+                Log(e.GetType().FullName.Substring(e.GetType().FullName.LastIndexOf('.')));
+            }
+
+
+            //rinfresco la view
+            viewMainForm.mainPanel.DrawStatus(status);
         }
         
     }

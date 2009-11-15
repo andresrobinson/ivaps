@@ -16,8 +16,21 @@ namespace Castellari.IVaPS.Model
     /// <summary>
     /// Capostipite della tassonomia degli eventi provenienti da Flight Simulator
     /// </summary>
-    public class FSEvent
+    public abstract class FSEvent
     {
+        /// <summary>
+        /// Costruttore che setta automaticamente il timestamp a Now
+        /// </summary>
+        public FSEvent()
+        {
+            this.Timestamp = DateTime.Now;
+        }
+
+        public FSEvent(DateTime timestamp)
+        {
+            this.Timestamp = timestamp;
+        }
+
         /// <summary>
         /// Timestamp di generazione dell'evento, ora del PC
         /// </summary>
