@@ -65,35 +65,60 @@ namespace Castellari.IVaPS.View
 
         private void btn_connect_Click(object sender, EventArgs e)
         {
-            if (Controller.Connect())
+            if (lbl_connect.Text == "Connect")
             {
-                if (Controller.StartStopRecording())
+                //sono disconnesso, quindi devo connettermi
+                if (Controller.Connect())
                 {
-                    Info("Successifully connected to FS!");
-                    lbl_info.ForeColor = Color.LightGreen;
+                    if (Controller.StartStopRecording())
+                    {
+                        Info("Successifully connected to FS!");
+                        lbl_info.ForeColor = Color.LightGreen;
+                        lbl_connect.Text = "Disconnect";
+                    }
+                    else
+                        Error("Unable to start recording");
                 }
                 else
-                    Error("Unable to start recording");
+                    Error("Unable to connect to FS");
+                
             }
             else
-                Error("Unable to connect to FS");
+            {
+                if (Controller.StartStopRecording())
+                    if (Controller.IsRecording)
+                        Info("Rec started");
+                    else
+                    {
+                        Info("Rec stopped");
+                        if (Controller.Disconnect())
+                        {
+                            Info("Disconnected to FS");
+                            lbl_connect.Text = "Connect";
+                        }
+                        else
+                            Error("Unable to disconnect to FS");
+                    }
+                else
+                    Error("Unable to connect to FS");
+            }
         }
 
         private void btn_disconnect_Click(object sender, EventArgs e)
         {
-            if (Controller.StartStopRecording())
-                if (Controller.IsRecording)
-                    Info("Rec started");
-                else
-                {
-                    Info("Rec stopped");
-                    if (Controller.Disconnect())
-                        Info("Disconnected to FS");
-                    else
-                        Error("Unable to disconnect to FS");
-                }
-            else
-                Error("Unable to connect to FS");
+            //if (Controller.StartStopRecording())
+            //    if (Controller.IsRecording)
+            //        Info("Rec started");
+            //    else
+            //    {
+            //        Info("Rec stopped");
+            //        if (Controller.Disconnect())
+            //            Info("Disconnected to FS");
+            //        else
+            //            Error("Unable to disconnect to FS");
+            //    }
+            //else
+            //    Error("Unable to connect to FS");
         }
 
         private void Info(string msg)

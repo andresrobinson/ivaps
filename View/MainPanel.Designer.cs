@@ -65,9 +65,8 @@
             this.lbl_speed = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.btn_connect = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lbl_connect = new System.Windows.Forms.Label();
             this.btn_disconnect = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.btn_ivaoFP = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
@@ -445,15 +444,15 @@
             this.btn_connect.UseVisualStyleBackColor = true;
             this.btn_connect.Click += new System.EventHandler(this.btn_connect_Click);
             // 
-            // label4
+            // lbl_connect
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(113, 241);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Connect";
+            this.lbl_connect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_connect.Location = new System.Drawing.Point(99, 241);
+            this.lbl_connect.Name = "lbl_connect";
+            this.lbl_connect.Size = new System.Drawing.Size(61, 13);
+            this.lbl_connect.TabIndex = 7;
+            this.lbl_connect.Text = "Connect";
+            this.lbl_connect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btn_disconnect
             // 
@@ -463,16 +462,6 @@
             this.btn_disconnect.TabIndex = 8;
             this.btn_disconnect.UseVisualStyleBackColor = true;
             this.btn_disconnect.Click += new System.EventHandler(this.btn_disconnect_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(99, 263);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Disconnect";
             // 
             // label6
             // 
@@ -576,9 +565,8 @@
             this.Controls.Add(this.btn_google);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btn_ivaoFP);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.btn_disconnect);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.lbl_connect);
             this.Controls.Add(this.btn_connect);
             this.Controls.Add(this.black_panel);
             this.Controls.Add(this.label1);
@@ -604,9 +592,8 @@
         private System.Windows.Forms.Label lbl_info;
         private System.Windows.Forms.Panel black_panel;
         private System.Windows.Forms.Button btn_connect;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lbl_connect;
         private System.Windows.Forms.Button btn_disconnect;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btn_ivaoFP;
         private System.Windows.Forms.Label label7;
