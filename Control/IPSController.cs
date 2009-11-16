@@ -62,7 +62,6 @@ namespace Castellari.IVaPS.Control
 
             #region Costruzione preliminare delle proprietà interne
             flightSim = new FSWrapper();
-            flightSim.Controller = this;
             status = new FlightStatus();
             viewMainForm.mainPanel.SetStatus(status);
             Log("..Init successifully terminated");
@@ -173,12 +172,16 @@ namespace Castellari.IVaPS.Control
                     if (flightSim.IsRecording)
                     {
                         flightSim.StopRecording();
+                        Log("Rec stopped");
                         flightSim.FlightSimEvent -= new FSWrapper.FSEventHandler(this.HandleEvent);
+                        flightSim.ErrorOccurred -= new FSWrapper.ErrorOccurredHandler(flightSim_ErrorOccurred);
                     }
                     else
                     {
                         flightSim.StartRecording();
+                        Log("Rec started");
                         flightSim.FlightSimEvent += new FSWrapper.FSEventHandler(this.HandleEvent);
+                        flightSim.ErrorOccurred += new FSWrapper.ErrorOccurredHandler(flightSim_ErrorOccurred);
                     }
                     return true;
                 }
@@ -193,6 +196,12 @@ namespace Castellari.IVaPS.Control
                 Log(ex.Message);
                 return false;
             }
+        }
+
+        void flightSim_ErrorOccurred(Exception ex)
+        {
+            Log(ex.Message);
+            Log(ex.StackTrace);
         }
 
         /// <summary>

@@ -14,7 +14,6 @@ using System.Timers;
 
 using FSUIPC;
 
-using Castellari.IVaPS.Control;
 using Castellari.IVaPS.Model;
 
 namespace Castellari.IVaPS.BLogic
@@ -105,24 +104,27 @@ namespace Castellari.IVaPS.BLogic
         /// </summary>
         private Timer timer = new Timer(IPSConfiguration.TIMER_ELAPSED_MILLISECONDS);
 
-        private AircraftPosition lastPosition = null;
-
         /// <summary>
         /// Costruttore
         /// </summary>
         public FSWrapper()
         {
-            lastPosition = new AircraftPosition();
-            lastPosition.Altitude = double.NaN;
-            lastPosition.AvailableFuel = double.NaN; ;
-            lastPosition.Heading = double.NaN;
-            lastPosition.IsAirborne = false;
-            lastPosition.IsEngineStarted = false;
-            lastPosition.Latitude = double.NaN;
-            lastPosition.Longitude = double.NaN;
-            lastPosition.Speed = double.NaN;
-            lastPosition.Timestamp = DateTime.Now;
+            LastPosition = new AircraftPosition();
+            LastPosition.Altitude = double.NaN;
+            LastPosition.AvailableFuel = double.NaN; ;
+            LastPosition.Heading = double.NaN;
+            LastPosition.IsAirborne = false;
+            LastPosition.IsEngineStarted = false;
+            LastPosition.Latitude = double.NaN;
+            LastPosition.Longitude = double.NaN;
+            LastPosition.Speed = double.NaN;
+            LastPosition.Timestamp = DateTime.Now;
         }
+
+        /// <summary>
+        /// Ultima posizione letta dalle FSUIPC
+        /// </summary>
+        public AircraftPosition LastPosition { get; set; }
 
         public delegate void FSEventHandler(FSEvent fsEvent);
         /// <summary>
@@ -131,24 +133,36 @@ namespace Castellari.IVaPS.BLogic
         /// </summary>
         public event FSEventHandler FlightSimEvent;
 
+        public delegate void ErrorOccurredHandler(Exception ex);
+
         /// <summary>
-        /// Riferimento al controllo necessario unicamente per il logging. Questa deroga alla normale logica che
-        /// le librerie non loggano è dovuto al fatto che il thread è asincrono e le eccezioni andrebbero perse.
+        /// Evento sollevato ogni qual volta si verifichi un errore nel modulo. Registrandosi a questo evento
+        /// si è quindi notificati anche di tutti gli errori che possono occorrere durante il normale
+        /// funzionamento del demone (timer) interno.
         /// </summary>
-        public IPSController Controller { get; set; }
-        
+        public event ErrorOccurredHandler ErrorOccurred;
+
+        /// <summary>
+        /// Metodo per attivare la connessione ad FSUIPC
+        /// </summary>
         public void ConnectToFS()
         {
             FSUIPCConnection.Open();
             connected = true;
         }
 
+        /// <summary>
+        /// Metodo per disattivare la connessione ad FSUIPC
+        /// </summary>
         public void DisconnectToFS()
         {
             FSUIPCConnection.Close();
             connected = false;
         }
 
+        /// <summary>
+        /// Dice se il wrapper è correntemente connesso con FSUIPC
+        /// </summary>
         public bool IsConnected
         {
             get 
@@ -157,20 +171,27 @@ namespace Castellari.IVaPS.BLogic
             }
         }
 
+        /// <summary>
+        /// Attiva un timer che fa "polling" dei parametri delle FSUIPC ogni TIMER_ELAPSED_MILLISECONDS
+        /// </summary>
         public void StartRecording()
         {
             timer.Elapsed += new ElapsedEventHandler(this.TickHandle);
             timer.Enabled = true;
-            Controller.Log("Rec started");
         }
 
+        /// <summary>
+        /// Disattiva il timer che governa il polling dello stato alle FSUIPC
+        /// </summary>
         public void StopRecording()
         {
             timer.Enabled = false;
             timer.Elapsed -= new ElapsedEventHandler(this.TickHandle);
-            Controller.Log("Rec stopped");
         }
 
+        /// <summary>
+        /// Torna true se il polling è attivo
+        /// </summary>
         public bool IsRecording
         {
             get 
@@ -179,6 +200,17 @@ namespace Castellari.IVaPS.BLogic
             }
         }
 
+        /// <summary>
+        /// Permette all'esterno di forzare una lettura delle FSUIPC
+        /// </summary>
+        public void ForceReading()
+        {
+            TickHandle(null, null);
+        }
+
+        /// <summary>
+        /// Gestore interno del watch dog sulle FSUIPC. In caso di errore sorreva un ErrorOccurredEvent
+        /// </summary>
         private void TickHandle(object sender, ElapsedEventArgs e)
         {
             try
@@ -216,13 +248,13 @@ namespace Castellari.IVaPS.BLogic
 
                 //gestione stato airborne
                 currentPosition.IsAirborne = (airborne.Value == 0);
-                if (!lastPosition.IsAirborne && currentPosition.IsAirborne)
+                if (!LastPosition.IsAirborne && currentPosition.IsAirborne)
                 {
                     //decollato
                     FSEvent to = new TakeOffEvent();
                     FlightSimEvent(to);
                 }
-                else if (lastPosition.IsAirborne && !currentPosition.IsAirborne)
+                else if (LastPosition.IsAirborne && !currentPosition.IsAirborne)
                 {
                     //atterrato
                     FSEvent ldg = new LandingEvent();
@@ -230,15 +262,15 @@ namespace Castellari.IVaPS.BLogic
                 }
 
                 //gestione dello stato del motore (ed invio eventi associati) issue 29
-                currentPosition.IsEngineStarted = currentPosition.AvailableFuel < lastPosition.AvailableFuel;//questa è tutta da verificare, NdF 20091115
-                if (!lastPosition.IsEngineStarted && currentPosition.IsEngineStarted)
+                currentPosition.IsEngineStarted = currentPosition.AvailableFuel < LastPosition.AvailableFuel;//questa è tutta da verificare, NdF 20091115
+                if (!LastPosition.IsEngineStarted && currentPosition.IsEngineStarted)
                 {
                     //il motore si è acceso
                     FSEvent evt = new EngineStartUpEvent();
                     FlightSimEvent(evt);
 
                 }
-                else if (lastPosition.IsEngineStarted && !currentPosition.IsEngineStarted)
+                else if (LastPosition.IsEngineStarted && !currentPosition.IsEngineStarted)
                 {
                     //il motore si è spento
                     FSEvent evt = new EngineShutDownEvent();
@@ -247,25 +279,24 @@ namespace Castellari.IVaPS.BLogic
                 
                 //gestione del movimento (ed invio eventi associati) issue 29
                 //l'1 invece dello 0 è dovuto a potenziali errori di arrotondamento nel calcolo della velocità
-                if (lastPosition.Speed <= 1 && currentPosition.Speed > 1)
+                if (LastPosition.Speed <= 1 && currentPosition.Speed > 1)
                 { 
                     //inizia a muoversi
                     FSEvent evt = new StartMovingEvent();
                     FlightSimEvent(evt);
                 }
-                else if (lastPosition.Speed >= 1 && currentPosition.Speed < 1)
+                else if (LastPosition.Speed >= 1 && currentPosition.Speed < 1)
                 {
                     //si ferma
                     FSEvent evt = new EndMovingEvent();
                     FlightSimEvent(evt);
                 }
 
-                lastPosition = currentPosition;
+                LastPosition = currentPosition;
             }
             catch (Exception ex)
             {
-                Controller.Log(ex.Message);
-                Controller.Log(ex.StackTrace);
+                ErrorOccurred(ex);
             }
         }
 
