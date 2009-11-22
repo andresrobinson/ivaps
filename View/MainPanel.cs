@@ -65,7 +65,8 @@ namespace Castellari.IVaPS.View
 
         private void btn_connect_Click(object sender, EventArgs e)
         {
-            if (lbl_connect.Text == "Connect")
+            //la prima condizione serve solo per non far incazzare il designer di Visual Studio!
+            if (lbl_connect!= null && lbl_connect.Text == "Connect")
             {
                 //sono disconnesso, quindi devo connettermi
                 if (Controller.Connect())
@@ -271,6 +272,13 @@ namespace Castellari.IVaPS.View
         {
             //connessione automatica
             btn_connect_Click(null, null);
+        }
+
+        private void btn_top_Click(object sender, EventArgs e)
+        {
+            MainForm fm = (MainForm)this.Parent;
+            fm.TopMost = !fm.TopMost;
+            btn_top.BackColor = fm.TopMost ? Color.Orange : Color.Transparent;
         }
     }
 }

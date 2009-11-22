@@ -78,6 +78,8 @@
             this.lbl_route_tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.btn_top = new System.Windows.Forms.Button();
             this.black_panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -457,7 +459,7 @@
             // 
             // btn_config
             // 
-            this.btn_config.Location = new System.Drawing.Point(159, 262);
+            this.btn_config.Location = new System.Drawing.Point(159, 259);
             this.btn_config.Name = "btn_config";
             this.btn_config.Size = new System.Drawing.Size(28, 16);
             this.btn_config.TabIndex = 8;
@@ -468,15 +470,15 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(32, 263);
+            this.label6.Location = new System.Drawing.Point(32, 278);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(48, 13);
+            this.label6.Size = new System.Drawing.Size(75, 13);
             this.label6.TabIndex = 11;
-            this.label6.Text = "IVAO FP";
+            this.label6.Text = "Dwld IVAO FP";
             // 
             // btn_ivaoFP
             // 
-            this.btn_ivaoFP.Location = new System.Drawing.Point(5, 262);
+            this.btn_ivaoFP.Location = new System.Drawing.Point(4, 276);
             this.btn_ivaoFP.Name = "btn_ivaoFP";
             this.btn_ivaoFP.Size = new System.Drawing.Size(28, 16);
             this.btn_ivaoFP.TabIndex = 10;
@@ -488,7 +490,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(32, 285);
+            this.label7.Location = new System.Drawing.Point(32, 297);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(54, 13);
             this.label7.TabIndex = 13;
@@ -496,7 +498,7 @@
             // 
             // btn_google
             // 
-            this.btn_google.Location = new System.Drawing.Point(5, 284);
+            this.btn_google.Location = new System.Drawing.Point(4, 295);
             this.btn_google.Name = "btn_google";
             this.btn_google.Size = new System.Drawing.Size(28, 16);
             this.btn_google.TabIndex = 12;
@@ -506,7 +508,7 @@
             // 
             // btn_pirep
             // 
-            this.btn_pirep.Location = new System.Drawing.Point(159, 284);
+            this.btn_pirep.Location = new System.Drawing.Point(159, 296);
             this.btn_pirep.Name = "btn_pirep";
             this.btn_pirep.Size = new System.Drawing.Size(28, 16);
             this.btn_pirep.TabIndex = 14;
@@ -545,7 +547,7 @@
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(99, 262);
+            this.label4.Location = new System.Drawing.Point(99, 259);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 13);
             this.label4.TabIndex = 19;
@@ -555,18 +557,40 @@
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(99, 284);
+            this.label5.Location = new System.Drawing.Point(99, 298);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 20;
             this.label5.Text = "Fill PIREP";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(32, 260);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(73, 13);
+            this.label16.TabIndex = 21;
+            this.label16.Text = "Always on top";
+            // 
+            // btn_top
+            // 
+            this.btn_top.Location = new System.Drawing.Point(4, 258);
+            this.btn_top.Name = "btn_top";
+            this.btn_top.Size = new System.Drawing.Size(28, 16);
+            this.btn_top.TabIndex = 23;
+            this.lbl_route_tooltip.SetToolTip(this.btn_top, "Enable/disable \"always on top\" on this window");
+            this.btn_top.UseVisualStyleBackColor = true;
+            this.btn_top.Click += new System.EventHandler(this.btn_top_Click);
+            // 
             // MainPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.btn_top);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txt_va);
@@ -584,7 +608,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_debug);
             this.Name = "MainPanel";
-            this.Size = new System.Drawing.Size(189, 305);
+            this.Size = new System.Drawing.Size(189, 313);
             this.Load += new System.EventHandler(this.MainPanel_Load);
             this.black_panel.ResumeLayout(false);
             this.black_panel.PerformLayout();
@@ -644,5 +668,7 @@
         private System.Windows.Forms.Label lbl_status;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button btn_top;
     }
 }

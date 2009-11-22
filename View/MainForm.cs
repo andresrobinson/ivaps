@@ -45,5 +45,24 @@ namespace Castellari.IVaPS.View
         {
 
         }
+
+        private void mainPanel_Resize(object sender, EventArgs e)
+        {
+            //per issue 21
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                //mostra in tray
+                notifyIcon.Visible = true;
+            }
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            //per issue 21
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            notifyIcon.Visible = false;
+        }
     }
 }
