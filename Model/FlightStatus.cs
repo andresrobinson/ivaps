@@ -95,14 +95,21 @@ namespace Castellari.IVaPS.Model
             }
             set
             {
-                double percurredDistance = 0;
-                if (currentPosition != null)
-                    percurredDistance = IPSUtils.CalulateDistance(currentPosition, value);
+                //l'if è per issue 33
+                if (CurrentStatus == FlightStates.Airborne)
+                {
+                    double percurredDistance = 0;
+                    if (currentPosition != null)
+                        percurredDistance = IPSUtils.CalulateDistance(currentPosition, value);
 
-                Distance += percurredDistance;
+                    Distance += percurredDistance;
+                }
+                
                 currentPosition = value;
+                
                 //per ora commento per evitare che sbraghi la RAM, poi ci penserò
                 //this.FlightLog.Add(currentPosition);
+                
                 if (currentPosition.Speed > MaxSpeed)
                     MaxSpeed = currentPosition.Speed;
                 if (currentPosition.Altitude > MaxAltitude)
