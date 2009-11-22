@@ -96,7 +96,7 @@ namespace Castellari.IVaPS.Control
         /// <param name="msg">Messaggio da mettere a log</param>
         public void Log(string msg)
         {
-            log.Log(DateTime.Now.ToShortTimeString() + "] " +  msg);
+            log.Log(DateTime.Now.ToShortTimeString() + ") " +  msg);
             if (logForm.Visible)
             {
                 //In questo modo si evita di scrivere su un controllo che sarebbe comunque invisibile

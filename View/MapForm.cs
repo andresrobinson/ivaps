@@ -43,6 +43,7 @@ namespace Castellari.IVaPS.View
             string tmp = string.Format("http://maps.google.it/maps?ie=UTF8&t=h&ll={0},{1}&z=13&output=embed",
                 pos.Latitude.ToString("00.00000").Replace(',', '.'),
                 pos.Longitude.ToString("00.00000").Replace(',', '.'));
+
             webBrowser1.Url = new Uri(tmp);
         }
 
