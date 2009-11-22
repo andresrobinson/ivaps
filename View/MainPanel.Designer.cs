@@ -66,17 +66,18 @@
             this.label10 = new System.Windows.Forms.Label();
             this.btn_connect = new System.Windows.Forms.Button();
             this.lbl_connect = new System.Windows.Forms.Label();
-            this.btn_disconnect = new System.Windows.Forms.Button();
+            this.btn_config = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.btn_ivaoFP = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.btn_google = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
             this.btn_pirep = new System.Windows.Forms.Button();
             this.txt_callsign = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.txt_va = new System.Windows.Forms.TextBox();
             this.lbl_route_tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.black_panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -429,11 +430,11 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 48);
+            this.label10.Location = new System.Drawing.Point(-2, 48);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(25, 13);
+            this.label10.Size = new System.Drawing.Size(31, 13);
             this.label10.TabIndex = 5;
-            this.label10.Text = "GS:";
+            this.label10.Text = "TAS:";
             // 
             // btn_connect
             // 
@@ -454,14 +455,14 @@
             this.lbl_connect.Text = "Connect";
             this.lbl_connect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // btn_disconnect
+            // btn_config
             // 
-            this.btn_disconnect.Location = new System.Drawing.Point(159, 262);
-            this.btn_disconnect.Name = "btn_disconnect";
-            this.btn_disconnect.Size = new System.Drawing.Size(28, 16);
-            this.btn_disconnect.TabIndex = 8;
-            this.btn_disconnect.UseVisualStyleBackColor = true;
-            this.btn_disconnect.Click += new System.EventHandler(this.btn_disconnect_Click);
+            this.btn_config.Location = new System.Drawing.Point(159, 262);
+            this.btn_config.Name = "btn_config";
+            this.btn_config.Size = new System.Drawing.Size(28, 16);
+            this.btn_config.TabIndex = 8;
+            this.btn_config.UseVisualStyleBackColor = true;
+            this.btn_config.Click += new System.EventHandler(this.btn_config_Click);
             // 
             // label6
             // 
@@ -489,9 +490,9 @@
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(32, 285);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(28, 13);
+            this.label7.Size = new System.Drawing.Size(54, 13);
             this.label7.TabIndex = 13;
-            this.label7.Text = "Map";
+            this.label7.Text = "View Map";
             // 
             // btn_google
             // 
@@ -502,16 +503,6 @@
             this.lbl_route_tooltip.SetToolTip(this.btn_google, "Display current position on Google Maps");
             this.btn_google.UseVisualStyleBackColor = true;
             this.btn_google.Click += new System.EventHandler(this.btn_google_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(121, 285);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(39, 13);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "PIREP";
             // 
             // btn_pirep
             // 
@@ -551,21 +542,42 @@
             this.txt_va.TabIndex = 18;
             this.txt_va.Text = "6290";
             // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(99, 262);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "Config";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(99, 284);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(61, 13);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Fill PIREP";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // MainPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.txt_va);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.txt_callsign);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.btn_pirep);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.btn_google);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btn_ivaoFP);
-            this.Controls.Add(this.btn_disconnect);
+            this.Controls.Add(this.btn_config);
             this.Controls.Add(this.lbl_connect);
             this.Controls.Add(this.btn_connect);
             this.Controls.Add(this.black_panel);
@@ -593,12 +605,11 @@
         private System.Windows.Forms.Panel black_panel;
         private System.Windows.Forms.Button btn_connect;
         private System.Windows.Forms.Label lbl_connect;
-        private System.Windows.Forms.Button btn_disconnect;
+        private System.Windows.Forms.Button btn_config;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btn_ivaoFP;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btn_google;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btn_pirep;
         private System.Windows.Forms.Label lbl_speed;
         private System.Windows.Forms.Label label10;
@@ -631,5 +642,7 @@
         private System.Windows.Forms.Label lbl_fuelArr;
         private System.Windows.Forms.ToolTip lbl_route_tooltip;
         private System.Windows.Forms.Label lbl_status;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }

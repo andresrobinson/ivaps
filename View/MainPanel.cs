@@ -104,21 +104,9 @@ namespace Castellari.IVaPS.View
             }
         }
 
-        private void btn_disconnect_Click(object sender, EventArgs e)
+        private void btn_config_Click(object sender, EventArgs e)
         {
-            //if (Controller.StartStopRecording())
-            //    if (Controller.IsRecording)
-            //        Info("Rec started");
-            //    else
-            //    {
-            //        Info("Rec stopped");
-            //        if (Controller.Disconnect())
-            //            Info("Disconnected to FS");
-            //        else
-            //            Error("Unable to disconnect to FS");
-            //    }
-            //else
-            //    Error("Unable to connect to FS");
+            Error("Non implementato");
         }
 
         private void Info(string msg)
