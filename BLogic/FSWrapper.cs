@@ -38,6 +38,7 @@ namespace Castellari.IVaPS.BLogic
     {
         #region costanti di OFFSET di FSUIPC
         private const int OFFSET_GS = 0x02B4;
+        private const int OFFSET_TAS = 0x02B8;
         private const int OFFSET_LAT = 0x0560;
         private const int OFFSET_LON = 0x0568;
         private const int OFFSET_ALT = 0x0574;
@@ -69,7 +70,7 @@ namespace Castellari.IVaPS.BLogic
         #endregion
 
         #region Variabili di tipo Offset<>
-        private Offset<int> airspeed = new Offset<int>(OFFSET_GS);
+        private Offset<int> airspeed = new Offset<int>(OFFSET_TAS);//corretto per issue 32
         private Offset<long> latitude = new Offset<long>(OFFSET_LAT);
         private Offset<long> longitude = new Offset<long>(OFFSET_LON);
         private Offset<int> altitude = new Offset<int>(OFFSET_ALT);
