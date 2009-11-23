@@ -221,7 +221,8 @@ namespace Castellari.IVaPS.BLogic
 
                 FSUIPCConnection.Process();
                 //airspeed
-                currentPosition.Speed = ((double)airspeed.Value / 65536d) * 1.943844492;//Knots
+                //currentPosition.Speed = ((double)airspeed.Value / 65536d) * 1.943844492;//Knots
+                currentPosition.Speed = ((double)airspeed.Value / 128);//issue 38
                 //latitude
                 currentPosition.Latitude = (double)latitude.Value * 90d / (10001750d * 65536d * 65536d);
                 //longitude
