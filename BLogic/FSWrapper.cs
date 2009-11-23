@@ -44,6 +44,7 @@ namespace Castellari.IVaPS.BLogic
         private const int OFFSET_ALT = 0x0574;
         private const int OFFSET_HDG = 0x0580;
         private const int OFFSET_AIRBORNE = 0x0366;
+        private const int RADIO_ALTITUDE= 0x31E4;
         
         private const int OFFSET_IVAP_DETECTED = 0x7b80;//unused currently
 
@@ -76,6 +77,8 @@ namespace Castellari.IVaPS.BLogic
         private Offset<int> altitude = new Offset<int>(OFFSET_ALT);
         private Offset<int> heading = new Offset<int>(OFFSET_HDG);
         private Offset<short> airborne = new Offset<short>(OFFSET_AIRBORNE);
+        private Offset<int> radioAlt = new Offset<int>(RADIO_ALTITUDE);
+        
         private Offset<byte> ivapDetected = new Offset<byte>(OFFSET_IVAP_DETECTED);
 
         private Offset<int> fuelCap1 = new Offset<int>(OFFSET_FUEL_CAPACITY_CENTER);
@@ -112,7 +115,8 @@ namespace Castellari.IVaPS.BLogic
         {
             LastPosition = new AircraftPosition();
             LastPosition.Altitude = double.NaN;
-            LastPosition.AvailableFuel = double.NaN; ;
+            LastPosition.RadioAltitude = double.NaN;
+            LastPosition.AvailableFuel = double.NaN;
             LastPosition.Heading = double.NaN;
             LastPosition.IsAirborne = false;
             LastPosition.IsEngineStarted = false;
@@ -229,6 +233,8 @@ namespace Castellari.IVaPS.BLogic
                 currentPosition.Longitude = (double)longitude.Value * 360d / (65536d * 65536d * 65536d * 65536d);
                 //altitude
                 currentPosition.Altitude = (int)altitude.Value * 3.28d;
+                //radio altitude
+                currentPosition.RadioAltitude = (double)radioAlt.Value / 65536;
                 //heading
                 currentPosition.Heading = heading.Value * 360d / (65536d * 65536d);
                 if(currentPosition.Heading < 0)
@@ -249,7 +255,7 @@ namespace Castellari.IVaPS.BLogic
                 FlightSimEvent(toBeRaised);
 
                 //gestione stato airborne
-                currentPosition.IsAirborne = (airborne.Value == 0);
+                currentPosition.IsAirborne = (airborne.Value == 0) || /*issue 36*/(currentPosition.RadioAltitude > 10);
                 if (!LastPosition.IsAirborne && currentPosition.IsAirborne)
                 {
                     //decollato

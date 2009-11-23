@@ -23,6 +23,10 @@ namespace Castellari.IVaPS.Model
         /// </summary>
         public double Heading { get; set; }
         /// <summary>
+        /// Altezza dal suolo, espressa in metri
+        /// </summary>
+        public double RadioAltitude { get; set; }
+        /// <summary>
         /// Velocità al suolo (ground speed) in nodi
         /// </summary>
         public double Speed { get; set; }
