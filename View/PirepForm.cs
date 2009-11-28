@@ -24,6 +24,7 @@ namespace Castellari.IVaPS.View
 
         private FlightStatus fs = null;
         private Point pos = Point.Empty;
+        private bool justFilled = false;//issue 39
 
         public PirepForm(Point initialPosition)
         {
@@ -34,6 +35,41 @@ namespace Castellari.IVaPS.View
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             this.Location = pos;
+            if(!justFilled)
+                btn_fill_Click(null, null);
+        }
+
+        public void FillPirep(FlightStatus fs)
+        {
+            this.fs = fs;
+            Text = "loading...";
+            webBrowser1.Url = new Uri(IVAO_SITE_VA_PIREP_PAGE + fs.VirtualAirlineID);
+        }
+
+        private void webBrowser1_LocationChanged(object sender, EventArgs e)
+        {
+            webBrowser1_DocumentCompleted(null, null);
+        }
+
+        public void ChangeTitle(string title)
+        {
+            Text = "IVAO PIREP: " + title;
+        }
+
+        private delegate void DrawDelegate(String title);
+
+        private void btn_close_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            webBrowser1.GoBack();
+        }
+
+        private void btn_fill_Click(object sender, EventArgs e)
+        {
             HtmlElement callsignField = webBrowser1.Document.All["Callsign"];
             if (callsignField == null)
                 Text = "Wrong page: please logon and retry";
@@ -57,58 +93,33 @@ namespace Castellari.IVaPS.View
                     {
                         webBrowser1.Document.All["Altitude"].SetAttribute("value", fs.MaxAltitude.ToString("0"));
                     }
-                    
+
 
                     webBrowser1.Document.All["TasCruise"].SetAttribute("value", fs.MaxSpeed.ToString("0"));
                     webBrowser1.Document.All["DepTime"].SetAttribute("value", fs.DepartureTime.ToUniversalTime().Hour.ToString("00"));
                     webBrowser1.Document.All["ActDepTime"].SetAttribute("value", fs.DepartureTime.ToUniversalTime().Minute.ToString("00"));
                     webBrowser1.Document.All["Land_Hour"].SetAttribute("value", fs.ArrivalTime.ToUniversalTime().Hour.ToString("00"));
                     webBrowser1.Document.All["Land_Minute"].SetAttribute("value", fs.ArrivalTime.ToUniversalTime().Minute.ToString("00"));
-                    webBrowser1.Document.All["Route"].SetAttribute("value", fs.FlightPlan.Route);
-                    webBrowser1.Document.All["Type"].SetAttribute("value", fs.FlightPlan.FlightType);
-                    if (fs.FlightPlan != null && fs.FlightPlan.Departure != null)
-                        webBrowser1.Document.All["DepAirport"].SetAttribute("value", fs.FlightPlan.Departure.ICAOCode);
-                    if (fs.FlightPlan != null && fs.FlightPlan.Arrival != null)
+                    if (fs.FlightPlan != null)
                     {
-                        webBrowser1.Document.All["DestAirport"].SetAttribute("value", fs.FlightPlan.Arrival.ICAOCode);
-                        webBrowser1.Document.All["LandAirport"].SetAttribute("value", fs.FlightPlan.Arrival.ICAOCode);
+                        webBrowser1.Document.All["Route"].SetAttribute("value", fs.FlightPlan.Route);
+                        webBrowser1.Document.All["Type"].SetAttribute("value", fs.FlightPlan.FlightType);
+                        if (fs.FlightPlan != null && fs.FlightPlan.Departure != null)
+                            webBrowser1.Document.All["DepAirport"].SetAttribute("value", fs.FlightPlan.Departure.ICAOCode);
+                        if (fs.FlightPlan != null && fs.FlightPlan.Arrival != null)
+                        {
+                            webBrowser1.Document.All["DestAirport"].SetAttribute("value", fs.FlightPlan.Arrival.ICAOCode);
+                            webBrowser1.Document.All["LandAirport"].SetAttribute("value", fs.FlightPlan.Arrival.ICAOCode);
+                        }
+                        if (fs.FlightPlan != null && fs.FlightPlan.Alternate != null)
+                            webBrowser1.Document.All["AltAirport"].SetAttribute("value", fs.FlightPlan.Alternate.ICAOCode);
+                        webBrowser1.Document.All["Aircraft"].SetAttribute("value", fs.FlightPlan.Aircraft);
+                        webBrowser1.Document.All["Fuel_Qty"].SetAttribute("value", (fs.DepartureFuel - fs.ArrivalFuel).ToString("0"));
                     }
-                    if (fs.FlightPlan != null && fs.FlightPlan.Alternate != null)
-                        webBrowser1.Document.All["AltAirport"].SetAttribute("value", fs.FlightPlan.Alternate.ICAOCode);
-                    webBrowser1.Document.All["Aircraft"].SetAttribute("value", fs.FlightPlan.Aircraft);
-                    webBrowser1.Document.All["Fuel_Qty"].SetAttribute("value", (fs.DepartureFuel-fs.ArrivalFuel).ToString("0"));
                     BeginInvoke(new DrawDelegate(this.ChangeTitle), new object[] { "Verify data before sent!" });
+                    justFilled = true;
                 }
             }
-        }
-
-        public void FillPirep(FlightStatus fs)
-        {
-            this.fs = fs;
-            Text = "loading...";
-            webBrowser1.Url = new Uri(IVAO_SITE_VA_PIREP_PAGE + fs.VirtualAirlineID);
-        }
-
-        private void webBrowser1_LocationChanged(object sender, EventArgs e)
-        {
-            webBrowser1_DocumentCompleted(null, null);
-        }
-
-        public void ChangeTitle(string title)
-        {
-            Text = title;
-        }
-
-        private delegate void DrawDelegate(String title);
-
-        private void btn_close_Click(object sender, EventArgs e)
-        {
-            this.Visible = false;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            webBrowser1.GoBack();
         }
     }
 }
