@@ -213,7 +213,7 @@ namespace Castellari.IVaPS.View
             if (model.CurrentPosition != null)
             {
                 mf = new MapForm(new Point(this.Parent.Location.X + this.Parent.Width, this.Parent.Location.Y), this.Controller);
-
+                mf.Visible = true;
                 mf.GoToPosition(model.CurrentPosition);
             }
             else

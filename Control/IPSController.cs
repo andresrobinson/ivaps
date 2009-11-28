@@ -194,6 +194,7 @@ namespace Castellari.IVaPS.Control
             catch (Exception ex)
             {
                 Log(ex.Message);
+                Log(ex.StackTrace);
                 return false;
             }
         }
@@ -248,7 +249,10 @@ namespace Castellari.IVaPS.Control
             {
                 PositioningEvent pe = (PositioningEvent)e;
                 status.CurrentPosition = pe.Position;
-                PositionUpdated(pe.Position);
+                if (PositionUpdated != null)
+                {
+                    PositionUpdated(pe.Position);
+                }
             }
             else if (e is TakeOffEvent)
             {
