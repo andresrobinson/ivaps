@@ -248,6 +248,7 @@ namespace Castellari.IVaPS.Control
             {
                 PositioningEvent pe = (PositioningEvent)e;
                 status.CurrentPosition = pe.Position;
+                PositionUpdated(pe.Position);
             }
             else if (e is TakeOffEvent)
             {
@@ -323,6 +324,14 @@ namespace Castellari.IVaPS.Control
             //rinfresco la view
             viewMainForm.mainPanel.DrawStatus(status);
         }
-        
+
+
+        public delegate void PositionEventHandler(AircraftPosition pos);
+        /// <summary>
+        /// Evento a cui sottoscriversi per ricevere tutti gli eventi generati dall'applicazione a partire
+        /// dalle letture fatte sulle FSUIPC. Il listner designato a livello di progettazione è IPSController
+        /// </summary>
+        public event PositionEventHandler PositionUpdated;
+
     }
 }

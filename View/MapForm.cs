@@ -15,19 +15,26 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Castellari.IVaPS.Model;
+using Castellari.IVaPS.Control;
 
 namespace Castellari.IVaPS.View
 {
     public partial class MapForm : Form
     {
-        private Point windowspos = Point.Empty;
-        private bool moved = false;
+        private const int MAP_AUTOUPDATE_DELAY_IN_SECONDS = 30;
 
-        public MapForm(Point initialPosition)
+        private Point windowspos = Point.Empty;
+        private DateTime lastMapUpdate = DateTime.MinValue;
+        private IPSController controller = null;
+
+
+        public MapForm(Point initialPosition, IPSController controller)
         {
             InitializeComponent();
             windowspos = initialPosition;
             this.Location = windowspos;
+            this.controller = controller;
+            controller.PositionUpdated += new IPSController.PositionEventHandler(this.HandleEvent);
         }
 
         public void GoToPosition(AircraftPosition pos)
@@ -47,19 +54,22 @@ namespace Castellari.IVaPS.View
             webBrowser1.Url = new Uri(tmp);
         }
 
-        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        /// <summary>
+        /// Gestore dei soli eventi di posizionamento per poter forzare il repaint
+        /// </summary>
+        /// <param name="e"></param>
+        public void HandleEvent(AircraftPosition pos)
         {
-            if (!moved)
+            if (lastMapUpdate.AddSeconds(MAP_AUTOUPDATE_DELAY_IN_SECONDS).CompareTo(DateTime.Now) < 0)
             {
-                this.Location = windowspos;
-                moved = true;
+                GoToPosition(pos);
+                lastMapUpdate = DateTime.Now;
             }
-            
         }
 
-        private void btn_close_Click(object sender, EventArgs e)
+        private void MapForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Visible = false;
+            controller.PositionUpdated -= new IPSController.PositionEventHandler(this.HandleEvent);
         }
     }
 }

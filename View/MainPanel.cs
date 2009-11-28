@@ -24,12 +24,7 @@ namespace Castellari.IVaPS.View
 {
     public partial class MainPanel : UserControl
     {
-        private const int MAP_AUTOUPDATE_DELAY_IN_SECONDS = 30;
-
         private FlightStatus model;
-        private DateTime lastMapUpdate = DateTime.MinValue;
-        private PirepForm pf = null;
-        private MapForm mf;
 
         public IPSController Controller { get; set; }
 
@@ -210,61 +205,35 @@ namespace Castellari.IVaPS.View
                 case FlightStates.EngineOff:
                     lbl_status.Text = "Engine OFF"; break;
             }
-
-            //gestione della mappa, tutta da rivedere
-            if (mf != null && mf.Visible && model != null && (lastMapUpdate.AddSeconds(MAP_AUTOUPDATE_DELAY_IN_SECONDS).CompareTo(DateTime.Now)<0))
-            {
-                mf.GoToPosition(model.CurrentPosition);
-                lastMapUpdate = DateTime.Now;
-            }
         }
 
         private void btn_google_Click(object sender, EventArgs e)
         {
-            if (model != null)
+            MapForm mf = null;
+            if (model.CurrentPosition != null)
             {
-                if (mf == null)
-                {
-                    mf = new MapForm(new Point(this.Parent.Location.X + this.Parent.Width, this.Parent.Location.Y));
-                    mf.Visible = false;
-                }
+                mf = new MapForm(new Point(this.Parent.Location.X + this.Parent.Width, this.Parent.Location.Y), this.Controller);
 
-                if (!mf.Visible)
-                {
-                    mf.GoToPosition(model.CurrentPosition);
-                    mf.Visible = true;
-                }
-                else
-                {
-                    mf.Visible = false;
-                }
+                mf.GoToPosition(model.CurrentPosition);
             }
             else
-                Info("Current position invalid");
+                Error("Current position invalid");
         }
 
         private void btn_pirep_Click(object sender, EventArgs e)
         {
-            if (pf == null)
+            if (model != null)
             {
                 Point p = new Point(this.Parent.Location.X + this.Parent.Width, this.Parent.Location.Y);
-                pf = new PirepForm(p);//così ho un lazy loading, se non si usa non uso ram
-            }
-
-            if (pf.Visible)
-            {
-                pf.Visible = false;
+                PirepForm pf = new PirepForm(p);
+                model.Callsign = txt_callsign.Text;
+                model.VirtualAirlineID = txt_va.Text;
+                pf.FillPirep(model);
+                pf.Visible = true;
             }
             else
             {
-                if (model != null)
-                {
-                    model.Callsign = txt_callsign.Text;
-                    model.VirtualAirlineID = txt_va.Text;
-                    pf.FillPirep(model);
-                    pf.Visible = true;
-                    this.Draw(model);
-                }
+                Error("No data to fill pirep");
             }
         }
 
