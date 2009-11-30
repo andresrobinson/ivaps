@@ -23,7 +23,6 @@ namespace Castellari.IVaPS.View
     {
         private const int MAP_AUTOUPDATE_DELAY_IN_SECONDS = 30;
 
-        private Point windowspos = Point.Empty;
         private DateTime lastMapUpdate = DateTime.MinValue;
         private IPSController controller = null;
 
@@ -31,19 +30,16 @@ namespace Castellari.IVaPS.View
         public MapForm(Point initialPosition, IPSController controller)
         {
             InitializeComponent();
-            windowspos = initialPosition;
-            this.Location = windowspos;
             this.controller = controller;
             controller.PositionUpdated += new IPSController.PositionEventHandler(this.HandleEvent);
+            this.Location = initialPosition;
         }
 
         public void GoToPosition(AircraftPosition pos)
         {
-            this.Location = windowspos;
             if (pos == null)
             {
                 Text = "Position currently unavailable";
-                this.Location = windowspos;
                 return;
             }
             Text = "lat: " + pos.Latitude.ToString("00.00000") + " lon: " + pos.Longitude.ToString("00.00000");
