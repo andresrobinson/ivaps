@@ -50,7 +50,6 @@
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MapForm";
-            this.ShowInTaskbar = false;
             this.Text = "Current Position";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MapForm_FormClosing);
             this.ResumeLayout(false);

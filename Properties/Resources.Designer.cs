@@ -73,20 +73,5 @@ namespace Castellari.IVaPS.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
-        ///    &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt; 
-        ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xmlns:v=&quot;urn:schemas-microsoft-com:vml&quot;&gt; 
-        ///  &lt;head&gt; 
-        ///    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt; 
-        ///    &lt;title&gt;Google Maps JavaScript API Example: Simple Markers&lt;/title&gt; 
-        ///    &lt;script src=&quot;http://maps.google.com/maps?file=api&amp;amp;v=2&amp;amp;key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSosDVG8KKPE1-m51RBrvYughuyMxQ-i1QfUnH94QxWIa6N4U6Mo [stringa troncata]&quot;;.
-        /// </summary>
-        internal static string prova {
-            get {
-                return ResourceManager.GetString("prova", resourceCulture);
-            }
-        }
     }
 }
