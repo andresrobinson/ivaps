@@ -104,6 +104,11 @@ namespace Castellari.IVaPS.BLogic
         private bool connected = false;
 
         /// <summary>
+        /// Flag per gestire un minimo di isteresi nella gestione del consumo di carburante: issue 44
+        /// </summary>
+        private bool isFirsPosWithNoFuelFlow = true;
+
+        /// <summary>
         /// Questo timer è quello che gestisce il watch-dog per il polling a FS
         /// </summary>
         private Timer timer = new Timer(IPSConfiguration.TIMER_ELAPSED_MILLISECONDS);
@@ -270,7 +275,8 @@ namespace Castellari.IVaPS.BLogic
                 }
 
                 //gestione dello stato del motore (ed invio eventi associati) issue 29
-                currentPosition.IsEngineStarted = currentPosition.AvailableFuel < LastPosition.AvailableFuel;//questa è tutta da verificare, NdF 20091115
+                currentPosition.IsEngineStarted = currentPosition.AvailableFuel < LastPosition.AvailableFuel;
+
                 if (!LastPosition.IsEngineStarted && currentPosition.IsEngineStarted)
                 {
                     //il motore si è acceso
@@ -280,9 +286,20 @@ namespace Castellari.IVaPS.BLogic
                 }
                 else if (LastPosition.IsEngineStarted && !currentPosition.IsEngineStarted)
                 {
-                    //il motore si è spento
-                    FSEvent evt = new EngineShutDownEvent();
-                    FlightSimEvent(evt);
+                    if (isFirsPosWithNoFuelFlow)
+                    {
+                        //visto che è la prima volta che questo accade, lascio una tolleranza di un giro
+                        //issue 44
+                        isFirsPosWithNoFuelFlow = false;
+                        currentPosition.IsEngineStarted = true;
+                    }
+                    else
+                    {
+                        //il motore si è spento davvero
+                        FSEvent evt = new EngineShutDownEvent();
+                        FlightSimEvent(evt);
+                        isFirsPosWithNoFuelFlow = true;
+                    }
                 }
                 
                 //gestione del movimento (ed invio eventi associati) issue 29
