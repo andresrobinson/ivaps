@@ -34,13 +34,16 @@
             // 
             // webBrowser1
             // 
+            this.webBrowser1.AllowWebBrowserDrop = false;
             this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
             this.webBrowser1.Location = new System.Drawing.Point(0, 0);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
             this.webBrowser1.ScrollBarsEnabled = false;
             this.webBrowser1.Size = new System.Drawing.Size(784, 562);
             this.webBrowser1.TabIndex = 0;
+            this.webBrowser1.SizeChanged += new System.EventHandler(this.webBrowser1_SizeChanged);
             // 
             // MapForm
             // 
@@ -49,7 +52,6 @@
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.Controls.Add(this.webBrowser1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MapForm";
             this.Text = "Current Position";
@@ -61,5 +63,6 @@
         #endregion
 
         private System.Windows.Forms.WebBrowser webBrowser1;
+
     }
 }

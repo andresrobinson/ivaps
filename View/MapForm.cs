@@ -25,6 +25,7 @@ namespace Castellari.IVaPS.View
 
         private DateTime lastMapUpdate = DateTime.MinValue;
         private IPSController controller = null;
+        private AircraftPosition lastPos = null;
 
 
         public MapForm(Point initialPosition, IPSController controller)
@@ -37,17 +38,47 @@ namespace Castellari.IVaPS.View
 
         public void GoToPosition(AircraftPosition pos)
         {
-            if (pos == null)
-            {
-                Text = "Position currently unavailable";
-                return;
-            }
-            Text = "lat: " + pos.Latitude.ToString("00.00000") + " lon: " + pos.Longitude.ToString("00.00000");
-            string tmp = string.Format("http://maps.google.it/maps?ie=UTF8&t=h&ll={0},{1}&z=13&output=embed",
-                pos.Latitude.ToString("00.00000").Replace(',', '.'),
-                pos.Longitude.ToString("00.00000").Replace(',', '.'));
+            lastPos = pos;
 
-            webBrowser1.Url = new Uri(tmp);
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("<html> ");
+            sb.AppendLine("  <head> ");
+            sb.AppendLine("    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/> ");
+            sb.AppendLine("    <title>Google Maps JavaScript API Example: Map Markers</title> ");
+            sb.AppendLine("    <script src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSosDVG8KKPE1-m51RBrvYughuyMxQ-i1QfUnH94QxWIa6N4U6MouMmBA\"");
+            sb.AppendLine("            type=\"text/javascript\"></script> ");
+            sb.AppendLine("    <script type=\"text/javascript\"> ");
+            sb.AppendLine("    ");
+            sb.AppendLine("    function initialize() {");
+            sb.AppendLine("      if (GBrowserIsCompatible()) {");
+            sb.AppendLine("        var map = new GMap2(document.getElementById(\"map_canvas\"));");
+            sb.AppendLine("        var latitude = " + pos.Latitude.ToString("00.00000").Replace(',', '.') + ";");
+            sb.AppendLine("        var longitude = " + pos.Longitude.ToString("00.00000").Replace(',', '.') + ";");
+            sb.AppendLine("        map.setCenter(new GLatLng(latitude, longitude), 13);");
+            sb.AppendLine("        map.addControl(new GSmallMapControl());");
+            sb.AppendLine("        map.addControl(new GMapTypeControl());");
+            sb.AppendLine("        map.setMapType(G_SATELLITE_MAP);");
+            sb.AppendLine("          var point = new GLatLng(latitude,longitude);");
+            sb.AppendLine("          var marker = new GMarker(point);");
+            sb.AppendLine("          map.addOverlay(marker);");
+            sb.AppendLine("      }");
+            sb.AppendLine("    }");
+            sb.AppendLine(" ");
+            sb.AppendLine("    </script> ");
+            sb.AppendLine("  </head> ");
+            sb.AppendLine("  <body onload=\"initialize()\" onunload=\"GUnload()\"> ");
+            sb.AppendLine("    <div id=\"map_canvas\" style=\"width: " + webBrowser1.Width + "px; height: " + webBrowser1.Height + "px\"></div> ");
+            sb.AppendLine("  </body> ");
+            sb.AppendLine("</html> ");
+
+            webBrowser1.DocumentText = sb.ToString();
+
+            //using (System.IO.StreamWriter sw = System.IO.File.CreateText(@"C:\provadoppia.html"))
+            //{
+            //    sw.Write(sb.ToString());
+            //    sw.Close();
+            //}
         }
 
         /// <summary>
@@ -66,6 +97,12 @@ namespace Castellari.IVaPS.View
         private void MapForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             controller.PositionUpdated -= new IPSController.PositionEventHandler(this.HandleEvent);
+        }
+
+        private void webBrowser1_SizeChanged(object sender, EventArgs e)
+        {
+            if (lastPos != null)
+                GoToPosition(lastPos);
         }
     }
 }
