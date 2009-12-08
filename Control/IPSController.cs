@@ -283,7 +283,9 @@ namespace Castellari.IVaPS.Control
             }
             else if (e is EngineShutDownEvent)
             {
-                if (status.CurrentStatus == FlightStates.OnBlocks)
+                //seconda condizione del primo if è aggiunta per issue 49
+                //se c'è vento l'indicata non scende sotto 1 e quindi non si passa mai nello stato "ai blocchi"
+                if (status.CurrentStatus == FlightStates.OnBlocks || status.CurrentStatus == FlightStates.Landed)
                 {
                     status.CurrentStatus = FlightStates.EngineOff;
                     status.ArrivalFuel = status.CurrentFuel; 
