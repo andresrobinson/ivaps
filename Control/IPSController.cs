@@ -245,87 +245,89 @@ namespace Castellari.IVaPS.Control
         /// per sapere quali sono gli eventi gestibili</param>
         private void HandleEvent(FSEvent e)
         {
-            if (e is PositioningEvent)
+            lock (this)
             {
-                PositioningEvent pe = (PositioningEvent)e;
-                status.CurrentPosition = pe.Position;
-                if (PositionUpdated != null)
+                if (e is PositioningEvent)
                 {
-                    PositionUpdated(pe.Position);
+                    PositioningEvent pe = (PositioningEvent)e;
+                    status.CurrentPosition = pe.Position;
+                    if (PositionUpdated != null)
+                    {
+                        PositionUpdated(pe.Position);
+                    }
                 }
-            }
-            else if (e is TakeOffEvent)
-            {
-                //se sono già airborne o atterrato vuol dire che è un touch 'n' go o un goaround, quindi non faccio nulla
-                if (status.CurrentStatus == FlightStates.TakeOffTaxi)
+                else if (e is TakeOffEvent)
                 {
-                    status.DepartureTime = e.Timestamp;
+                    //se sono già airborne o atterrato vuol dire che è un touch 'n' go o un goaround, quindi non faccio nulla
+                    if (status.CurrentStatus <= FlightStates.TakeOffTaxi)//il <= inserito per issue 51
+                    {
+                        status.DepartureTime = e.Timestamp;
+                    }
+                    status.CurrentStatus = FlightStates.Airborne;
                 }
-                status.CurrentStatus = FlightStates.Airborne;
-            }
-            else if (e is LandingEvent)
-            {
-                if (status.CurrentStatus == FlightStates.Airborne)
+                else if (e is LandingEvent)
                 {
-                    status.CurrentStatus = FlightStates.Landed;
-                    status.ArrivalTime = e.Timestamp;
-                    //in questo modo l'ultimo atterraggio è sempre quello che fa fede per l'ora di arrivo
+                    if (status.CurrentStatus == FlightStates.Airborne)
+                    {
+                        status.CurrentStatus = FlightStates.Landed;
+                        status.ArrivalTime = e.Timestamp;
+                        //in questo modo l'ultimo atterraggio è sempre quello che fa fede per l'ora di arrivo
+                    }
                 }
-            }
-            else if (e is EngineStartUpEvent)
-            {
-                //se è la prima accensione la considero come quella "buona"
-                if (status.CurrentStatus == FlightStates.Before_Departed)
+                else if (e is EngineStartUpEvent)
                 {
-                    status.CurrentStatus = FlightStates.Engine_Started;
-                    status.DepartureFuel = status.CurrentFuel;
+                    //se è la prima accensione la considero come quella "buona"
+                    if (status.CurrentStatus == FlightStates.Before_Departed)
+                    {
+                        status.CurrentStatus = FlightStates.Engine_Started;
+                        status.DepartureFuel = status.CurrentFuel;
+                    }
                 }
-            }
-            else if (e is EngineShutDownEvent)
-            {
-                //seconda condizione del primo if è aggiunta per issue 49
-                //se c'è vento l'indicata non scende sotto 1 e quindi non si passa mai nello stato "ai blocchi"
-                if (status.CurrentStatus == FlightStates.OnBlocks || status.CurrentStatus == FlightStates.Landed)
+                else if (e is EngineShutDownEvent)
                 {
-                    status.CurrentStatus = FlightStates.EngineOff;
-                    status.ArrivalFuel = status.CurrentFuel; 
+                    //seconda condizione del primo if è aggiunta per issue 49
+                    //se c'è vento l'indicata non scende sotto 1 e quindi non si passa mai nello stato "ai blocchi"
+                    if (status.CurrentStatus == FlightStates.OnBlocks || status.CurrentStatus == FlightStates.Landed)
+                    {
+                        status.CurrentStatus = FlightStates.EngineOff;
+                        status.ArrivalFuel = status.CurrentFuel;
+                    }
+                    else if (status.CurrentStatus == FlightStates.Engine_Started || status.CurrentStatus == FlightStates.TakeOffTaxi)
+                    {
+                        status.CurrentStatus = FlightStates.Before_Departed;
+                    }
                 }
-                else if(status.CurrentStatus == FlightStates.Engine_Started || status.CurrentStatus == FlightStates.TakeOffTaxi)
+                else if (e is StartMovingEvent)
                 {
-                    status.CurrentStatus = FlightStates.Before_Departed;
+                    if (status.CurrentStatus <= FlightStates.Engine_Started)
+                    {
+                        status.CurrentStatus = FlightStates.TakeOffTaxi;
+                    }
+                    else if (status.CurrentStatus == FlightStates.OnBlocks)
+                    {
+                        //vuol dire che non ero realmente ai blocchi, ma che mi ero solo arrestato durante il taxi dopo l'atterraggio
+                        status.CurrentStatus = FlightStates.Landed;
+                    }
+                    //negli altri casi è un normale stop durante il rullaggio di partenza o di arrivo
                 }
-            }
-            else if (e is StartMovingEvent)
-            {
-                if (status.CurrentStatus == FlightStates.Before_Departed || status.CurrentStatus == FlightStates.Engine_Started)
+                else if (e is EndMovingEvent)
                 {
-                    status.CurrentStatus = FlightStates.TakeOffTaxi;
+                    if (status.CurrentStatus == FlightStates.Landed || status.CurrentStatus == FlightStates.OnBlocks)
+                    {
+                        //la seconda condizione è per evitare di avere problemi se mi fermo durante il taxi dopo l'atterraggio
+                        status.CurrentStatus = FlightStates.OnBlocks;
+                        //l'ultimo tra on-bock e shutdown motori determina l'ultimo calcolo di fuel
+                        status.ArrivalFuel = status.CurrentFuel;
+                    }
                 }
-                else if (status.CurrentStatus == FlightStates.OnBlocks)
-                {
-                    //vuol dire che non ero realmente ai blocchi, ma che mi ero solo arrestato durante il taxi dopo l'atterraggio
-                    status.CurrentStatus = FlightStates.Landed;
-                }
-                //negli altri casi è un normale stop durante il rullaggio di partenza o di arrivo
-            }
-            else if (e is EndMovingEvent)
-            {
-                if (status.CurrentStatus == FlightStates.Landed || status.CurrentStatus == FlightStates.OnBlocks)
-                {
-                    //la seconda condizione è per evitare di avere problemi se mi fermo durante il taxi dopo l'atterraggio
-                    status.CurrentStatus = FlightStates.OnBlocks;
-                    //l'ultimo tra on-bock e shutdown motori determina l'ultimo calcolo di fuel
-                    status.ArrivalFuel = status.CurrentFuel; 
-                }
-            }
-            else
-                throw new InvalidOperationException("non implementato");
+                else
+                    throw new InvalidOperationException("non implementato");
 
-            if (!(e is PositioningEvent))
-            {
-                Log(e.GetType().FullName.Substring(e.GetType().FullName.LastIndexOf('.')));
+                if (!(e is PositioningEvent))
+                {
+                    Log(e.GetType().FullName.Substring(e.GetType().FullName.LastIndexOf('.')));
+                }
             }
-
 
             //rinfresco la view
             viewMainForm.mainPanel.DrawStatus(status);

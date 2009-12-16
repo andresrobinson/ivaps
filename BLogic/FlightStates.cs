@@ -9,12 +9,12 @@ namespace Castellari.IVaPS.BLogic
     /// </summary>
     public enum FlightStates : byte
     {
-        Before_Departed,
-        Engine_Started,
-        TakeOffTaxi,
-        Airborne,
-        Landed,
-        OnBlocks,
-        EngineOff
+        Before_Departed = 0,
+        Engine_Started = 1,
+        TakeOffTaxi = 2,
+        Airborne = 3,
+        Landed = 4,
+        OnBlocks = 5,
+        EngineOff = 6
     }
 }
