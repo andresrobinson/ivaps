@@ -302,6 +302,9 @@ namespace Castellari.IVaPS.Control
                     if (status.CurrentStatus <= FlightStates.Engine_Started)
                     {
                         status.CurrentStatus = FlightStates.TakeOffTaxi;
+                        //issue 54
+                        if(status.DepartureFuel == 0)
+                            status.DepartureFuel = status.CurrentFuel;
                     }
                     else if (status.CurrentStatus == FlightStates.OnBlocks)
                     {

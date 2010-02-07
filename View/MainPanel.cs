@@ -241,6 +241,13 @@ namespace Castellari.IVaPS.View
         {
             //connessione automatica
             btn_connect_Click(null, null);
+            //issue 42
+            if (lbl_connect.Text == "Disconnect")
+            {
+                Thread oThread = new Thread(new ThreadStart(this.AsyncFPLoad));
+                oThread.Start();
+            }
+            
         }
 
         private void btn_top_Click(object sender, EventArgs e)
@@ -248,6 +255,12 @@ namespace Castellari.IVaPS.View
             MainForm fm = (MainForm)this.Parent;
             fm.TopMost = !fm.TopMost;
             btn_top.BackColor = fm.TopMost ? Color.Orange : Color.Transparent;
+        }
+
+        private void AsyncFPLoad()
+        {
+            Thread.Sleep(1000);
+            btn_rec_Click(null, null);
         }
     }
 }

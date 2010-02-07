@@ -143,6 +143,9 @@ namespace Castellari.IVaPS.Model
             VirtualAirlineID = "";
             FlightPlan = null;
             CurrentStatus = FlightStates.Before_Departed;
+            DepartureFuel = 0;
+            ArrivalFuel = 0;
+            CurrentFuel = 0;
         }
         #endregion
     }
