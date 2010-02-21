@@ -64,5 +64,14 @@ namespace Castellari.IVaPS.View
             this.WindowState = FormWindowState.Normal;
             notifyIcon.Visible = false;
         }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //issue 
+            if (MessageBox.Show("Are you sure you want to exit?", "Confirm exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }
