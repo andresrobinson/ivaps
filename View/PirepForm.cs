@@ -82,11 +82,14 @@ namespace Castellari.IVaPS.View
                     if (shortCallsign.Length == 7) shortCallsign = shortCallsign.Substring(3);
                     callsignField.SetAttribute("value", shortCallsign);
                     webBrowser1.Document.All["Distance"].SetAttribute("value", fs.Distance.ToString("0"));
+
                     //per la gestione dei livelli di volo (issue 23)
                     if (fs.MaxAltitude > IPSConfiguration.TRANSITION_ALTITUDE_FEET)
                     {
                         //è un livello di volo
-                        int flightLevel = ((int)fs.MaxAltitude / 1000) * 10;//non divido banalmente per 100 per approssimare l'ultima cifra
+                        //non divido banalmente per 100 per approssimare l'ultima cifra
+                        //il round è introdotto per issue 55
+                        int flightLevel = (int)Math.Round(fs.MaxAltitude / 1000d,MidpointRounding.ToEven) * 10;
                         webBrowser1.Document.All["Altitude"].SetAttribute("value", flightLevel.ToString("0"));
                     }
                     else

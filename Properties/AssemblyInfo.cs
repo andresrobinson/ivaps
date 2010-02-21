@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // insieme di attributi. Per modificare le informazioni associate a un assembly
 // occorre quindi modificare i valori di questi attributi.
 [assembly: AssemblyTitle("IVaPS")]
-[assembly: AssemblyDescription("Ivao VirtualAirline Pirep Sender")]
+[assembly: AssemblyDescription("Ivao(R) VirtualAirline Pirep Sender")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("www.castellari.bo.it")]
 [assembly: AssemblyProduct("IVaPS")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // È possibile specificare tutti i valori oppure impostare valori predefiniti per i numeri relativi alla revisione e alla build 
 // utilizzando l'asterisco (*) come descritto di seguito:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.2.4")]
-[assembly: AssemblyFileVersion("0.2.4")]
+[assembly: AssemblyVersion("0.2.5")]
+[assembly: AssemblyFileVersion("0.2.5")]
