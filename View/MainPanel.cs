@@ -64,7 +64,7 @@ namespace Castellari.IVaPS.View
                 return;//fatto per il designer di VS2008
 
             //la prima condizione serve solo per non far incazzare il designer di Visual Studio!
-            if (lbl_connect != null && lbl_connect.Text == "Connect")
+            if (lbl_connect != null && lbl_connect.Text == "Connect to FS")
             {
                 //sono disconnesso, quindi devo connettermi
                 if (Controller.Connect())
@@ -93,7 +93,7 @@ namespace Castellari.IVaPS.View
                         if (Controller.Disconnect())
                         {
                             Info("Disconnected to FS");
-                            lbl_connect.Text = "Connect";
+                            lbl_connect.Text = "Connect to FS";
                         }
                         else
                             Error("Unable to disconnect to FS");
@@ -118,7 +118,14 @@ namespace Castellari.IVaPS.View
         public void Error(string msg)
         {
             this.lbl_info.ForeColor = Color.Red;
-            BeginInvoke(new MyDelegate(this.ShowMessage), new object[] { msg });
+            try
+            {
+                BeginInvoke(new MyDelegate(this.ShowMessage), new object[] { msg });
+            }
+            catch
+            {
+                //ci si arriva in caso di chiusura del form prima della scrittura, quindi noop
+            }
         }
 
         private delegate void MyDelegate(string msg);
