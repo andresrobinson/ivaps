@@ -72,21 +72,18 @@
             this.label7 = new System.Windows.Forms.Label();
             this.btn_google = new System.Windows.Forms.Button();
             this.btn_pirep = new System.Windows.Forms.Button();
-            this.txt_callsign = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.txt_va = new System.Windows.Forms.TextBox();
             this.lbl_route_tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.btn_top = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.btn_top = new System.Windows.Forms.Button();
             this.black_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbl_info
             // 
             this.lbl_info.AutoSize = true;
-            this.lbl_info.Location = new System.Drawing.Point(3, 196);
+            this.lbl_info.Location = new System.Drawing.Point(3, 214);
             this.lbl_info.Name = "lbl_info";
             this.lbl_info.Size = new System.Drawing.Size(115, 13);
             this.lbl_info.TabIndex = 4;
@@ -186,7 +183,7 @@
             this.black_panel.ForeColor = System.Drawing.Color.DarkGreen;
             this.black_panel.Location = new System.Drawing.Point(0, 0);
             this.black_panel.Name = "black_panel";
-            this.black_panel.Size = new System.Drawing.Size(190, 216);
+            this.black_panel.Size = new System.Drawing.Size(190, 234);
             this.black_panel.TabIndex = 5;
             // 
             // lbl_status
@@ -271,7 +268,7 @@
             this.lbl_route.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_route.Location = new System.Drawing.Point(0, 171);
             this.lbl_route.Name = "lbl_route";
-            this.lbl_route.Size = new System.Drawing.Size(183, 25);
+            this.lbl_route.Size = new System.Drawing.Size(183, 43);
             this.lbl_route.TabIndex = 23;
             this.lbl_route.Text = "Route";
             this.lbl_route_tooltip.SetToolTip(this.lbl_route, "Flight Plan currently not loaded");
@@ -450,11 +447,11 @@
             // lbl_connect
             // 
             this.lbl_connect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_connect.Location = new System.Drawing.Point(99, 241);
+            this.lbl_connect.Location = new System.Drawing.Point(76, 241);
             this.lbl_connect.Name = "lbl_connect";
-            this.lbl_connect.Size = new System.Drawing.Size(61, 13);
+            this.lbl_connect.Size = new System.Drawing.Size(84, 13);
             this.lbl_connect.TabIndex = 7;
-            this.lbl_connect.Text = "Connect";
+            this.lbl_connect.Text = "Connect to FS";
             this.lbl_connect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btn_config
@@ -516,33 +513,15 @@
             this.btn_pirep.UseVisualStyleBackColor = true;
             this.btn_pirep.Click += new System.EventHandler(this.btn_pirep_Click);
             // 
-            // txt_callsign
+            // btn_top
             // 
-            this.txt_callsign.ForeColor = System.Drawing.Color.SteelBlue;
-            this.txt_callsign.Location = new System.Drawing.Point(5, 214);
-            this.txt_callsign.Name = "txt_callsign";
-            this.txt_callsign.Size = new System.Drawing.Size(55, 20);
-            this.txt_callsign.TabIndex = 16;
-            this.txt_callsign.Text = "OVT0505";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(62, 218);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(86, 13);
-            this.label17.TabIndex = 17;
-            this.label17.Text = "Callsign     VA ID";
-            // 
-            // txt_va
-            // 
-            this.txt_va.ForeColor = System.Drawing.Color.SteelBlue;
-            this.txt_va.Location = new System.Drawing.Point(152, 214);
-            this.txt_va.Name = "txt_va";
-            this.txt_va.Size = new System.Drawing.Size(37, 20);
-            this.txt_va.TabIndex = 18;
-            this.txt_va.Text = "6290";
+            this.btn_top.Location = new System.Drawing.Point(4, 258);
+            this.btn_top.Name = "btn_top";
+            this.btn_top.Size = new System.Drawing.Size(28, 16);
+            this.btn_top.TabIndex = 23;
+            this.lbl_route_tooltip.SetToolTip(this.btn_top, "Enable/disable \"always on top\" on this window");
+            this.btn_top.UseVisualStyleBackColor = true;
+            this.btn_top.Click += new System.EventHandler(this.btn_top_Click);
             // 
             // label4
             // 
@@ -574,16 +553,6 @@
             this.label16.TabIndex = 21;
             this.label16.Text = "Always on top";
             // 
-            // btn_top
-            // 
-            this.btn_top.Location = new System.Drawing.Point(4, 258);
-            this.btn_top.Name = "btn_top";
-            this.btn_top.Size = new System.Drawing.Size(28, 16);
-            this.btn_top.TabIndex = 23;
-            this.lbl_route_tooltip.SetToolTip(this.btn_top, "Enable/disable \"always on top\" on this window");
-            this.btn_top.UseVisualStyleBackColor = true;
-            this.btn_top.Click += new System.EventHandler(this.btn_top_Click);
-            // 
             // MainPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -593,9 +562,6 @@
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.txt_va);
-            this.Controls.Add(this.label17);
-            this.Controls.Add(this.txt_callsign);
             this.Controls.Add(this.btn_pirep);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.btn_google);
@@ -654,9 +620,6 @@
         private System.Windows.Forms.Label lbl_arrIcao;
         private System.Windows.Forms.Label lbl_depIcao;
         private System.Windows.Forms.Label lbl_route;
-        private System.Windows.Forms.Label label17;
-        public System.Windows.Forms.TextBox txt_callsign;
-        public System.Windows.Forms.TextBox txt_va;
         private System.Windows.Forms.Label lbl_currFuel;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;

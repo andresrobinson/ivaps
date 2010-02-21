@@ -15,6 +15,8 @@ using System.Reflection;
 using Castellari.IVaPS.Model;
 using Castellari.IVaPS.View;
 using Castellari.IVaPS.BLogic;
+using System.IO;
+using System.Threading;
 
 namespace Castellari.IVaPS.Control
 {
@@ -64,6 +66,26 @@ namespace Castellari.IVaPS.Control
             flightSim = new FSWrapper();
             status = new FlightStatus();
             viewMainForm.mainPanel.SetStatus(status);
+
+            try
+            {
+                IPSConfiguration.Load();
+                Log("Configuration loaded");
+                if (IPSConfiguration.AUTO_ALWAYSONTOP)
+                    viewMainForm.mainPanel.btn_top_Click(null, null);
+                //issue 42
+                if (IPSConfiguration.AUTOLOAD_FLIGHTPLAN)
+                {
+                    Thread oThread = new Thread(new ThreadStart(viewMainForm.mainPanel.AsyncFPLoad));
+                    oThread.Start();
+                }
+            }
+            catch (FileNotFoundException fnfex)
+            { 
+                //gestione dell'assenza di configurazione
+                Log("Configuration file not found: " + fnfex.FileName);
+            }
+
             Log("..Init successifully terminated");
             #endregion
         }
@@ -219,13 +241,11 @@ namespace Castellari.IVaPS.Control
         /// <summary>
         /// Reperisce il piano di volo dai server di IVAO
         /// </summary>
-        /// <param name="callsign">il callsign del pilota</param>
-        /// <param name="virtualAirlineCode">il codice della virtual airline</param>
         /// <returns>true se il reperimento riesce</returns>
-        public bool FetchFlightPlan(string callsign, string virtualAirlineCode)
+        public bool FetchFlightPlan()
         {
-            status.Callsign = callsign;
-            status.VirtualAirlineID = virtualAirlineCode;
+            status.Callsign = IPSConfiguration.CALLSIGN;
+            status.VirtualAirlineID = IPSConfiguration.VA_ID;
 
             IvaoFlightPlan fp = IPSUtils.RetrivePlan(status.Callsign);
             if (fp != null)
@@ -235,6 +255,23 @@ namespace Castellari.IVaPS.Control
             }
             else
                 return false;
+        }
+
+        public void SaveConfig()
+        {
+            try
+            {
+                IPSConfiguration.Save();
+                status.Callsign = IPSConfiguration.CALLSIGN;
+                status.VirtualAirlineID = IPSConfiguration.VA_ID;
+                viewMainForm.mainPanel.Info("Config saved");
+            }
+            catch (Exception ex)
+            {
+                Log("Eccor saving config: " + ex.ToString());
+                viewMainForm.mainPanel.Error("Eccor saving config");
+            }
+
         }
 
         /// <summary>

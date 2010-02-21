@@ -48,7 +48,7 @@ namespace Castellari.IVaPS.View
 
         private void btn_rec_Click(object sender, EventArgs e)
         {
-            if (Controller.FetchFlightPlan(txt_callsign.Text,txt_va.Text))
+            if (Controller.FetchFlightPlan())
             {
                 Info("FP for " + model.Callsign + " loaded");
             }
@@ -60,8 +60,11 @@ namespace Castellari.IVaPS.View
 
         private void btn_connect_Click(object sender, EventArgs e)
         {
+            if (Controller == null)
+                return;//fatto per il designer di VS2008
+
             //la prima condizione serve solo per non far incazzare il designer di Visual Studio!
-            if (lbl_connect!= null && lbl_connect.Text == "Connect")
+            if (lbl_connect != null && lbl_connect.Text == "Connect")
             {
                 //sono disconnesso, quindi devo connettermi
                 if (Controller.Connect())
@@ -102,16 +105,17 @@ namespace Castellari.IVaPS.View
 
         private void btn_config_Click(object sender, EventArgs e)
         {
-            Error("Non implementato");
+            ConfigForm cf = new ConfigForm(Controller);
+            cf.Visible = true;
         }
 
-        private void Info(string msg)
+        public void Info(string msg)
         {
             this.lbl_info.ForeColor = Color.DarkGreen;
             BeginInvoke(new MyDelegate(this.ShowMessage), new object[] {msg});
         }
 
-        private void Error(string msg)
+        public void Error(string msg)
         {
             this.lbl_info.ForeColor = Color.Red;
             BeginInvoke(new MyDelegate(this.ShowMessage), new object[] { msg });
@@ -226,8 +230,8 @@ namespace Castellari.IVaPS.View
             {
                 Point p = new Point(this.Parent.Location.X + this.Parent.Width, this.Parent.Location.Y);
                 PirepForm pf = new PirepForm(p);
-                model.Callsign = txt_callsign.Text;
-                model.VirtualAirlineID = txt_va.Text;
+                model.Callsign = IPSConfiguration.CALLSIGN;
+                model.VirtualAirlineID = IPSConfiguration.VA_ID;
                 pf.FillPirep(model);
                 pf.Visible = true;
             }
@@ -241,23 +245,16 @@ namespace Castellari.IVaPS.View
         {
             //connessione automatica
             btn_connect_Click(null, null);
-            //issue 42
-            if (lbl_connect.Text == "Disconnect")
-            {
-                Thread oThread = new Thread(new ThreadStart(this.AsyncFPLoad));
-                oThread.Start();
-            }
-            
         }
 
-        private void btn_top_Click(object sender, EventArgs e)
+        public void btn_top_Click(object sender, EventArgs e)
         {
             MainForm fm = (MainForm)this.Parent;
             fm.TopMost = !fm.TopMost;
             btn_top.BackColor = fm.TopMost ? Color.Orange : Color.Transparent;
         }
 
-        private void AsyncFPLoad()
+        public void AsyncFPLoad()
         {
             Thread.Sleep(1000);
             btn_rec_Click(null, null);
