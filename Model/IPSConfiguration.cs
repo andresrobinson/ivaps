@@ -18,6 +18,7 @@ namespace Castellari.IVaPS.Model
         private static string vaId = null;//id IVAO della Virtual Airline
         private static bool autoLoadFlightPlan = true;//true se si desidera di default tentare di caricare da IVAN il piano di volo
         private static bool autoAlwaysOnTop = true;//true se si desidera di default avere la finestra sempre in primpo piano
+        private static string ivaoFpUrl = null;
 
         /// <summary>
         /// Tempo, in millisecondi, ogni quanto viene fatto polling verso le FSUIPC
@@ -67,6 +68,9 @@ namespace Castellari.IVaPS.Model
                 VA_ID = (string)acc["VA_ID"];
                 AUTOLOAD_FLIGHTPLAN = bool.Parse((string)acc["AUTOLOAD_FLIGHTPLAN"]);
                 AUTO_ALWAYSONTOP = bool.Parse((string)acc["AUTO_ALWAYSONTOP"]);
+                IVAO_FP_URL = (string)acc["IVAO_FP_URL"];
+                if (IVAO_FP_URL == null)
+                    IVAO_FP_URL = "http://de3.www.ivao.aero/whazzup.txt";
             }
             finally
             {
@@ -95,6 +99,7 @@ namespace Castellari.IVaPS.Model
                 sw.WriteLine("VA_ID={0}", VA_ID);
                 sw.WriteLine("AUTOLOAD_FLIGHTPLAN={0}", AUTOLOAD_FLIGHTPLAN.ToString());
                 sw.WriteLine("AUTO_ALWAYSONTOP={0}", AUTO_ALWAYSONTOP.ToString());
+                sw.WriteLine("IVAO_FP_URL={0}", IVAO_FP_URL);
                 sw.Flush();
                 sw.Close();
 
@@ -153,6 +158,19 @@ namespace Castellari.IVaPS.Model
                 autoAlwaysOnTop = value;
             }
         }
+
+        public static string IVAO_FP_URL 
+        { 
+            get 
+            {
+                return ivaoFpUrl;
+            }
+            set
+            {
+                ivaoFpUrl = value;
+            }
+        }
+
 
         private static string CfgFileFullPath
         {

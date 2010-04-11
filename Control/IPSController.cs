@@ -81,7 +81,7 @@ namespace Castellari.IVaPS.Control
                 }
             }
             catch (FileNotFoundException fnfex)
-            { 
+            {
                 //gestione dell'assenza di configurazione
                 Log("Configuration file not found: " + fnfex.FileName);
             }
@@ -105,7 +105,7 @@ namespace Castellari.IVaPS.Control
                 logForm.Visible = false;
             else
                 logForm.Visible = true;
-                logForm.Content = log.CurrentLog;
+            logForm.Content = log.CurrentLog;
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Castellari.IVaPS.Control
         /// <param name="msg">Messaggio da mettere a log</param>
         public void Log(string msg)
         {
-            log.Log(DateTime.Now.ToShortTimeString() + ") " +  msg);
+            log.Log(DateTime.Now.ToShortTimeString() + ") " + msg);
             if (logForm.Visible)
             {
                 //In questo modo si evita di scrivere su un controllo che sarebbe comunque invisibile
@@ -237,7 +237,7 @@ namespace Castellari.IVaPS.Control
                 return flightSim.IsRecording;
             }
         }
-           
+
         /// <summary>
         /// Reperisce il piano di volo dai server di IVAO
         /// </summary>
@@ -247,7 +247,19 @@ namespace Castellari.IVaPS.Control
             status.Callsign = IPSConfiguration.CALLSIGN;
             status.VirtualAirlineID = IPSConfiguration.VA_ID;
 
-            IvaoFlightPlan fp = IPSUtils.RetrivePlan(status.Callsign);
+            IvaoFlightPlan fp = null;
+
+            //try/catch inserito per issue 62
+            try
+            {
+                fp = IPSUtils.RetrivePlan(status.Callsign);
+            }
+            catch (Exception ex)
+            {
+                Log("Impossibile reperire il piano di volo: " + ex.Message);
+                Log(ex.StackTrace);
+            }
+
             if (fp != null)
             {
                 status.FlightPlan = fp;
@@ -340,7 +352,7 @@ namespace Castellari.IVaPS.Control
                     {
                         status.CurrentStatus = FlightStates.TakeOffTaxi;
                         //issue 54
-                        if(status.DepartureFuel == 0)
+                        if (status.DepartureFuel == 0)
                             status.DepartureFuel = status.CurrentFuel;
                     }
                     else if (status.CurrentStatus == FlightStates.OnBlocks)

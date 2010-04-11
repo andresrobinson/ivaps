@@ -22,7 +22,6 @@ namespace Castellari.IVaPS.BLogic
     public class IPSUtils
     {
         private const double R = 3440;//miglia nautiche
-        private const string IVAO_FLIGHTPLANS_URL = "http://de.www.ivao.aero/whazzup.txt";
 
         /// <summary>
         /// Calcola la distanza in MIGLIA NAUTICHE (nm) tra due punti geografici. Il calcolo è svolto con la
@@ -52,7 +51,7 @@ namespace Castellari.IVaPS.BLogic
         {
             //Istanzio le variabili che servono per la chiamata http
             WebClient client = new WebClient();
-            Stream data = client.OpenRead(IVAO_FLIGHTPLANS_URL);
+            Stream data = client.OpenRead(IPSConfiguration.IVAO_FP_URL);
             StreamReader reader = new StreamReader(data);
             string str = "";
             string rightLine = null;
