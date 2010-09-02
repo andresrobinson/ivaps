@@ -83,6 +83,7 @@ namespace Castellari.IVaPS.Model
         /// </summary>
         public double CurrentFuel { get; set; }
 
+
         /// <summary>
         /// Quando viene settata dall'esterno una nuova current position, questa viene
         /// automaticamente aggiunta anche al FlightLog
@@ -110,8 +111,8 @@ namespace Castellari.IVaPS.Model
                 //per ora commento per evitare che sbraghi la RAM, poi ci penserò
                 //this.FlightLog.Add(currentPosition);
                 
-                if (currentPosition.Speed > MaxSpeed)
-                    MaxSpeed = currentPosition.Speed;
+                if (currentPosition.TrueAirspeedSpeed > MaxSpeed)
+                    MaxSpeed = currentPosition.TrueAirspeedSpeed;
                 if (currentPosition.Altitude > MaxAltitude)
                     MaxAltitude = currentPosition.Altitude;
 

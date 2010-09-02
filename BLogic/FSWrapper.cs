@@ -47,6 +47,9 @@ namespace Castellari.IVaPS.BLogic
         private const int RADIO_ALTITUDE= 0x31E4;
         
         private const int OFFSET_IVAP_DETECTED = 0x7b80;//unused currently
+        private const int OFFSET_IVAP_TRASPONDER_STATUS = 0x7B91;
+
+        private const int OFFSET_FSVERSION = 0x3308;
 
         private const int OFFSET_FUEL_CONTENT_CENTER = 0x0B74;
         private const int OFFSET_FUEL_CAPACITY_CENTER = 0x0B78;
@@ -68,9 +71,11 @@ namespace Castellari.IVaPS.BLogic
 
         private const int OFFSET_FUEL_CONTENT_RIGHTTIP = 0x0BA4;
         private const int OFFSET_FUEL_CAPACITY_RIGHTTIP = 0x0BA8;
+
         #endregion
 
         #region Variabili di tipo Offset<>
+        private Offset<int> groundspeed = new Offset<int>(OFFSET_GS);//issue 50
         private Offset<int> airspeed = new Offset<int>(OFFSET_TAS);//corretto per issue 32
         private Offset<long> latitude = new Offset<long>(OFFSET_LAT);
         private Offset<long> longitude = new Offset<long>(OFFSET_LON);
@@ -80,6 +85,9 @@ namespace Castellari.IVaPS.BLogic
         private Offset<int> radioAlt = new Offset<int>(RADIO_ALTITUDE);
         
         private Offset<byte> ivapDetected = new Offset<byte>(OFFSET_IVAP_DETECTED);
+        private Offset<byte> ivapTrasponder = new Offset<byte>(OFFSET_IVAP_TRASPONDER_STATUS);
+
+        private Offset<short> fsversion = new Offset<short>(OFFSET_FSVERSION);
 
         private Offset<int> fuelCap1 = new Offset<int>(OFFSET_FUEL_CAPACITY_CENTER);
         private Offset<int> fuelCap2 = new Offset<int>(OFFSET_FUEL_CAPACITY_LEFTMAIN);
@@ -127,7 +135,8 @@ namespace Castellari.IVaPS.BLogic
             LastPosition.IsEngineStarted = false;
             LastPosition.Latitude = double.NaN;
             LastPosition.Longitude = double.NaN;
-            LastPosition.Speed = double.NaN;
+            LastPosition.TrueAirspeedSpeed = double.NaN;
+            LastPosition.GroundSpeed = double.NaN;
             LastPosition.Timestamp = DateTime.Now;
         }
 
@@ -219,6 +228,17 @@ namespace Castellari.IVaPS.BLogic
         }
 
         /// <summary>
+        /// Cambia lo stato del trasponder
+        /// </summary>
+        /// <param name="switchInCharlieMode">true per metterlo in charlie, false per riportarlo in Sierra</param>
+        public void SetTrasponderMode(bool switchInCharlieMode)
+        {
+            //metodo per issue 63
+            ivapTrasponder.Value = switchInCharlieMode ? (byte)0 : (byte)1;
+            //da verificare se serve FSUIPCConnection.Process();
+        }
+
+        /// <summary>
         /// Gestore interno del watch dog sulle FSUIPC. In caso di errore sorreva un ErrorOccurredEvent
         /// </summary>
         private void TickHandle(object sender, ElapsedEventArgs e)
@@ -229,9 +249,37 @@ namespace Castellari.IVaPS.BLogic
                 AircraftPosition currentPosition = new AircraftPosition();
 
                 FSUIPCConnection.Process();
+
+                //issue 63
+                #region gestione di ivap
+                IvapStatus.Instance.IsRunning = ((byte)ivapDetected.Value == 1);
+                if (IvapStatus.Instance.IsRunning)
+                {
+                    IvapStatus.Instance.IvapTrasponderIsInStandby = ((byte)ivapTrasponder.Value == 1);
+                }
+                else IvapStatus.Instance.IvapTrasponderIsInStandby = true;
+                #endregion
+
+                //issue 11
+                #region versione FS
+                switch ((short)ivapTrasponder.Value)
+                {
+                    case 7:
+                        IvapStatus.Instance.FSVersion = FlightSimulatorVersion.FS2004;
+                        break;
+                    case 9:
+                        IvapStatus.Instance.FSVersion = FlightSimulatorVersion.FSX;
+                        break;
+                    default:
+                        IvapStatus.Instance.FSVersion = FlightSimulatorVersion.Altro;
+                        break;
+                }
+                #endregion
+
+                //ground speed
+                currentPosition.GroundSpeed = ((double)groundspeed.Value / 65536d) * 1.943844492;//Knots
                 //airspeed
-                //currentPosition.Speed = ((double)airspeed.Value / 65536d) * 1.943844492;//Knots
-                currentPosition.Speed = ((double)airspeed.Value / 128);//issue 38
+                currentPosition.TrueAirspeedSpeed = ((double)airspeed.Value / 128);//issue 38
                 //latitude
                 currentPosition.Latitude = (double)latitude.Value * 90d / (10001750d * 65536d * 65536d);
                 //longitude
@@ -242,7 +290,7 @@ namespace Castellari.IVaPS.BLogic
                 currentPosition.RadioAltitude = (double)radioAlt.Value / 65536;
                 //heading
                 currentPosition.Heading = heading.Value * 360d / (65536d * 65536d);
-                if(currentPosition.Heading < 0)
+                if (currentPosition.Heading < 0)
                     currentPosition.Heading = 360 + currentPosition.Heading;
 
                 //fuel
@@ -301,16 +349,16 @@ namespace Castellari.IVaPS.BLogic
                         isFirsPosWithNoFuelFlow = true;
                     }
                 }
-                
+
                 //gestione del movimento (ed invio eventi associati) issue 29
                 //l'1 invece dello 0 è dovuto a potenziali errori di arrotondamento nel calcolo della velocità
-                if (LastPosition.Speed <= 1 && currentPosition.Speed > 1)
-                { 
+                if (LastPosition.GroundSpeed <= 1 && currentPosition.GroundSpeed > 1)
+                {
                     //inizia a muoversi
                     FSEvent evt = new StartMovingEvent();
                     FlightSimEvent(evt);
                 }
-                else if (LastPosition.Speed >= 1 && currentPosition.Speed < 1)
+                else if (LastPosition.GroundSpeed >= 1 && currentPosition.GroundSpeed < 1)
                 {
                     //si ferma
                     FSEvent evt = new EndMovingEvent();

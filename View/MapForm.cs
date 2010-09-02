@@ -53,8 +53,8 @@ namespace Castellari.IVaPS.View
             sb.AppendLine("    function initialize() {");
             sb.AppendLine("      if (GBrowserIsCompatible()) {");
             sb.AppendLine("        var map = new GMap2(document.getElementById(\"map_canvas\"));");
-            sb.AppendLine("        var latitude = " + pos.Latitude.ToString("00.00000").Replace(',', '.') + ";");
-            sb.AppendLine("        var longitude = " + pos.Longitude.ToString("00.00000").Replace(',', '.') + ";");
+            sb.AppendLine("        var latitude = " + pos.Latitude.ToString("0.00000").Replace(',', '.') + ";");
+            sb.AppendLine("        var longitude = " + pos.Longitude.ToString("0.00000").Replace(',', '.') + ";");
             sb.AppendLine("        map.setCenter(new GLatLng(latitude, longitude), 13);");
             sb.AppendLine("        map.addControl(new GSmallMapControl());");
             sb.AppendLine("        map.addControl(new GMapTypeControl());");

@@ -29,7 +29,11 @@ namespace Castellari.IVaPS.Model
         /// <summary>
         /// Velocità al suolo (ground speed) in nodi
         /// </summary>
-        public double Speed { get; set; }
+        public double GroundSpeed { get; set; }
+        /// <summary>
+        /// Velocità reale all'aria (TAS), espressa in nodi
+        /// </summary>
+        public double TrueAirspeedSpeed { get; set; }
         /// <summary>
         /// Istande del rilevamento della posizione
         /// </summary>
@@ -53,8 +57,8 @@ namespace Castellari.IVaPS.Model
         {
             get 
             {
-                if (Speed != double.NaN)
-                    return Speed > 0;
+                if (GroundSpeed != double.NaN)
+                    return GroundSpeed > 0;
                 else
                     return false;
             }

@@ -204,6 +204,11 @@ namespace Castellari.IVaPS.Control
                         Log("Rec started");
                         flightSim.FlightSimEvent += new FSWrapper.FSEventHandler(this.HandleEvent);
                         flightSim.ErrorOccurred += new FSWrapper.ErrorOccurredHandler(flightSim_ErrorOccurred);
+                        //derivato da issue 63:
+                        Thread.Sleep(1200);//per fare in modo che faccia la prima lettura...
+                        Log(IvapStatus.Instance.IsRunning ? "detected IVAP running" : "NOT detected IVAP running");
+                        //derivato da issue 11:
+                        Log("FS version: " + IvapStatus.Instance.FSVersion.ToString());                        
                     }
                     return true;
                 }
@@ -280,8 +285,8 @@ namespace Castellari.IVaPS.Control
             }
             catch (Exception ex)
             {
-                Log("Eccor saving config: " + ex.ToString());
-                viewMainForm.mainPanel.Error("Eccor saving config");
+                Log("Error saving config: " + ex.ToString());
+                viewMainForm.mainPanel.Error("Error saving config");
             }
 
         }
@@ -313,6 +318,15 @@ namespace Castellari.IVaPS.Control
                         status.DepartureTime = e.Timestamp;
                     }
                     status.CurrentStatus = FlightStates.Airborne;
+                    //isssue 63
+                    if (IPSConfiguration.AUTO_TRASPONDER)
+                    {
+                        if (IvapStatus.Instance.IsRunning && IvapStatus.Instance.IvapTrasponderIsInStandby)
+                        { 
+                            //ivap è presente ma il trasponder è in Sierra, quindi lo metto in charlie
+                            flightSim.SetTrasponderMode(true);
+                        }
+                    }
                 }
                 else if (e is LandingEvent)
                 {
@@ -321,6 +335,15 @@ namespace Castellari.IVaPS.Control
                         status.CurrentStatus = FlightStates.Landed;
                         status.ArrivalTime = e.Timestamp;
                         //in questo modo l'ultimo atterraggio è sempre quello che fa fede per l'ora di arrivo
+                        //isssue 63:
+                        if (IPSConfiguration.AUTO_TRASPONDER)
+                        {
+                            if (IvapStatus.Instance.IsRunning && !IvapStatus.Instance.IvapTrasponderIsInStandby)
+                            {
+                                //ivap è presente ma il trasponder è in Sierra, quindi lo metto in charlie
+                                flightSim.SetTrasponderMode(false);
+                            }
+                        }
                     }
                 }
                 else if (e is EngineStartUpEvent)

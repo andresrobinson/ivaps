@@ -36,6 +36,7 @@
             this.btn_save = new System.Windows.Forms.Button();
             this.txt_vaid = new System.Windows.Forms.TextBox();
             this.txt_callsign = new System.Windows.Forms.TextBox();
+            this.ckb_trasponder = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -78,7 +79,7 @@
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(102, 110);
+            this.btn_save.Location = new System.Drawing.Point(118, 137);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(75, 23);
             this.btn_save.TabIndex = 5;
@@ -104,11 +105,22 @@
             this.txt_callsign.TabIndex = 1;
             this.txt_callsign.Text = "OVT0505";
             // 
+            // ckb_trasponder
+            // 
+            this.ckb_trasponder.AutoSize = true;
+            this.ckb_trasponder.Location = new System.Drawing.Point(13, 114);
+            this.ckb_trasponder.Name = "ckb_trasponder";
+            this.ckb_trasponder.Size = new System.Drawing.Size(152, 17);
+            this.ckb_trasponder.TabIndex = 6;
+            this.ckb_trasponder.Text = "Automatic Trasponder S/C";
+            this.ckb_trasponder.UseVisualStyleBackColor = true;
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(192, 135);
+            this.ClientSize = new System.Drawing.Size(192, 163);
+            this.Controls.Add(this.ckb_trasponder);
             this.Controls.Add(this.txt_callsign);
             this.Controls.Add(this.txt_vaid);
             this.Controls.Add(this.btn_save);
@@ -134,5 +146,6 @@
         private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.TextBox txt_vaid;
         private System.Windows.Forms.TextBox txt_callsign;
+        private System.Windows.Forms.CheckBox ckb_trasponder;
     }
 }

@@ -51,6 +51,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.DarkGray;
@@ -59,6 +60,7 @@
             this.label1.Size = new System.Drawing.Size(187, 15);
             this.label1.TabIndex = 1;
             this.label1.Text = "Developed by F. Castellari (OVT0505)";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // notifyIcon
             // 

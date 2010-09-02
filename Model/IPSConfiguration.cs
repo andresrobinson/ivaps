@@ -19,6 +19,7 @@ namespace Castellari.IVaPS.Model
         private static bool autoLoadFlightPlan = true;//true se si desidera di default tentare di caricare da IVAN il piano di volo
         private static bool autoAlwaysOnTop = true;//true se si desidera di default avere la finestra sempre in primpo piano
         private static string ivaoFpUrl = null;
+        private static bool autoTrasponder = true;//true se si vuole la gestione automatica del modo trasponder Sierra e Charlie, issue 63
 
         /// <summary>
         /// Tempo, in millisecondi, ogni quanto viene fatto polling verso le FSUIPC
@@ -58,7 +59,7 @@ namespace Castellari.IVaPS.Model
                 StreamReader sr = new StreamReader(fs);
                 string buff = null;
                 Hashtable acc = new Hashtable();
-                while ((buff = sr.ReadLine()) != null)
+                while ((buff = sr.ReadLine()) != null && !string.IsNullOrEmpty(buff))
                 {
                     string[] tmp = buff.Split('=');
                     acc.Add(tmp[0], tmp[1]);
@@ -68,6 +69,10 @@ namespace Castellari.IVaPS.Model
                 VA_ID = (string)acc["VA_ID"];
                 AUTOLOAD_FLIGHTPLAN = bool.Parse((string)acc["AUTOLOAD_FLIGHTPLAN"]);
                 AUTO_ALWAYSONTOP = bool.Parse((string)acc["AUTO_ALWAYSONTOP"]);
+                if (acc["AUTO_TRASPONDER"] != null)
+                    AUTO_TRASPONDER = bool.Parse((string)acc["AUTO_TRASPONDER"]);
+                else
+                    AUTO_TRASPONDER = true;
                 IVAO_FP_URL = (string)acc["IVAO_FP_URL"];
                 if (IVAO_FP_URL == null)
                     IVAO_FP_URL = "http://de3.www.ivao.aero/whazzup.txt";
@@ -99,6 +104,7 @@ namespace Castellari.IVaPS.Model
                 sw.WriteLine("VA_ID={0}", VA_ID);
                 sw.WriteLine("AUTOLOAD_FLIGHTPLAN={0}", AUTOLOAD_FLIGHTPLAN.ToString());
                 sw.WriteLine("AUTO_ALWAYSONTOP={0}", AUTO_ALWAYSONTOP.ToString());
+                sw.WriteLine("AUTO_TRASPONDER={0}", AUTO_TRASPONDER.ToString());
                 sw.WriteLine("IVAO_FP_URL={0}", IVAO_FP_URL);
                 sw.Flush();
                 sw.Close();
@@ -156,6 +162,19 @@ namespace Castellari.IVaPS.Model
             set
             {
                 autoAlwaysOnTop = value;
+            }
+        }
+
+        public static bool AUTO_TRASPONDER
+        {
+            //per issue 63
+            get
+            {
+                return autoTrasponder;
+            }
+            set
+            {
+                autoTrasponder = value;
             }
         }
 

@@ -73,5 +73,11 @@ namespace Castellari.IVaPS.View
                 e.Cancel = true;
             }
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            AboutForm af = new AboutForm();
+            af.Show();
+        }
     }
 }

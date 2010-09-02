@@ -25,6 +25,7 @@ namespace Castellari.IVaPS.View
                 txt_vaid.Text = IPSConfiguration.VA_ID;
                 chk_aot.Checked = IPSConfiguration.AUTO_ALWAYSONTOP;
                 chk_fp.Checked = IPSConfiguration.AUTOLOAD_FLIGHTPLAN;
+                ckb_trasponder.Checked = IPSConfiguration.AUTO_TRASPONDER;
             }
             catch 
             {
@@ -41,6 +42,7 @@ namespace Castellari.IVaPS.View
             IPSConfiguration.VA_ID = txt_vaid.Text;
             IPSConfiguration.AUTO_ALWAYSONTOP = chk_aot.Checked;
             IPSConfiguration.AUTOLOAD_FLIGHTPLAN = chk_fp.Checked;
+            IPSConfiguration.AUTO_TRASPONDER = ckb_trasponder.Checked;
             controller.SaveConfig();
             this.Close();
         }

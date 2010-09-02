@@ -153,7 +153,7 @@ namespace Castellari.IVaPS.View
             {
                 lbl_lat.Text = stat.CurrentPosition.Latitude.ToString("00.000000") + "°";
                 lbl_lon.Text = stat.CurrentPosition.Longitude.ToString("00.000000") + "°";
-                lbl_speed.Text = stat.CurrentPosition.Speed.ToString("000.0") + " Knots";
+                lbl_speed.Text = stat.CurrentPosition.TrueAirspeedSpeed.ToString("000.0") + " Knots";
                 lbl_alt.Text = stat.CurrentPosition.Altitude.ToString("00000") + " ft";
                 lbl_hdg.Text = stat.CurrentPosition.Heading.ToString("000") + "°";
             }
@@ -221,6 +221,16 @@ namespace Castellari.IVaPS.View
         private void btn_google_Click(object sender, EventArgs e)
         {
             MapForm mf = null;
+
+            //debug per issue 60
+            //mf = new MapForm(new Point(this.Parent.Location.X + this.Parent.Width, this.Parent.Location.Y), this.Controller);
+            //mf.Visible = true;
+            //AircraftPosition pos = new AircraftPosition();
+            //pos.Latitude = 3.381824;
+            //pos.Longitude = -76.464844;
+            //mf.GoToPosition(pos);
+            //fine debug
+
             if (model.CurrentPosition != null)
             {
                 mf = new MapForm(new Point(this.Parent.Location.X + this.Parent.Width, this.Parent.Location.Y), this.Controller);
