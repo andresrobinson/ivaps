@@ -37,6 +37,8 @@
             this.txt_vaid = new System.Windows.Forms.TextBox();
             this.txt_callsign = new System.Windows.Forms.TextBox();
             this.ckb_trasponder = new System.Windows.Forms.CheckBox();
+            this.cbo_chk = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -79,7 +81,7 @@
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(118, 137);
+            this.btn_save.Location = new System.Drawing.Point(118, 162);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(75, 23);
             this.btn_save.TabIndex = 5;
@@ -115,11 +117,30 @@
             this.ckb_trasponder.Text = "Automatic Trasponder S/C";
             this.ckb_trasponder.UseVisualStyleBackColor = true;
             // 
+            // cbo_chk
+            // 
+            this.cbo_chk.FormattingEnabled = true;
+            this.cbo_chk.Location = new System.Drawing.Point(78, 135);
+            this.cbo_chk.Name = "cbo_chk";
+            this.cbo_chk.Size = new System.Drawing.Size(99, 21);
+            this.cbo_chk.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(13, 138);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Checklist:";
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(192, 163);
+            this.ClientSize = new System.Drawing.Size(192, 187);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cbo_chk);
             this.Controls.Add(this.ckb_trasponder);
             this.Controls.Add(this.txt_callsign);
             this.Controls.Add(this.txt_vaid);
@@ -147,5 +168,7 @@
         private System.Windows.Forms.TextBox txt_vaid;
         private System.Windows.Forms.TextBox txt_callsign;
         private System.Windows.Forms.CheckBox ckb_trasponder;
+        private System.Windows.Forms.ComboBox cbo_chk;
+        private System.Windows.Forms.Label label3;
     }
 }

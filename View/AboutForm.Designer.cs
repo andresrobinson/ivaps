@@ -29,13 +29,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.lnklbl_help = new System.Windows.Forms.LinkLabel();
             this.labelProductName = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
             this.labelCopyright = new System.Windows.Forms.Label();
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
-            this.lnklbl_help = new System.Windows.Forms.LinkLabel();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -66,6 +66,17 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(430, 216);
             this.tableLayoutPanel.TabIndex = 0;
+            // 
+            // lnklbl_help
+            // 
+            this.lnklbl_help.AutoSize = true;
+            this.lnklbl_help.Location = new System.Drawing.Point(144, 76);
+            this.lnklbl_help.Name = "lnklbl_help";
+            this.lnklbl_help.Size = new System.Drawing.Size(135, 13);
+            this.lnklbl_help.TabIndex = 1;
+            this.lnklbl_help.TabStop = true;
+            this.lnklbl_help.Text = "Click here for a on-line help";
+            this.lnklbl_help.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkClicked);
             // 
             // labelProductName
             // 
@@ -114,6 +125,15 @@
             this.logoPictureBox.TabIndex = 12;
             this.logoPictureBox.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(144, 174);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(150, 13);
+            this.label1.TabIndex = 26;
+            this.label1.Text = "Created by: Federico Castellari";
+            // 
             // linkLabel1
             // 
             this.linkLabel1.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -125,26 +145,6 @@
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Special thanks to Marco Milesi and www.oriovirtualteam.it";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkClicked);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(144, 174);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(150, 13);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "Created by: Federico Castellari";
-            // 
-            // lnklbl_help
-            // 
-            this.lnklbl_help.AutoSize = true;
-            this.lnklbl_help.Location = new System.Drawing.Point(144, 76);
-            this.lnklbl_help.Name = "lnklbl_help";
-            this.lnklbl_help.Size = new System.Drawing.Size(135, 13);
-            this.lnklbl_help.TabIndex = 1;
-            this.lnklbl_help.TabStop = true;
-            this.lnklbl_help.Text = "Click here for a on-line help";
-            this.lnklbl_help.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkClicked);
             // 
             // AboutForm
             // 

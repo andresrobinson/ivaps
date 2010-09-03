@@ -408,6 +408,32 @@ namespace Castellari.IVaPS.Control
             viewMainForm.mainPanel.DrawStatus(status);
         }
 
+        public void SpeekCurrentPosition()
+        {
+            ChecklistSpeaker.ReadPosition(status.CurrentPosition);
+        }
+
+        public void SpeekChecklistPhase(short phaseNumber)
+        {
+            Checklist chklst = ChecklistReader.ReadChecklist(IPSConfiguration.CURRENT_CHECKLIST);
+            if(chklst != null)
+                ChecklistSpeaker.ReadPhase(chklst.Phases[phaseNumber]);
+            else
+                ChecklistSpeaker.ReadPhase(null);
+        }
+
+        public void SpeekChecklistSpeeds()
+        {
+            try
+            {
+                Checklist chklst = ChecklistReader.ReadChecklist(IPSConfiguration.CURRENT_CHECKLIST);
+                ChecklistSpeaker.ReadAllSpeeds(chklst);
+            }
+            catch (Exception ex)
+            {
+                ChecklistSpeaker.ReadAllSpeeds(null);
+            }
+        }
 
         public delegate void PositionEventHandler(AircraftPosition pos);
         /// <summary>

@@ -276,5 +276,11 @@ namespace Castellari.IVaPS.View
             Thread.Sleep(1000);
             btn_rec_Click(null, null);
         }
+
+        private void btn_assist_Click(object sender, EventArgs e)
+        {
+            CrewForm af = new CrewForm();
+            af.Show();
+        }
     }
 }

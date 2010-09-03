@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Castellari.IVaPS.Model;
 using Castellari.IVaPS.Control;
+using Castellari.IVaPS.BLogic;
 
 namespace Castellari.IVaPS.View
 {
@@ -26,6 +27,16 @@ namespace Castellari.IVaPS.View
                 chk_aot.Checked = IPSConfiguration.AUTO_ALWAYSONTOP;
                 chk_fp.Checked = IPSConfiguration.AUTOLOAD_FLIGHTPLAN;
                 ckb_trasponder.Checked = IPSConfiguration.AUTO_TRASPONDER;
+                string[] tmp = ChecklistReader.ReadAvailableChecklists();
+                foreach (string s in tmp)
+                {
+                    cbo_chk.Items.Add(s);
+                }
+                if (IPSConfiguration.CURRENT_CHECKLIST != null)
+                {
+                    cbo_chk.SelectedItem = IPSConfiguration.CURRENT_CHECKLIST;
+                }
+                
             }
             catch 
             {
@@ -43,6 +54,7 @@ namespace Castellari.IVaPS.View
             IPSConfiguration.AUTO_ALWAYSONTOP = chk_aot.Checked;
             IPSConfiguration.AUTOLOAD_FLIGHTPLAN = chk_fp.Checked;
             IPSConfiguration.AUTO_TRASPONDER = ckb_trasponder.Checked;
+            IPSConfiguration.CURRENT_CHECKLIST = cbo_chk.SelectedItem.ToString();
             controller.SaveConfig();
             this.Close();
         }

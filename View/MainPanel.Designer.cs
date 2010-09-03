@@ -77,6 +77,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.btn_assist = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             this.black_panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -553,11 +555,32 @@
             this.label16.TabIndex = 21;
             this.label16.Text = "Always on top";
             // 
+            // btn_assist
+            // 
+            this.btn_assist.Location = new System.Drawing.Point(159, 277);
+            this.btn_assist.Name = "btn_assist";
+            this.btn_assist.Size = new System.Drawing.Size(28, 16);
+            this.btn_assist.TabIndex = 24;
+            this.btn_assist.UseVisualStyleBackColor = true;
+            this.btn_assist.Click += new System.EventHandler(this.btn_assist_Click);
+            // 
+            // label8
+            // 
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(99, 279);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(61, 13);
+            this.label8.TabIndex = 25;
+            this.label8.Text = "Crew";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // MainPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.btn_assist);
             this.Controls.Add(this.btn_top);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label5);
@@ -633,5 +656,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button btn_top;
+        private System.Windows.Forms.Button btn_assist;
+        private System.Windows.Forms.Label label8;
     }
 }

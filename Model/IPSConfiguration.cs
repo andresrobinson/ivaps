@@ -20,6 +20,7 @@ namespace Castellari.IVaPS.Model
         private static bool autoAlwaysOnTop = true;//true se si desidera di default avere la finestra sempre in primpo piano
         private static string ivaoFpUrl = null;
         private static bool autoTrasponder = true;//true se si vuole la gestione automatica del modo trasponder Sierra e Charlie, issue 63
+        private static string currentChecklist = null;
 
         /// <summary>
         /// Tempo, in millisecondi, ogni quanto viene fatto polling verso le FSUIPC
@@ -74,6 +75,7 @@ namespace Castellari.IVaPS.Model
                 else
                     AUTO_TRASPONDER = true;
                 IVAO_FP_URL = (string)acc["IVAO_FP_URL"];
+                CURRENT_CHECKLIST = (string)acc["CURRENT_CHECKLIST"];
                 if (IVAO_FP_URL == null)
                     IVAO_FP_URL = "http://de3.www.ivao.aero/whazzup.txt";
             }
@@ -106,6 +108,7 @@ namespace Castellari.IVaPS.Model
                 sw.WriteLine("AUTO_ALWAYSONTOP={0}", AUTO_ALWAYSONTOP.ToString());
                 sw.WriteLine("AUTO_TRASPONDER={0}", AUTO_TRASPONDER.ToString());
                 sw.WriteLine("IVAO_FP_URL={0}", IVAO_FP_URL);
+                sw.WriteLine("CURRENT_CHECKLIST={0}", CURRENT_CHECKLIST);
                 sw.Flush();
                 sw.Close();
 
@@ -187,6 +190,18 @@ namespace Castellari.IVaPS.Model
             set
             {
                 ivaoFpUrl = value;
+            }
+        }
+
+        public static string CURRENT_CHECKLIST
+        {
+            get
+            {
+                return currentChecklist;
+            }
+            set
+            {
+                currentChecklist = value;
             }
         }
 
