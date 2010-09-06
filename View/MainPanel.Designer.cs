@@ -567,11 +567,11 @@
             // label8
             // 
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(99, 279);
+            this.label8.Location = new System.Drawing.Point(113, 278);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(61, 13);
+            this.label8.Size = new System.Drawing.Size(47, 14);
             this.label8.TabIndex = 25;
-            this.label8.Text = "Crew";
+            this.label8.Text = "Utils";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // MainPanel

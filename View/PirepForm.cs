@@ -90,7 +90,7 @@ namespace Castellari.IVaPS.View
                         //non divido banalmente per 100 per approssimare l'ultima cifra
                         //il round è introdotto per issue 55
                         int flightLevel = (int)Math.Round(fs.MaxAltitude / 1000d,MidpointRounding.ToEven) * 10;
-                        webBrowser1.Document.All["Altitude"].SetAttribute("value", flightLevel.ToString("0"));
+                        webBrowser1.Document.All["Altitude"].SetAttribute("value", flightLevel.ToString("000"));//"000" per issue 65
                     }
                     else
                     {
