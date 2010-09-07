@@ -104,59 +104,19 @@ namespace Castellari.IVaPS.View
             controller.SpeekCurrentPosition();
         }
 
+        private void hk_speeds_Pressed(object sender, EventArgs e)
+        {
+            controller.SpeekChecklistSpeeds();
+        }
+
         private void hk_1_Pressed(object sender, EventArgs e)
         {
             controller.SpeekChecklistPhase(0);
         }
 
-        private void hk_2_Pressed(object sender, EventArgs e)
+        private void hk_checklist_Pressed(object sender, EventArgs e)
         {
-            controller.SpeekChecklistPhase(1);
-        }
-
-        private void hk_3_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistPhase(2);
-        }
-
-        private void hk_4_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistPhase(3);
-        }
-
-        private void hk_5_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistPhase(4);
-        }
-
-        private void hk_6_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistPhase(5);
-        }
-
-        private void hk7_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistPhase(6);
-        }
-
-        private void hk_8_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistPhase(7);
-        }
-
-        private void hk_9_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistPhase(8);
-        }
-
-        private void hk_0_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistPhase(9);
-        }
-
-        private void hk_speeds_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistSpeeds();
+            controller.ShowHideChecklistSelection();
         }
     }
 }

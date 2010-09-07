@@ -48,6 +48,10 @@ namespace Castellari.IVaPS.Control
         /// gli eventi che porteranno a tenere aggiornato il modello
         /// </summary>
         private FSWrapper flightSim = null;
+        /// <summary>
+        /// il selection form dedicato alla selezione della sottosezione di checklist da leggere
+        /// </summary>
+        private TransparentChoiseForm checklistSelectionForm = null;
 
         /// <summary>
         /// Costruttore. Richiede un riferimento alla vista principale per poter
@@ -282,6 +286,7 @@ namespace Castellari.IVaPS.Control
                 status.Callsign = IPSConfiguration.CALLSIGN;
                 status.VirtualAirlineID = IPSConfiguration.VA_ID;
                 viewMainForm.mainPanel.Info("Config saved");
+                LoadChecklistPhase();
             }
             catch (Exception ex)
             {
@@ -413,8 +418,31 @@ namespace Castellari.IVaPS.Control
             ChecklistSpeaker.ReadPosition(status.CurrentPosition);
         }
 
-        public void SpeekChecklistPhase(short phaseNumber)
+        public void ShowHideChecklistSelection()
         {
+            if (ChecklistSpeaker.IsCurrentlySpeaking())//issue 66
+            {
+                ChecklistSpeaker.StopSpeaking();
+                Thread.Sleep(200);
+                ChecklistSpeaker.Speak("canceled");
+                return;
+            }
+
+            //metodo creato per issue 68
+            if (checklistSelectionForm == null)
+            {
+                checklistSelectionForm = new TransparentChoiseForm();
+                checklistSelectionForm.ChooseTitle = "Chose checklist phase to be readed:";
+                LoadChecklistPhase();
+                checklistSelectionForm.SelectedEvent += new TransparentChoiseForm.SelectedIndexHandler(this.SpeekChecklistPhase);
+            }
+            checklistSelectionForm.Visible = !checklistSelectionForm.Visible;
+            if (checklistSelectionForm.Visible) checklistSelectionForm.Activate();
+        }
+
+        public void SpeekChecklistPhase(int phaseNumber)
+        {
+            checklistSelectionForm.Visible = false;
             Checklist chklst = ChecklistReader.ReadChecklist(IPSConfiguration.CURRENT_CHECKLIST);
             if(chklst != null)
                 ChecklistSpeaker.ReadPhase(chklst.Phases[phaseNumber]);
@@ -442,5 +470,16 @@ namespace Castellari.IVaPS.Control
         /// </summary>
         public event PositionEventHandler PositionUpdated;
 
+        private void LoadChecklistPhase()
+        {
+            Checklist cklst = ChecklistReader.ReadChecklist(IPSConfiguration.CURRENT_CHECKLIST);
+            string[] phases = new string[cklst.Phases.Count];
+            int i = 0;
+            foreach (ChecklistPhase phase in cklst.Phases)
+            {
+                phases[i++] = phase.PhaseName;
+            }
+            checklistSelectionForm.AvailableChooses = phases;
+        }
     }
 }

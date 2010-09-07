@@ -110,6 +110,35 @@ namespace Castellari.IVaPS.BLogic
             }
         }
 
+        /// <summary>
+        /// Annncia la frase
+        /// </summary>
+        /// <param name="message">la frase da annunciare (non SSML)</param>
+        public static void Speak(string message)
+        {
+            if (voice.State == SynthesizerState.Speaking) return;
+            voice.SpeakAsync(message);
+        }
+
+        /// <summary>
+        /// Se è in corso uno speak lo interrompe. Altrimenti noop
+        /// </summary>
+        public static void StopSpeaking()
+        {
+            //metodo aggiunto per issue 66
+            if (voice.State != SynthesizerState.Speaking) return;
+            voice.SpeakAsyncCancelAll();
+        }
+
+        /// <summary>
+        /// Restituisce true se al momento della richiesta vi è un messaggio in erogazione.
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsCurrentlySpeaking()
+        {
+            return (voice.State == SynthesizerState.Speaking);
+        }
+
         private static void RealRead(StringBuilder content, int volume)
         {
             if (voice.State == SynthesizerState.Speaking) return;
@@ -118,21 +147,9 @@ namespace Castellari.IVaPS.BLogic
             StringBuilder toBeSpeeked = new StringBuilder(SSML_HEADER);
             toBeSpeeked.Append(content);
             toBeSpeeked.Append(SSML_FOOTER);
-            ChecklistSpeaker tmp = new ChecklistSpeaker(toBeSpeeked.ToString());
-            Thread oThread = new Thread(new ThreadStart(tmp.AsyncRead));
-            oThread.Start();
+
+            voice.SpeakSsmlAsync(toBeSpeeked.ToString());//issue 66
         }
 
-        private string s = null;
-
-        private ChecklistSpeaker(string s)
-        {
-            this.s = s;
-        }
-
-        private void AsyncRead()
-        {
-            voice.SpeakSsml(s);
-        }
     }
 }
