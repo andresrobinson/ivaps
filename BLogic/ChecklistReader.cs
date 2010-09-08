@@ -83,7 +83,7 @@ namespace Castellari.IVaPS.BLogic
                     }
                 }
             }
-
+            reader.Close();//issue 70
             return toBeRet;
         }
     }
