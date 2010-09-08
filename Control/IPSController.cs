@@ -17,6 +17,7 @@ using Castellari.IVaPS.View;
 using Castellari.IVaPS.BLogic;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Castellari.IVaPS.Control
 {
@@ -52,6 +53,10 @@ namespace Castellari.IVaPS.Control
         /// il selection form dedicato alla selezione della sottosezione di checklist da leggere
         /// </summary>
         private TransparentChoiseForm checklistSelectionForm = null;
+        /// <summary>
+        /// Form di visualizzazione delle immagini
+        /// </summary>
+        private ImageViewer imageViewer = null;
 
         /// <summary>
         /// Costruttore. Richiede un riferimento alla vista principale per poter
@@ -438,6 +443,23 @@ namespace Castellari.IVaPS.Control
             }
             checklistSelectionForm.Visible = !checklistSelectionForm.Visible;
             if (checklistSelectionForm.Visible) checklistSelectionForm.Activate();
+        }
+
+        public void ShowHideMaps()//creato per issue 71
+        {
+            if (imageViewer == null)
+            {
+                imageViewer = new ImageViewer();
+                imageViewer.Height = Convert.ToInt32(Screen.PrimaryScreen.Bounds.Height * 0.8);
+                imageViewer.Width = Convert.ToInt32(Screen.PrimaryScreen.Bounds.Width * 0.8);
+            }
+            
+            if (imageViewer.ImagesPath == null)
+            {
+                imageViewer.ImagesPath = ImageLoader.FindImages();
+            }
+
+            imageViewer.Visible = !imageViewer.Visible;
         }
 
         public void SpeekChecklistPhase(int phaseNumber)

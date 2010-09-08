@@ -35,6 +35,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -50,11 +51,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 108);
+            this.label2.Location = new System.Drawing.Point(13, 129);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(154, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Read current position: CTRL+3";
+            this.label2.Text = "Read current position: CTRL+4";
             // 
             // label3
             // 
@@ -68,11 +69,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 83);
+            this.label4.Location = new System.Drawing.Point(13, 106);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(176, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Read caracteristic speeds: CTRL+2";
+            this.label4.Text = "Read caracteristic speeds: CTRL+3";
             // 
             // label5
             // 
@@ -86,17 +87,27 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 130);
+            this.label7.Location = new System.Drawing.Point(13, 152);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(157, 13);
+            this.label7.Size = new System.Drawing.Size(235, 13);
             this.label7.TabIndex = 6;
-            this.label7.Text = "Stop current speaking: CTRL+1";
+            this.label7.Text = "Stop current speaking: CTRL+1 during speaking";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(13, 82);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(109, 13);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "Show Maps: CTRL+2";
             // 
             // CrewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 163);
+            this.ClientSize = new System.Drawing.Size(284, 183);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -121,5 +132,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
     }
 }

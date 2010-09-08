@@ -37,6 +37,7 @@
             this.hk_position = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.hk_speeds = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.hk_checklist = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
+            this.hk_map = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -83,18 +84,23 @@
             // 
             // hk_position
             // 
-            this.hk_position.Shortcut = System.Windows.Forms.Shortcut.Ctrl3;
+            this.hk_position.Shortcut = System.Windows.Forms.Shortcut.Ctrl4;
             this.hk_position.Pressed += new System.EventHandler(this.hk_position_Pressed);
             // 
             // hk_speeds
             // 
-            this.hk_speeds.Shortcut = System.Windows.Forms.Shortcut.Ctrl2;
+            this.hk_speeds.Shortcut = System.Windows.Forms.Shortcut.Ctrl3;
             this.hk_speeds.Pressed += new System.EventHandler(this.hk_speeds_Pressed);
             // 
             // hk_checklist
             // 
             this.hk_checklist.Shortcut = System.Windows.Forms.Shortcut.Ctrl1;
             this.hk_checklist.Pressed += new System.EventHandler(this.hk_checklist_Pressed);
+            // 
+            // hk_map
+            // 
+            this.hk_map.Shortcut = System.Windows.Forms.Shortcut.Ctrl2;
+            this.hk_map.Pressed += new System.EventHandler(this.hk_map_Pressed);
             // 
             // MainForm
             // 
@@ -123,6 +129,7 @@
         private Castellari.IVaPS.HotKeys.SystemHotkey hk_position;
         private Castellari.IVaPS.HotKeys.SystemHotkey hk_speeds;
         private Castellari.IVaPS.HotKeys.SystemHotkey hk_checklist;
+        private Castellari.IVaPS.HotKeys.SystemHotkey hk_map;
 
     }
 }
