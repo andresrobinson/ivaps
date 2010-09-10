@@ -14,6 +14,7 @@ namespace Castellari.IVaPS.View
         private bool isDragging = false;
         private Point lastMousePosDuringDrag = Point.Empty;
         private string imagePath = null;
+        private Image img = null;
 
         public ImagePaintPanel()
         {
@@ -37,6 +38,8 @@ namespace Castellari.IVaPS.View
             {
                 imagePath = value;
                 CurrentCorner = new Point(0, 0);
+                if (ImagePath != null)
+                    img = Image.FromFile(ImagePath);
                 Invalidate();
             }
         }
@@ -62,9 +65,7 @@ namespace Castellari.IVaPS.View
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //base.OnPaint(e);
-            if (ImagePath == null) return;
-            Image img = Image.FromFile(ImagePath);
+            if (img == null) return;
             e.Graphics.DrawImage(img , CurrentCorner);
         }
 
