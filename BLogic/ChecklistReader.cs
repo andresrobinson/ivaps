@@ -12,7 +12,7 @@ namespace Castellari.IVaPS.BLogic
     /// </summary>
     public class ChecklistReader
     {
-        private static string CHECKLIST_RELATIVE_PATH = @".";
+        private static string CHECKLIST_RELATIVE_PATH = @"./checklist";//issue 74
         private static string CHECKLIST_FILE_EXTENSION = "chklst";
 
         /// <summary>
