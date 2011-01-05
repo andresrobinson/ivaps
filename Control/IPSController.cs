@@ -425,7 +425,7 @@ namespace Castellari.IVaPS.Control
 
         public void ShowHideChecklistSelection()
         {
-            if (ChecklistSpeaker.IsCurrentlySpeaking())//issue 66
+            if (ChecklistSpeaker.IsCurrentlySpeaking() || ChecklistSpeaker.IsCurrentlyPaused() )//issue 66, 77
             {
                 ChecklistSpeaker.StopSpeaking();
                 Thread.Sleep(200);
@@ -483,6 +483,14 @@ namespace Castellari.IVaPS.Control
             {
                 ChecklistSpeaker.ReadAllSpeeds(null);
             }
+        }
+
+        public void PauseResumeSpeaking()
+        {
+            if (ChecklistSpeaker.IsCurrentlySpeaking())
+                ChecklistSpeaker.PauseSpeaking();
+            else
+                ChecklistSpeaker.ResumeSpeaking();
         }
 
         public delegate void PositionEventHandler(AircraftPosition pos);

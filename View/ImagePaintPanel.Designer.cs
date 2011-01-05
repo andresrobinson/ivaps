@@ -35,6 +35,7 @@
             this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MouseLeave += new System.EventHandler(this.ImagePaintPanel_MouseLeave);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ImagePaintPanel_MouseMove);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ImagePaintPanel_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ImagePaintPanel_MouseDown);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ImagePaintPanel_MouseUp);
             this.ResumeLayout(false);

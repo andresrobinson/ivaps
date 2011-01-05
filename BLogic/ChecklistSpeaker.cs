@@ -98,7 +98,8 @@ namespace Castellari.IVaPS.BLogic
                 string tmp2 = tmp[0] + ", " + tmp[1] + ", " + tmp[2] + ", ";
                 toBeSpeeked.Append(string.Format(TEMPLATE_HEADING,tmp2));
                 toBeSpeeked.Append(SSML_PAUSE_SHORT);
-                toBeSpeeked.Append(string.Format(TEMPLATE_ALTITUDE, Convert.ToInt32(pos.Altitude)/100*100));
+                int RoundedAltitude = Convert.ToInt32(pos.Altitude)/100*100;// /100*100 inserito per arrotondare ai 100 piedi;
+                toBeSpeeked.Append(string.Format(TEMPLATE_ALTITUDE, RoundedAltitude.ToString("0,000").Replace('.', ','))); //RoundedAltitude.ToString("0,000").Replace('.',',') per issue 75
                 toBeSpeeked.Append(SSML_PAUSE_SHORT);
                 toBeSpeeked.Append(string.Format(TEMPLATE_SPEED, Convert.ToInt32(pos.TrueAirspeedSpeed)));
                 toBeSpeeked.Append(SSML_PAUSE_SHORT);
@@ -121,13 +122,35 @@ namespace Castellari.IVaPS.BLogic
         }
 
         /// <summary>
-        /// Se è in corso uno speak lo interrompe. Altrimenti noop
+        /// Se è in corso (o in pausa) uno speak lo interrompe. Altrimenti noop
         /// </summary>
         public static void StopSpeaking()
         {
+            if(voice.State == SynthesizerState.Paused)
+                voice.Resume();//altrimenti non si cancella, per issue 77
+            //metodo aggiunto per issue 66, 77
+            if ((voice.State == SynthesizerState.Speaking) || (voice.State == SynthesizerState.Paused))
+                voice.SpeakAsyncCancelAll();
+        }
+
+        /// <summary>
+        /// Se è in corso uno speak lo mette in pausa. Altrimenti noop
+        /// </summary>
+        public static void PauseSpeaking()
+        {
             //metodo aggiunto per issue 66
             if (voice.State != SynthesizerState.Speaking) return;
-            voice.SpeakAsyncCancelAll();
+            voice.Pause();
+        }
+
+        /// <summary>
+        /// Se è in corso uno speak in pausa lo rimette in esecuzione. Altrimenti noop
+        /// </summary>
+        public static void ResumeSpeaking()
+        {
+            //metodo aggiunto per issue 66
+            if (voice.State != SynthesizerState.Paused) return;
+            voice.Resume();
         }
 
         /// <summary>
@@ -137,6 +160,11 @@ namespace Castellari.IVaPS.BLogic
         public static bool IsCurrentlySpeaking()
         {
             return (voice.State == SynthesizerState.Speaking);
+        }
+
+        public static bool IsCurrentlyPaused()
+        {
+            return (voice.State == SynthesizerState.Paused);
         }
 
         private static void RealRead(StringBuilder content, int volume)

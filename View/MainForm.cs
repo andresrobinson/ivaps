@@ -123,5 +123,10 @@ namespace Castellari.IVaPS.View
         {
             controller.ShowHideMaps();
         }
+
+        private void hk_pauseresumespeak_Pressed(object sender, EventArgs e)
+        {
+            controller.PauseResumeSpeaking();
+        }
     }
 }

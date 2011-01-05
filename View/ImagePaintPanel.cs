@@ -15,6 +15,8 @@ namespace Castellari.IVaPS.View
         private Point lastMousePosDuringDrag = Point.Empty;
         private string imagePath = null;
         private Image img = null;
+        private Point lastClickCenter = Point.Empty;
+        private Point lastClickEndpoint = Point.Empty;
 
         public ImagePaintPanel()
         {
@@ -67,6 +69,18 @@ namespace Castellari.IVaPS.View
         {
             if (img == null) return;
             e.Graphics.DrawImage(img , CurrentCorner);
+            //issue 76
+            if (lastClickCenter != Point.Empty)
+            {
+                e.Graphics.DrawLine(Pens.Red, lastClickCenter, lastClickEndpoint);
+                e.Graphics.FillRectangle(Brushes.White, lastClickEndpoint.X + 15, lastClickEndpoint.Y + 5, 85, 30);
+                double angleInRadians = Math.Atan2(lastClickEndpoint.X - lastClickCenter.X, lastClickCenter.Y - lastClickEndpoint.Y);
+                if (angleInRadians < 0) angleInRadians += (2 * Math.PI);
+                double angleInDegrees = (angleInRadians * 360) / (2 * Math.PI);
+                e.Graphics.DrawString("QDR: " + angleInDegrees.ToString("000") + "°", new Font("Arial", 12, FontStyle.Bold), Brushes.Red, lastClickEndpoint.X + 15, lastClickEndpoint.Y + 5);
+                double length = Math.Sqrt(Math.Pow(lastClickEndpoint.X - lastClickCenter.X,2) + Math.Pow(lastClickCenter.Y - lastClickEndpoint.Y,2));
+                e.Graphics.DrawString(Convert.ToInt32(length) + " px", new Font("Arial", 8, FontStyle.Bold), Brushes.Red, lastClickEndpoint.X + 16, lastClickEndpoint.Y + 20);            
+            }
         }
 
         private void ImagePaintPanel_MouseMove(object sender, MouseEventArgs e)
@@ -75,6 +89,12 @@ namespace Castellari.IVaPS.View
             {
                 MoveExactly(e.X - lastMousePosDuringDrag.X, e.Y - lastMousePosDuringDrag.Y);
                 lastMousePosDuringDrag = e.Location;
+            }
+            else if (lastClickCenter != Point.Empty)
+            {
+                //issue 76
+                lastClickEndpoint = e.Location;
+                this.Invalidate();
             }
         }
 
@@ -93,6 +113,23 @@ namespace Castellari.IVaPS.View
         private void ImagePaintPanel_MouseLeave(object sender, EventArgs e)
         {
             ImagePaintPanel_MouseUp(null, null);
+        }
+
+        //per issue 76
+        private void ImagePaintPanel_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (lastClickCenter == Point.Empty)
+                {
+                    lastClickCenter = e.Location;
+                }
+                else
+                {
+                    lastClickCenter = Point.Empty;
+                }
+                lastClickEndpoint = Point.Empty;
+            }
         }
     }
 }
