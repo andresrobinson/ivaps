@@ -87,6 +87,10 @@ namespace Castellari.IVaPS.View
                 case 'd':
                     imagePaintPanel1.MoveRightLeft(-MOVMENT_SIZE_HORIZONTAL);
                     break;
+                case (char)27:
+                    //gestione dell'ESC per issue 85
+                    this.Visible = false;
+                    break;
                 default:
                     break;
             }

@@ -80,6 +80,7 @@
             // imagePaintPanel1
             // 
             this.imagePaintPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.imagePaintPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.imagePaintPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.imagePaintPanel1.ImagePath = null;
             this.imagePaintPanel1.Location = new System.Drawing.Point(0, 0);
@@ -101,6 +102,7 @@
             this.Name = "ImageViewer";
             this.Opacity = 0.75;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.TopMost = true;
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ImageViewer_KeyPress);
             this.Resize += new System.EventHandler(this.ImageViewer_Resize);
             this.panel1.ResumeLayout(false);
