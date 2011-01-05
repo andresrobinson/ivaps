@@ -70,11 +70,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 106);
+            this.label4.Location = new System.Drawing.Point(13, 151);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(176, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Read caracteristic speeds: CTRL+3";
+            this.label4.Text = "Read caracteristic speeds: CTRL+5";
             // 
             // label5
             // 
@@ -106,11 +106,11 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 151);
+            this.label8.Location = new System.Drawing.Point(13, 104);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(165, 13);
             this.label8.TabIndex = 8;
-            this.label8.Text = "Stop/Resume speaking: CTRL+5";
+            this.label8.Text = "Stop/Resume speaking: CTRL+3";
             // 
             // CrewForm
             // 
