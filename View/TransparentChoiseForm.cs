@@ -14,6 +14,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Castellari.IVaPS.Control;
 
 namespace Castellari.IVaPS.View
 {
@@ -90,23 +91,30 @@ namespace Castellari.IVaPS.View
 
         private void txt_msg_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '0')
+            try
             {
-                //gestione del cambio pagina
-                SwitchPage();
+                if (e.KeyChar == '0')
+                {
+                    //gestione del cambio pagina
+                    SwitchPage();
+                }
+                else if (e.KeyChar == 27)
+                {
+                    //gestione dell'ESC
+                    this.Visible = false;
+                }
+                else
+                {
+                    int selectedIndex = 0;
+                    if (!int.TryParse(e.KeyChar.ToString(), out selectedIndex)) return;
+                    int selectedValue = currentPage * CHOOSE_PER_PAGE + selectedIndex - 1;
+                    if (selectedValue >= chooses.Length) return;
+                    SelectedEvent(selectedValue);
+                }
             }
-            else if (e.KeyChar == 27)
+            catch (Exception ex)
             {
-                //gestione dell'ESC
-                this.Visible = false;
-            }
-            else
-            {
-                int selectedIndex = 0;
-                if (!int.TryParse(e.KeyChar.ToString(), out selectedIndex)) return;
-                int selectedValue = currentPage * CHOOSE_PER_PAGE + selectedIndex - 1;
-                if (selectedValue >= chooses.Length) return;
-                SelectedEvent(selectedValue);
+                //noop
             }
         }
 

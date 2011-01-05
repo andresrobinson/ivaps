@@ -106,6 +106,9 @@ namespace Castellari.IVaPS.View
         private void btn_config_Click(object sender, EventArgs e)
         {
             ConfigForm cf = new ConfigForm(Controller);
+            Point p = this.Parent.Location;
+            p.Offset(this.Parent.Width,0);
+            cf.Location = p;
             cf.Visible = true;
         }
 

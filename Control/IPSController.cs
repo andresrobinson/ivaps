@@ -509,6 +509,10 @@ namespace Castellari.IVaPS.Control
             {
                 phases[i++] = phase.PhaseName;
             }
+            if (checklistSelectionForm == null)
+            {
+                checklistSelectionForm = new TransparentChoiseForm();
+            }
             checklistSelectionForm.AvailableChooses = phases;
         }
     }

@@ -15,7 +15,7 @@ namespace Castellari.IVaPS.BLogic
 {
     /// <summary>
     /// Classe di utility che "tiene in pancia" il buffer dei log.
-    /// Si è fatta la scelta di non usare un framework di logging ddicato per tenere tutto leggero e per 
+    /// Si è fatta la scelta di non usare un framework di logging dedicato per tenere tutto leggero e per 
     /// consentire di vedere i log anche in UI e non su file (richiedendo una cfg specifica)
     /// </summary>
     public class LogUtil
