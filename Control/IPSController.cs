@@ -57,6 +57,14 @@ namespace Castellari.IVaPS.Control
         /// Form di visualizzazione delle immagini
         /// </summary>
         private ImageViewer imageViewer = null;
+        /// <summary>
+        /// Barra delle utility
+        /// </summary>
+        private UtilityBar utilBar = null;
+        /// <summary>
+        /// Engine interno di TTS
+        /// </summary>
+        private ChecklistSpeaker checklistSpeaker = null;
 
         /// <summary>
         /// Costruttore. Richiede un riferimento alla vista principale per poter
@@ -74,7 +82,11 @@ namespace Castellari.IVaPS.Control
             #region Costruzione preliminare delle proprietà interne
             flightSim = new FSWrapper();
             status = new FlightStatus();
+            checklistSpeaker = new ChecklistSpeaker();
+            checklistSpeaker.Controller = this;
+            utilBar = new UtilityBar();
             viewMainForm.mainPanel.SetStatus(status);
+            
 
             try
             {
@@ -291,7 +303,7 @@ namespace Castellari.IVaPS.Control
                 status.Callsign = IPSConfiguration.CALLSIGN;
                 status.VirtualAirlineID = IPSConfiguration.VA_ID;
                 viewMainForm.mainPanel.Info("Config saved");
-                LoadChecklistPhase();
+                checklistSelectionForm = null;//per issue 89
             }
             catch (Exception ex)
             {
@@ -416,20 +428,21 @@ namespace Castellari.IVaPS.Control
 
             //rinfresco la view
             viewMainForm.mainPanel.DrawStatus(status);
+            utilBar.UpdateView(status);
         }
 
         public void SpeekCurrentPosition()
         {
-            ChecklistSpeaker.ReadPosition(status.CurrentPosition);
+            checklistSpeaker.ReadPosition(status.CurrentPosition);
         }
 
         public void ShowHideChecklistSelection()
         {
-            if (ChecklistSpeaker.IsCurrentlySpeaking() || ChecklistSpeaker.IsCurrentlyPaused() )//issue 66, 77
+            if (checklistSpeaker.IsCurrentlySpeaking() || checklistSpeaker.IsCurrentlyPaused())//issue 66, 77
             {
-                ChecklistSpeaker.StopSpeaking();
+                checklistSpeaker.StopSpeaking();
                 Thread.Sleep(200);
-                ChecklistSpeaker.Speak("canceled");
+                checklistSpeaker.Speak("canceled");
                 return;
             }
 
@@ -437,10 +450,10 @@ namespace Castellari.IVaPS.Control
             if (checklistSelectionForm == null)
             {
                 checklistSelectionForm = new TransparentChoiseForm();
-                checklistSelectionForm.ChooseTitle = "Chose checklist phase to be readed:";
                 LoadChecklistPhase();
                 checklistSelectionForm.SelectedEvent += new TransparentChoiseForm.SelectedIndexHandler(this.SpeekChecklistPhase);
             }
+            checklistSelectionForm.ChooseTitle = "Chose checklist phase to be readed:";
             checklistSelectionForm.Visible = !checklistSelectionForm.Visible;
             if (checklistSelectionForm.Visible) checklistSelectionForm.Activate();
         }
@@ -462,14 +475,44 @@ namespace Castellari.IVaPS.Control
             imageViewer.Visible = !imageViewer.Visible;
         }
 
+        public void ShowHideUtilityBar() //creato per issue 87
+        {
+            if (utilBar == null) utilBar = new UtilityBar();
+
+            if (!utilBar.Visible)
+                utilBar.Visible = true;
+            else
+                utilBar.PressedSelect();
+        }
+
+        public void UtilityBarUp()
+        {
+            utilBar.PressedUp();
+        }
+
+        public void UtilityBarDown()
+        {
+            utilBar.PressedDown();
+        }
+
+        /// <summary>
+        /// Mostra il messaggio sulla utility bar
+        /// </summary>
+        /// <param name="message"></param>
+        public void ShowMessage(string message)
+        {
+            if(utilBar != null)
+                utilBar.ShowMessage(message);
+        }
+
         public void SpeekChecklistPhase(int phaseNumber)
         {
             checklistSelectionForm.Visible = false;
             Checklist chklst = ChecklistReader.ReadChecklist(IPSConfiguration.CURRENT_CHECKLIST);
             if(chklst != null)
-                ChecklistSpeaker.ReadPhase(chklst.Phases[phaseNumber]);
+                checklistSpeaker.ReadPhase(chklst.Phases[phaseNumber]);
             else
-                ChecklistSpeaker.ReadPhase(null);
+                checklistSpeaker.ReadPhase(null);
         }
 
         public void SpeekChecklistSpeeds()
@@ -477,20 +520,20 @@ namespace Castellari.IVaPS.Control
             try
             {
                 Checklist chklst = ChecklistReader.ReadChecklist(IPSConfiguration.CURRENT_CHECKLIST);
-                ChecklistSpeaker.ReadAllSpeeds(chklst);
+                checklistSpeaker.ReadAllSpeeds(chklst);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ChecklistSpeaker.ReadAllSpeeds(null);
+                checklistSpeaker.ReadAllSpeeds(null);
             }
         }
 
         public void PauseResumeSpeaking()
         {
-            if (ChecklistSpeaker.IsCurrentlySpeaking())
-                ChecklistSpeaker.PauseSpeaking();
+            if (checklistSpeaker.IsCurrentlySpeaking())
+                checklistSpeaker.PauseSpeaking();
             else
-                ChecklistSpeaker.ResumeSpeaking();
+                checklistSpeaker.ResumeSpeaking();
         }
 
         public delegate void PositionEventHandler(AircraftPosition pos);

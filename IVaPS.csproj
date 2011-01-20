@@ -111,6 +111,12 @@
     <EmbeddedResource Include="View\CrewForm.resx">
       <DependentUpon>CrewForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\CrossIndicator.resx">
+      <DependentUpon>CrossIndicator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\DirectionIndicator.resx">
+      <DependentUpon>DirectionIndicator.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\ImagePaintPanel.resx">
       <DependentUpon>ImagePaintPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -129,11 +135,47 @@
     <EmbeddedResource Include="View\MapForm.resx">
       <DependentUpon>MapForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\UBNav1Status.resx">
+      <DependentUpon>UBNav1Status.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\PirepForm.resx">
       <DependentUpon>PirepForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\TransparentChoiseForm.resx">
       <DependentUpon>TransparentChoiseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBADF.resx">
+      <DependentUpon>UBADF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBAltitude.resx">
+      <DependentUpon>UBAltitude.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBAPAlt.resx">
+      <DependentUpon>UBAPAlt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBAPcrs.resx">
+      <DependentUpon>UBAPcrs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBAPSpd.resx">
+      <DependentUpon>UBAPSpd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBcrs.resx">
+      <DependentUpon>UBcrs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBHeadingSpeed.resx">
+      <DependentUpon>UBHeadingSpeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBMesageBox.resx">
+      <DependentUpon>UBMesageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBNav1.resx">
+      <DependentUpon>UBNav1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBNav2.resx">
+      <DependentUpon>UBNav2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UtilityBar.resx">
+      <DependentUpon>UtilityBar.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -168,6 +210,18 @@
     <Compile Include="View\CrewForm.Designer.cs">
       <DependentUpon>CrewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\CrossIndicator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\CrossIndicator.Designer.cs">
+      <DependentUpon>CrossIndicator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\DirectionIndicator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\DirectionIndicator.Designer.cs">
+      <DependentUpon>DirectionIndicator.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\ImagePaintPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -180,6 +234,7 @@
     <Compile Include="View\ImageViewer.Designer.cs">
       <DependentUpon>ImageViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\IUtilityBarItemSelectable.cs" />
     <Compile Include="View\LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -204,6 +259,12 @@
     <Compile Include="View\MapForm.Designer.cs">
       <DependentUpon>MapForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\UBNav1Status.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBNav1Status.Designer.cs">
+      <DependentUpon>UBNav1Status.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\PirepForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +276,74 @@
     </Compile>
     <Compile Include="View\TransparentChoiseForm.Designer.cs">
       <DependentUpon>TransparentChoiseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBADF.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBADF.Designer.cs">
+      <DependentUpon>UBADF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBAltitude.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBAltitude.Designer.cs">
+      <DependentUpon>UBAltitude.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBAPAlt.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBAPAlt.Designer.cs">
+      <DependentUpon>UBAPAlt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBAPcrs.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBAPcrs.Designer.cs">
+      <DependentUpon>UBAPcrs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBAPSpd.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBAPSpd.Designer.cs">
+      <DependentUpon>UBAPSpd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBcrs.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBcrs.Designer.cs">
+      <DependentUpon>UBcrs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBHeadingSpeed.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBHeadingSpeed.Designer.cs">
+      <DependentUpon>UBHeadingSpeed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBMesageBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBMesageBox.Designer.cs">
+      <DependentUpon>UBMesageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBNav1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBNav1.Designer.cs">
+      <DependentUpon>UBNav1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBNav2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBNav2.Designer.cs">
+      <DependentUpon>UBNav2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UtilityBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\UtilityBar.Designer.cs">
+      <DependentUpon>UtilityBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\IUtilityBarItem.cs">
     </Compile>
   </ItemGroup>
   <ItemGroup>

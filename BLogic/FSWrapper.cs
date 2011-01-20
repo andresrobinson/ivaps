@@ -7,6 +7,7 @@
 // Developed using Microsoft Visual C# 2008 Express Edition
 //=========================================================
 
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +16,7 @@ using System.Timers;
 using FSUIPC;
 
 using Castellari.IVaPS.Model;
+using System.Globalization;
 
 namespace Castellari.IVaPS.BLogic
 {
@@ -39,54 +41,61 @@ namespace Castellari.IVaPS.BLogic
         #region costanti di OFFSET di FSUIPC
         private const int OFFSET_GS = 0x02B4;
         private const int OFFSET_TAS = 0x02B8;
+        private const int OFFSET_IAS = 0x02BC;
         private const int OFFSET_LAT = 0x0560;
         private const int OFFSET_LON = 0x0568;
         private const int OFFSET_ALT = 0x0574;
         private const int OFFSET_HDG = 0x0580;
+        private const int OFFSET_QNH = 0x0330;
         private const int OFFSET_AIRBORNE = 0x0366;
         private const int RADIO_ALTITUDE= 0x31E4;
         
         private const int OFFSET_IVAP_DETECTED = 0x7b80;//unused currently
         private const int OFFSET_IVAP_TRASPONDER_STATUS = 0x7B91;
-
         private const int OFFSET_FSVERSION = 0x3308;
 
         private const int OFFSET_FUEL_CONTENT_CENTER = 0x0B74;
         private const int OFFSET_FUEL_CAPACITY_CENTER = 0x0B78;
-
         private const int OFFSET_FUEL_CONTENT_LEFTMAIN = 0x0B7C;
         private const int OFFSET_FUEL_CAPACITY_LEFTMAIN = 0x0B80;
-
         private const int OFFSET_FUEL_CONTENT_LEFTAUX = 0x0B84;
         private const int OFFSET_FUEL_CAPACITY_LEFTAUX = 0x0B88;
-
         private const int OFFSET_FUEL_CONTENT_LEFTTIP = 0x0B8C;
         private const int OFFSET_FUEL_CAPACITY_LEFTTIP = 0x0B90;
-
         private const int OFFSET_FUEL_CONTENT_RIGHTMAIN = 0x0B94;
         private const int OFFSET_FUEL_CAPACITY_RIGHTMAIN = 0x0B98;
-
         private const int OFFSET_FUEL_CONTENT_RIGHTAUX = 0x0B9C;
         private const int OFFSET_FUEL_CAPACITY_RIGHTAUX = 0x0BA0;
-
         private const int OFFSET_FUEL_CONTENT_RIGHTTIP = 0x0BA4;
         private const int OFFSET_FUEL_CAPACITY_RIGHTTIP = 0x0BA8;
 
+        private const int OFFSET_NAV1 = 0x0350;
+        private const int OFFSET_NAV1_LOC = 0x0C48;
+        private const int OFFSET_NAV1_GLIDE = 0x0C49;
+        private const int OFFSET_NAV1_OBS = 0x0C4E;
+        private const int OFFSET_NAV1_RADIAL = 0x0C50;
+        private const int OFFSET_NAV1_DME = 0x0C29;
+
+        private const int OFFSET_AUTOPILOT_HEADING = 0x07CC;
+        
+        
+        
         #endregion
 
         #region Variabili di tipo Offset<>
         private Offset<int> groundspeed = new Offset<int>(OFFSET_GS);//issue 50
         private Offset<int> airspeed = new Offset<int>(OFFSET_TAS);//corretto per issue 32
+        private Offset<int> indicatedAirspeed = new Offset<int>(OFFSET_IAS);//corretto per issue 32
         private Offset<long> latitude = new Offset<long>(OFFSET_LAT);
         private Offset<long> longitude = new Offset<long>(OFFSET_LON);
         private Offset<int> altitude = new Offset<int>(OFFSET_ALT);
         private Offset<int> heading = new Offset<int>(OFFSET_HDG);
         private Offset<short> airborne = new Offset<short>(OFFSET_AIRBORNE);
         private Offset<int> radioAlt = new Offset<int>(RADIO_ALTITUDE);
+        private Offset<int> qnh = new Offset<int>(OFFSET_QNH);
         
         private Offset<byte> ivapDetected = new Offset<byte>(OFFSET_IVAP_DETECTED);
         private Offset<byte> ivapTrasponder = new Offset<byte>(OFFSET_IVAP_TRASPONDER_STATUS);
-
         private Offset<short> fsversion = new Offset<short>(OFFSET_FSVERSION);
 
         private Offset<int> fuelCap1 = new Offset<int>(OFFSET_FUEL_CAPACITY_CENTER);
@@ -96,7 +105,6 @@ namespace Castellari.IVaPS.BLogic
         private Offset<int> fuelCap5 = new Offset<int>(OFFSET_FUEL_CAPACITY_RIGHTMAIN);
         private Offset<int> fuelCap6 = new Offset<int>(OFFSET_FUEL_CAPACITY_RIGHTAUX);
         private Offset<int> fuelCap7 = new Offset<int>(OFFSET_FUEL_CAPACITY_RIGHTTIP);
-
         private Offset<int> fuelQty1 = new Offset<int>(OFFSET_FUEL_CONTENT_CENTER);
         private Offset<int> fuelQty2 = new Offset<int>(OFFSET_FUEL_CONTENT_LEFTMAIN);
         private Offset<int> fuelQty3 = new Offset<int>(OFFSET_FUEL_CONTENT_LEFTAUX);
@@ -104,6 +112,15 @@ namespace Castellari.IVaPS.BLogic
         private Offset<int> fuelQty5 = new Offset<int>(OFFSET_FUEL_CONTENT_RIGHTMAIN);
         private Offset<int> fuelQty6 = new Offset<int>(OFFSET_FUEL_CONTENT_RIGHTAUX);
         private Offset<int> fuelQty7 = new Offset<int>(OFFSET_FUEL_CONTENT_RIGHTTIP);
+
+        private Offset<short> nav1 = new Offset<short>(OFFSET_NAV1);
+        private Offset<byte> nav1_loc = new Offset<byte>(OFFSET_NAV1_LOC);
+        private Offset<byte> nav1_glide = new Offset<byte>(OFFSET_NAV1_GLIDE);
+        private Offset<short> nav1_obs = new Offset<short>(OFFSET_NAV1_OBS);
+        private Offset<short> nav1_radial = new Offset<short>(OFFSET_NAV1_RADIAL);
+        private Offset<byte[]> nav1_dme = new Offset<byte[]>(OFFSET_NAV1_DME,5);
+        private Offset<short> autopilot_hdg = new Offset<short>(OFFSET_AUTOPILOT_HEADING);
+
         #endregion
 
         /// <summary>
@@ -136,8 +153,17 @@ namespace Castellari.IVaPS.BLogic
             LastPosition.Latitude = double.NaN;
             LastPosition.Longitude = double.NaN;
             LastPosition.TrueAirspeedSpeed = double.NaN;
+            LastPosition.IndicatedAirspeedSpeed = double.NaN;
             LastPosition.GroundSpeed = double.NaN;
+            LastPosition.QNH= double.NaN;
             LastPosition.Timestamp = DateTime.Now;
+            LastPosition.Nav1 = double.NaN;
+            LastPosition.Nav1Localizer = 0;
+            LastPosition.Nav1Glide = 0;
+            LastPosition.Nav1OBS = 0;
+            LastPosition.Nav1Radial = 0;
+            LastPosition.Nav1DME = double.NaN;
+            LastPosition.AutopilotHeading = 0;
         }
 
         /// <summary>
@@ -166,7 +192,9 @@ namespace Castellari.IVaPS.BLogic
         /// </summary>
         public void ConnectToFS()
         {
+#if !FEDE_DEBUG
             FSUIPCConnection.Open();
+#endif
             connected = true;
         }
 
@@ -248,6 +276,32 @@ namespace Castellari.IVaPS.BLogic
                 PositioningEvent toBeRaised = new PositioningEvent();
                 AircraftPosition currentPosition = new AircraftPosition();
 
+#if FEDE_DEBUG
+                currentPosition.IndicatedAirspeedSpeed = (new Random()).NextDouble() * 100;
+                currentPosition.Altitude = 0;
+                currentPosition.AutopilotHeading = 100;
+                currentPosition.AvailableFuel = 100;
+                currentPosition.GroundSpeed = currentPosition.IndicatedAirspeedSpeed;
+                currentPosition.Heading = 45;
+                currentPosition.IsAirborne = false;
+                currentPosition.IsEngineStarted = false;
+                currentPosition.Latitude = 44;
+                currentPosition.Longitude = 11;
+                currentPosition.Nav1 = 112.2;
+                currentPosition.Nav1DME = 0.7;
+                currentPosition.Nav1Glide = 0;
+                currentPosition.Nav1OBS = 270;
+                currentPosition.Nav1Radial = 0;
+                currentPosition.Nav1Localizer = 50;
+                currentPosition.QNH = 1013;
+                currentPosition.RadioAltitude = 0;
+                currentPosition.Timestamp = DateTime.Now;
+                currentPosition.TrueAirspeedSpeed = currentPosition.IndicatedAirspeedSpeed;
+                toBeRaised.Position = currentPosition;
+                FlightSimEvent(toBeRaised);
+                return;
+#endif
+
                 FSUIPCConnection.Process();
 
                 //issue 63
@@ -280,6 +334,7 @@ namespace Castellari.IVaPS.BLogic
                 currentPosition.GroundSpeed = ((double)groundspeed.Value / 65536d) * 1.943844492;//Knots
                 //airspeed
                 currentPosition.TrueAirspeedSpeed = ((double)airspeed.Value / 128);//issue 38
+                currentPosition.IndicatedAirspeedSpeed = ((double)indicatedAirspeed.Value / 128);
                 //latitude
                 currentPosition.Latitude = (double)latitude.Value * 90d / (10001750d * 65536d * 65536d);
                 //longitude
@@ -292,6 +347,29 @@ namespace Castellari.IVaPS.BLogic
                 currentPosition.Heading = heading.Value * 360d / (65536d * 65536d);
                 if (currentPosition.Heading < 0)
                     currentPosition.Heading = 360 + currentPosition.Heading;
+                //QNH letto sull'altimetro
+                currentPosition.QNH = (int)qnh.Value / 16;
+                //NAV 1
+                currentPosition.Nav1 = 100 + ReadBCD((short)nav1.Value);
+                currentPosition.Nav1Localizer = (short)(byte)nav1_loc.Value;
+                if (currentPosition.Nav1Localizer > 128) currentPosition.Nav1Localizer = (short)(-256 + currentPosition.Nav1Localizer);
+                currentPosition.Nav1Glide = (byte)nav1_glide.Value;
+                currentPosition.Nav1OBS = (short)nav1_obs.Value;
+                if (currentPosition.Nav1OBS < 0) currentPosition.Nav1OBS = (180 -  currentPosition.Nav1OBS);
+                currentPosition.Nav1Radial = ((short)nav1_radial.Value) * 360 / 65536;
+                if (currentPosition.Nav1Radial < 0) currentPosition.Nav1Radial = (180 - currentPosition.Nav1Radial);
+
+                currentPosition.Nav1DME = ReadDME((byte[])nav1_dme.Value);
+
+                //======================= PER DEBUG!!!!!!!!!!!!!!!!!!!! =====================
+                //ErrorOccurred(new Exception(currentPosition.Nav1Localizer + " , " + currentPosition.Nav1Glide));
+                //ErrorOccurred(new Exception("currentPosition.Nav1Radial: " + currentPosition.Nav1Radial));
+
+
+
+                //Autopilot
+                currentPosition.AutopilotHeading = ((short)autopilot_hdg.Value) * 360 / 65536;
+                if (currentPosition.AutopilotHeading < 0) currentPosition.AutopilotHeading = (180 - currentPosition.AutopilotHeading);
 
                 //fuel
                 currentPosition.AvailableFuel = 0;
@@ -373,5 +451,36 @@ namespace Castellari.IVaPS.BLogic
             }
         }
 
+        private double ReadBCD(short p)
+        {
+            byte bypeDown = (byte)p;
+            byte bypeUp = (byte)(p >> 8);
+            string preComma = bypeUp.ToString("x");
+            string postComma = bypeDown.ToString("x");
+            
+            return double.Parse(preComma) + (double.Parse(postComma)/100);
+        }
+
+        private double ReadDME(byte[] chars)
+        {
+            StringBuilder s = new StringBuilder();
+            foreach (byte b in chars)
+            {
+                if(b!=0) s.Append((char)b);
+            }
+            
+            if (s.ToString().EndsWith(".")) s.Append('0');
+            try
+            {
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.NumberDecimalSeparator = ".";
+                return double.Parse(s.ToString(), nfi);
+            }
+            catch
+            {
+                return double.NaN;
+            }
+
+        }
     }
 }

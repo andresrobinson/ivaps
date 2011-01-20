@@ -39,6 +39,9 @@
             this.hk_checklist = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.hk_map = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.hk_pauseresumespeak = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
+            this.utilbar_select = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
+            this.utilbar_up = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
+            this.utilbar_down = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -108,6 +111,21 @@
             this.hk_pauseresumespeak.Shortcut = System.Windows.Forms.Shortcut.Ctrl3;
             this.hk_pauseresumespeak.Pressed += new System.EventHandler(this.hk_pauseresumespeak_Pressed);
             // 
+            // utilbar_select
+            // 
+            this.utilbar_select.Shortcut = System.Windows.Forms.Shortcut.Ctrl0;
+            this.utilbar_select.Pressed += new System.EventHandler(this.utilbar_select_Pressed);
+            // 
+            // utilbar_up
+            // 
+            this.utilbar_up.Shortcut = System.Windows.Forms.Shortcut.Ctrl8;
+            this.utilbar_up.Pressed += new System.EventHandler(this.utilbar_up_Pressed);
+            // 
+            // utilbar_down
+            // 
+            this.utilbar_down.Shortcut = System.Windows.Forms.Shortcut.Ctrl9;
+            this.utilbar_down.Pressed += new System.EventHandler(this.utilbar_down_Pressed);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,6 +155,9 @@
         private Castellari.IVaPS.HotKeys.SystemHotkey hk_checklist;
         private Castellari.IVaPS.HotKeys.SystemHotkey hk_map;
         private Castellari.IVaPS.HotKeys.SystemHotkey hk_pauseresumespeak;
+        private Castellari.IVaPS.HotKeys.SystemHotkey utilbar_select;
+        private Castellari.IVaPS.HotKeys.SystemHotkey utilbar_up;
+        private Castellari.IVaPS.HotKeys.SystemHotkey utilbar_down;
 
     }
 }

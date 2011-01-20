@@ -112,7 +112,7 @@ namespace Castellari.IVaPS.View
                     SelectedEvent(selectedValue);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //noop
             }

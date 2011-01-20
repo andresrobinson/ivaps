@@ -109,11 +109,6 @@ namespace Castellari.IVaPS.View
             controller.SpeekChecklistSpeeds();
         }
 
-        private void hk_1_Pressed(object sender, EventArgs e)
-        {
-            controller.SpeekChecklistPhase(0);
-        }
-
         private void hk_checklist_Pressed(object sender, EventArgs e)
         {
             controller.ShowHideChecklistSelection();
@@ -127,6 +122,21 @@ namespace Castellari.IVaPS.View
         private void hk_pauseresumespeak_Pressed(object sender, EventArgs e)
         {
             controller.PauseResumeSpeaking();
+        }
+
+        private void utilbar_select_Pressed(object sender, EventArgs e)
+        {
+            controller.ShowHideUtilityBar();
+        }
+
+        private void utilbar_up_Pressed(object sender, EventArgs e)
+        {
+            controller.UtilityBarUp();
+        }
+
+        private void utilbar_down_Pressed(object sender, EventArgs e)
+        {
+            controller.UtilityBarDown();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 using System.Speech.Synthesis;
 using Castellari.IVaPS.Model;
 using System.Threading;
+using Castellari.IVaPS.Control;
 
 
 namespace Castellari.IVaPS.BLogic
@@ -13,7 +14,8 @@ namespace Castellari.IVaPS.BLogic
     /// </summary>
     public class ChecklistSpeaker
     {
-        private static int VOLUME = 100;
+        private static ChecklistSpeaker singleton = new ChecklistSpeaker();
+
         private static string SSML_HEADER = "<?xml version=\"1.0\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis/synthesis.xsd\" xml:lang=\"en-US\">";
         private static string SSML_FOOTER = "</speak>";
         private static string SSML_PAUSE_SHORT = "<break time=\"100ms\"/>";
@@ -28,45 +30,88 @@ namespace Castellari.IVaPS.BLogic
         private static string TEMPLATE_ALTITUDE = "Altitude: {0} feets.";
         private static string TEMPLATE_SPEED = "True airspeed: {0} knots.";
 
-        private static SpeechSynthesizer voice = new SpeechSynthesizer();
+        private Thread backgroundThread = null;
+        private SpeakingThread backgroundSpeaker = null;
+        
+        public IPSController Controller { get; set; }
+
+        public static ChecklistSpeaker Instance
+        {
+            get
+            {
+                return singleton;
+            }
+        }
 
         /// <summary>
         /// Legge la fase di checklist richiesta
         /// </summary>
         /// <param name="phase"></param>
-        public static void ReadPhase(ChecklistPhase phase)
+        public void ReadPhase(ChecklistPhase phase)
         {
+
+            backgroundSpeaker = new SpeakingThread(Controller);
+ 
             if (phase == null)
             {
-                RealRead(new StringBuilder("Checklist phase unavailable, select it on config section"), VOLUME);
+                string s = "Checklist phase unavailable, select it on config section";
+                backgroundSpeaker.AddInSpeakingBuffer(s,s);
+                backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+                backgroundThread.Start();
                 return;
             }
 
             StringBuilder toBeSpeeked = new StringBuilder();
-            toBeSpeeked.Append(string.Format(TEMPLATE_READ_CHECKLISTPHASE, phase.PhaseName));
+            string msg = string.Empty;
+
+            #region lettura dell'header di checklist
+            msg = string.Format(TEMPLATE_READ_CHECKLISTPHASE, phase.PhaseName);
+            toBeSpeeked.Append(msg);
             toBeSpeeked.Append(SSML_PAUSE_MEDIUM);
+            backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), phase.PhaseName + " checklist:");
+            #endregion
+
 
             foreach (ChecklistItem item in phase.Items)
             {
-                toBeSpeeked.Append(string.Format(TEMPLATE_READ_COUPLE, item.Description, item.Value));
-                toBeSpeeked.Append(string.Format(TEMPLATE_SSML_PAUSE_IN_SECONDS,item.Delay));
-            }
-            
-            toBeSpeeked.Append(SSML_PAUSE_MEDIUM);
-            toBeSpeeked.Append(string.Format(TEMPLATE_READ_CHECKLISTPHASECOMPLETED, phase.PhaseName));
+                toBeSpeeked = new StringBuilder();
+                msg = string.Format(TEMPLATE_READ_COUPLE, item.Description, item.Value);
+                toBeSpeeked.Append(msg);
+                toBeSpeeked.Append(string.Format(TEMPLATE_SSML_PAUSE_IN_SECONDS, item.Delay));
 
-            RealRead(toBeSpeeked, VOLUME);
+                backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), item.Description + " : " + item.Value);
+            }
+
+            #region lettura del footer
+            toBeSpeeked = new StringBuilder();
+            msg = string.Empty;
+
+            toBeSpeeked.Append(SSML_PAUSE_MEDIUM);
+            msg = string.Format(TEMPLATE_READ_CHECKLISTPHASECOMPLETED, phase.PhaseName);
+            toBeSpeeked.Append(msg);
+
+            backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), phase.PhaseName + " checklist completed");
+            #endregion
+
+
+            backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+            backgroundThread.Start();
         }
 
         /// <summary>
         /// Legge le velocità caratteristiche dell'aereomobile a cui appartiene la checklist
         /// </summary>
         /// <param name="cklst"></param>
-        public static void ReadAllSpeeds(Checklist cklst)
+        public void ReadAllSpeeds(Checklist cklst)
         {
+            backgroundSpeaker = new SpeakingThread(Controller);
+
             if (cklst == null)
             {
-                RealRead(new StringBuilder("Checklist unavailable, select it on config section"), VOLUME);
+                string s = "Checklist unavailable, select it on config section";
+                backgroundSpeaker.AddInSpeakingBuffer(s, s);
+                backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+                backgroundThread.Start();
                 return;
             }
 
@@ -75,22 +120,48 @@ namespace Castellari.IVaPS.BLogic
             toBeSpeeked.Append(CARACTERISTIC_SPEEDS);
             toBeSpeeked.Append(SSML_PAUSE_SHORT);
             toBeSpeeked.Append(string.Format(TEMPLATE_READ_COUPLE, "V rotate" , cklst.Vr));
+
+            backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), "V rotate: " + cklst.Vr);
+            toBeSpeeked = new StringBuilder();
+
             toBeSpeeked.Append(SSML_PAUSE_SHORT);
             toBeSpeeked.Append(string.Format(TEMPLATE_READ_COUPLE, "approach speed", cklst.Vapp));
+
+            backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), "approach speed: " + cklst.Vapp);
+            toBeSpeeked = new StringBuilder();
+
             toBeSpeeked.Append(SSML_PAUSE_SHORT);
             toBeSpeeked.Append(string.Format(TEMPLATE_READ_COUPLE, "flaps extension speed", cklst.Vf0));
+
+            backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), "flaps extension speed: " + cklst.Vf0);
+            toBeSpeeked = new StringBuilder();
+
             toBeSpeeked.Append(SSML_PAUSE_SHORT);
             toBeSpeeked.Append(string.Format(TEMPLATE_READ_COUPLE, "touchdown speed", cklst.Vldg));
+
+            backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), "touchdown speed: " + cklst.Vldg);
+            toBeSpeeked = new StringBuilder();
+
             toBeSpeeked.Append(SSML_PAUSE_SHORT);
             toBeSpeeked.Append(string.Format(TEMPLATE_READ_COUPLE, "never exceed speed", cklst.Vne));
+
+            backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), "never exceed speed: " + cklst.Vne);
+            toBeSpeeked = new StringBuilder();
+
             toBeSpeeked.Append(SSML_PAUSE_SHORT);
             toBeSpeeked.Append(string.Format(TEMPLATE_READ_COUPLE, "stall speed", cklst.Vs));
-            toBeSpeeked.Append(SSML_PAUSE_MEDIUM);
-            RealRead(toBeSpeeked, VOLUME);
+
+            backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), "stall speed: " + cklst.Vs);
+            toBeSpeeked = new StringBuilder();
+
+            backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+            backgroundThread.Start();
         }
 
-        public static void ReadPosition(AircraftPosition pos)
+        public void ReadPosition(AircraftPosition pos)
         {
+            backgroundSpeaker = new SpeakingThread(Controller);
+
             if (pos != null)
             {
                 StringBuilder toBeSpeeked = new StringBuilder();
@@ -103,81 +174,149 @@ namespace Castellari.IVaPS.BLogic
                 toBeSpeeked.Append(SSML_PAUSE_SHORT);
                 toBeSpeeked.Append(string.Format(TEMPLATE_SPEED, Convert.ToInt32(pos.TrueAirspeedSpeed)));
                 toBeSpeeked.Append(SSML_PAUSE_SHORT);
-                RealRead(toBeSpeeked, VOLUME);
+                
+                backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
             }
             else
             {
-                RealRead(new StringBuilder("Position unknown"), VOLUME);
+                backgroundSpeaker.AddInSpeakingBuffer("Position unknown", "Position unknown");
+                backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
             }
+            
+            backgroundThread.Start();
         }
 
         /// <summary>
         /// Annncia la frase
         /// </summary>
         /// <param name="message">la frase da annunciare (non SSML)</param>
-        public static void Speak(string message)
+        public void Speak(string message)
         {
-            if (voice.State == SynthesizerState.Speaking) return;
-            voice.SpeakAsync(message);
+            if (IsCurrentlySpeaking()) return;
+            backgroundSpeaker = new SpeakingThread(Controller);
+            backgroundSpeaker.AddInSpeakingBuffer(message, message);
+            
+            backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+            backgroundThread.Start();
         }
 
         /// <summary>
         /// Se è in corso (o in pausa) uno speak lo interrompe. Altrimenti noop
         /// </summary>
-        public static void StopSpeaking()
+        public void StopSpeaking()
         {
-            if(voice.State == SynthesizerState.Paused)
-                voice.Resume();//altrimenti non si cancella, per issue 77
-            //metodo aggiunto per issue 66, 77
-            if ((voice.State == SynthesizerState.Speaking) || (voice.State == SynthesizerState.Paused))
-                voice.SpeakAsyncCancelAll();
+            if (backgroundSpeaker != null)
+                backgroundSpeaker.Kill();
         }
 
         /// <summary>
         /// Se è in corso uno speak lo mette in pausa. Altrimenti noop
         /// </summary>
-        public static void PauseSpeaking()
+        public void PauseSpeaking()
         {
-            //metodo aggiunto per issue 66
-            if (voice.State != SynthesizerState.Speaking) return;
-            voice.Pause();
+            if (backgroundSpeaker != null)
+                backgroundSpeaker.IsPaused = true;
         }
 
         /// <summary>
         /// Se è in corso uno speak in pausa lo rimette in esecuzione. Altrimenti noop
         /// </summary>
-        public static void ResumeSpeaking()
+        public void ResumeSpeaking()
         {
-            //metodo aggiunto per issue 66
-            if (voice.State != SynthesizerState.Paused) return;
-            voice.Resume();
+            if (backgroundSpeaker != null)
+                backgroundSpeaker.IsPaused = false;
         }
 
         /// <summary>
         /// Restituisce true se al momento della richiesta vi è un messaggio in erogazione.
         /// </summary>
         /// <returns></returns>
-        public static bool IsCurrentlySpeaking()
+        public bool IsCurrentlySpeaking()
         {
-            return (voice.State == SynthesizerState.Speaking);
+            if (backgroundSpeaker != null)
+                return backgroundSpeaker.IsSpeaking;
+            else
+                return false;
         }
 
-        public static bool IsCurrentlyPaused()
+        public bool IsCurrentlyPaused()
         {
-            return (voice.State == SynthesizerState.Paused);
+            if (backgroundSpeaker != null)
+                return backgroundSpeaker.IsPaused;
+            else
+                return false;
         }
 
-        private static void RealRead(StringBuilder content, int volume)
+        private class SpeakingThread
         {
-            if (voice.State == SynthesizerState.Speaking) return;
+            private static int VOLUME = 100;
+            private SpeechSynthesizer voice = new SpeechSynthesizer();
 
-            voice.Volume = volume;
-            StringBuilder toBeSpeeked = new StringBuilder(SSML_HEADER);
-            toBeSpeeked.Append(content);
-            toBeSpeeked.Append(SSML_FOOTER);
+            private List<string> toBeSpeakeds = new List<string>();
+            private List<string> toBeShoweds = new List<string>();
+            private int currentIndex = 0;
+            private IPSController ctrl = null;
+            private bool isAborted = false;
+            private bool isStarted = false;
+            
+            public bool IsPaused { get; set; }
 
-            voice.SpeakSsmlAsync(toBeSpeeked.ToString());//issue 66
+            public bool IsSpeaking
+            {
+                get 
+                {
+                    return isStarted && (currentIndex < toBeShoweds.Count) && !isAborted && !IsPaused;
+                }
+            }
+
+            public SpeakingThread(IPSController ctrl)
+            {
+                this.ctrl = ctrl;
+            }
+
+            public void Kill()
+            {
+                isAborted = true;
+            }
+
+            public void AddInSpeakingBuffer(string toBeSpeaked, string toBeShowed)
+            {
+                if (currentIndex != 0) throw new InvalidOperationException("sto già parlando!!");
+                toBeSpeakeds.Add(toBeSpeaked);
+                toBeShoweds.Add(toBeShowed);
+            }
+
+            public void Run()
+            {
+                isStarted = true;
+                for (currentIndex = 0; currentIndex < toBeShoweds.Count && !isAborted; currentIndex++)
+                {
+                    while (IsPaused) Thread.Sleep(100);
+
+                    ctrl.ShowMessage(toBeShoweds[currentIndex]);
+                    RealRead(new StringBuilder(toBeSpeakeds[currentIndex]), VOLUME);
+                }
+            }
+
+            private void RealRead(StringBuilder content, int volume)
+            {
+                if (voice.State == SynthesizerState.Speaking) return;
+
+                voice.Volume = volume;
+                StringBuilder toBeSpeeked = new StringBuilder(SSML_HEADER);
+                toBeSpeeked.Append(content);
+                toBeSpeeked.Append(SSML_FOOTER);
+
+                try
+                {
+                    voice.SpeakSsml(toBeSpeeked.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Thread.Sleep(1000); //=== DA TOGLIERE, PER DEBUG!
+                    //noop
+                }
+            }
         }
-
     }
 }
