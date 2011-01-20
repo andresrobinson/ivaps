@@ -225,15 +225,6 @@ namespace Castellari.IVaPS.View
         {
             MapForm mf = null;
 
-            //debug per issue 60
-            //mf = new MapForm(new Point(this.Parent.Location.X + this.Parent.Width, this.Parent.Location.Y), this.Controller);
-            //mf.Visible = true;
-            //AircraftPosition pos = new AircraftPosition();
-            //pos.Latitude = 3.381824;
-            //pos.Longitude = -76.464844;
-            //mf.GoToPosition(pos);
-            //fine debug
-
             if (model.CurrentPosition != null)
             {
                 mf = new MapForm(new Point(this.Parent.Location.X + this.Parent.Width, this.Parent.Location.Y), this.Controller);

@@ -330,7 +330,7 @@ namespace Castellari.IVaPS.Control
                     if (PositionUpdated != null)
                     {
                         PositionUpdated(pe.Position);
-                    }
+                    }                    
                 }
                 else if (e is TakeOffEvent)
                 {

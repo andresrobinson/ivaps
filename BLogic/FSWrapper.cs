@@ -7,6 +7,7 @@
 // Developed using Microsoft Visual C# 2008 Express Edition
 //=========================================================
 
+//#define FEDE_DEBUG
 
 using System;
 using System.Collections.Generic;
@@ -282,7 +283,7 @@ namespace Castellari.IVaPS.BLogic
                 currentPosition.AutopilotHeading = 100;
                 currentPosition.AvailableFuel = 100;
                 currentPosition.GroundSpeed = currentPosition.IndicatedAirspeedSpeed;
-                currentPosition.Heading = 45;
+                currentPosition.Heading = 196;
                 currentPosition.IsAirborne = false;
                 currentPosition.IsEngineStarted = false;
                 currentPosition.Latitude = 44;
@@ -291,7 +292,7 @@ namespace Castellari.IVaPS.BLogic
                 currentPosition.Nav1DME = 0.7;
                 currentPosition.Nav1Glide = 0;
                 currentPosition.Nav1OBS = 270;
-                currentPosition.Nav1Radial = 0;
+                currentPosition.Nav1Radial = 291;
                 currentPosition.Nav1Localizer = 50;
                 currentPosition.QNH = 1013;
                 currentPosition.RadioAltitude = 0;

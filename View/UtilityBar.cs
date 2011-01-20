@@ -78,6 +78,7 @@ namespace Castellari.IVaPS.View
                     lastStatus = status;
                 BeginInvoke(new DrawDelegate(this.Draw), new object[0]);
             }
+
         }
 
         public void PressedSelect()
@@ -183,7 +184,7 @@ namespace Castellari.IVaPS.View
             }
             catch (Exception)
             {
-                //noop inserito perchè a volte, durante il debug, salta senza che capisca il perchè
+                //noop inserito perchè a volte, durante il test, salta senza che capisca il perchè
             }
         }
         #endregion

@@ -25,12 +25,14 @@ namespace Castellari.IVaPS.View
                 else lbl_dma.Text = "n/a"; 
                 crossIndicator1.HorizontalError = (float)status.CurrentPosition.Nav1Localizer / 127f * 100f;
                 crossIndicator1.VerticalError = (float)status.CurrentPosition.Nav1Glide / 127f * 100f;
-                directionIndicator1.DirectionAngle = (((int)status.CurrentPosition.Nav1Radial + 180) - status.CurrentPosition.Heading);
+                int absoluteVorDirection = 360 - (int)status.CurrentPosition.Nav1Radial;
+                directionIndicator1.DirectionAngle = (absoluteVorDirection - status.CurrentPosition.Heading);
             }
             else
             {
                 lbl_dma.Text = "n/a";
             }
+            Invalidate();
         }
 
         #region IUtilityBarItem Membri di
