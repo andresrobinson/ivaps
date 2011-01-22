@@ -249,7 +249,6 @@ namespace Castellari.IVaPS.BLogic
 
         private class SpeakingThread
         {
-            private static int VOLUME = 100;
             private SpeechSynthesizer voice = new SpeechSynthesizer();
 
             private List<string> toBeSpeakeds = new List<string>();
@@ -294,7 +293,7 @@ namespace Castellari.IVaPS.BLogic
                     while (IsPaused) Thread.Sleep(100);
 
                     ctrl.ShowMessage(toBeShoweds[currentIndex]);
-                    RealRead(new StringBuilder(toBeSpeakeds[currentIndex]), VOLUME);
+                    RealRead(new StringBuilder(toBeSpeakeds[currentIndex]), IPSConfiguration.TTS_VOLUME);
                 }
             }
 
@@ -313,7 +312,6 @@ namespace Castellari.IVaPS.BLogic
                 }
                 catch (Exception ex)
                 {
-                    Thread.Sleep(1000); //=== DA TOGLIERE, PER DEBUG!
                     //noop
                 }
             }

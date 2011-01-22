@@ -117,6 +117,9 @@
     <EmbeddedResource Include="View\DirectionIndicator.resx">
       <DependentUpon>DirectionIndicator.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\HistogramIndicator.resx">
+      <DependentUpon>HistogramIndicator.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\ImagePaintPanel.resx">
       <DependentUpon>ImagePaintPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -174,6 +177,9 @@
     <EmbeddedResource Include="View\UBNav2.resx">
       <DependentUpon>UBNav2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\UBThrottle.resx">
+      <DependentUpon>UBThrottle.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\UtilityBar.resx">
       <DependentUpon>UtilityBar.cs</DependentUpon>
     </EmbeddedResource>
@@ -221,6 +227,12 @@
     </Compile>
     <Compile Include="View\DirectionIndicator.Designer.cs">
       <DependentUpon>DirectionIndicator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\HistogramIndicator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\HistogramIndicator.Designer.cs">
+      <DependentUpon>HistogramIndicator.cs</DependentUpon>
     </Compile>
     <Compile Include="View\ImagePaintPanel.cs">
       <SubType>Component</SubType>
@@ -336,6 +348,12 @@
     </Compile>
     <Compile Include="View\UBNav2.Designer.cs">
       <DependentUpon>UBNav2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBThrottle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBThrottle.Designer.cs">
+      <DependentUpon>UBThrottle.cs</DependentUpon>
     </Compile>
     <Compile Include="View\UtilityBar.cs">
       <SubType>Form</SubType>

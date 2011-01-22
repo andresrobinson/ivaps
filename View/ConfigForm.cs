@@ -36,6 +36,7 @@ namespace Castellari.IVaPS.View
                 {
                     cbo_chk.SelectedItem = IPSConfiguration.CURRENT_CHECKLIST;
                 }
+                ttsVolume.Value = IPSConfiguration.TTS_VOLUME;
                 
             }
             catch 
@@ -55,6 +56,7 @@ namespace Castellari.IVaPS.View
             IPSConfiguration.AUTOLOAD_FLIGHTPLAN = chk_fp.Checked;
             IPSConfiguration.AUTO_TRASPONDER = ckb_trasponder.Checked;
             IPSConfiguration.CURRENT_CHECKLIST = cbo_chk.SelectedItem.ToString();
+            IPSConfiguration.TTS_VOLUME = ttsVolume.Value;
             controller.SaveConfig();
             this.Close();
         }

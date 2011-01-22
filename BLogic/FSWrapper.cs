@@ -78,6 +78,8 @@ namespace Castellari.IVaPS.BLogic
         private const int OFFSET_NAV1_DME = 0x0C29;
 
         private const int OFFSET_AUTOPILOT_HEADING = 0x07CC;
+
+        private const int OFFSET_THROTTLE_1_LEVER = 0x088C;
         
         
         
@@ -122,6 +124,8 @@ namespace Castellari.IVaPS.BLogic
         private Offset<byte[]> nav1_dme = new Offset<byte[]>(OFFSET_NAV1_DME,5);
         private Offset<short> autopilot_hdg = new Offset<short>(OFFSET_AUTOPILOT_HEADING);
 
+        private Offset<short> throttle1 = new Offset<short>(OFFSET_THROTTLE_1_LEVER);
+
         #endregion
 
         /// <summary>
@@ -165,6 +169,7 @@ namespace Castellari.IVaPS.BLogic
             LastPosition.Nav1Radial = 0;
             LastPosition.Nav1DME = double.NaN;
             LastPosition.AutopilotHeading = 0;
+            LastPosition.ThrottlePercentage = 0;
         }
 
         /// <summary>
@@ -298,6 +303,8 @@ namespace Castellari.IVaPS.BLogic
                 currentPosition.RadioAltitude = 0;
                 currentPosition.Timestamp = DateTime.Now;
                 currentPosition.TrueAirspeedSpeed = currentPosition.IndicatedAirspeedSpeed;
+                currentPosition.ThrottlePercentage = 75;
+
                 toBeRaised.Position = currentPosition;
                 FlightSimEvent(toBeRaised);
                 return;
@@ -362,9 +369,10 @@ namespace Castellari.IVaPS.BLogic
 
                 currentPosition.Nav1DME = ReadDME((byte[])nav1_dme.Value);
 
-                //======================= PER DEBUG!!!!!!!!!!!!!!!!!!!! =====================
-                //ErrorOccurred(new Exception(currentPosition.Nav1Localizer + " , " + currentPosition.Nav1Glide));
-                //ErrorOccurred(new Exception("currentPosition.Nav1Radial: " + currentPosition.Nav1Radial));
+                //Throttle
+                if ((short)throttle1.Value <= 0) currentPosition.ThrottlePercentage = 0;//inversori di spinta inseriti
+                else currentPosition.ThrottlePercentage = (int)((short)throttle1.Value / 16384d * 100);
+                
 
 
 

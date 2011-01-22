@@ -87,6 +87,10 @@ namespace Castellari.IVaPS.Model
         /// </summary>
         public int AutopilotHeading { get; set; }
         /// <summary>
+        /// La percentuale 0-100 di throttle (in realtà letto sul throttle dell'engine 1, ignorando gli inversori
+        /// </summary>
+        public int ThrottlePercentage { get; set; }
+        /// <summary>
         /// Torna true se l'aereomobile è in movimento
         /// </summary>
         public bool IsMoving

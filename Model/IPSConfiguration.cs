@@ -21,6 +21,7 @@ namespace Castellari.IVaPS.Model
         private static string ivaoFpUrl = null;
         private static bool autoTrasponder = true;//true se si vuole la gestione automatica del modo trasponder Sierra e Charlie, issue 63
         private static string currentChecklist = null;
+        private static int ttsVolume = 100;//volume del text-2-speech, in % da 0 a 100
 
         /// <summary>
         /// Tempo, in millisecondi, ogni quanto viene fatto polling verso le FSUIPC
@@ -78,6 +79,14 @@ namespace Castellari.IVaPS.Model
                 CURRENT_CHECKLIST = (string)acc["CURRENT_CHECKLIST"];
                 if (IVAO_FP_URL == null)
                     IVAO_FP_URL = "http://de3.www.ivao.aero/whazzup.txt";
+                string tmptts = (string)acc["TTS_VOLUME"];
+                if (tmptts != null)
+                {
+                    int itmp;
+                    int.TryParse(tmptts, out itmp);
+                    TTS_VOLUME = itmp;
+                }
+                else TTS_VOLUME = 100;
             }
             finally
             {
@@ -109,6 +118,7 @@ namespace Castellari.IVaPS.Model
                 sw.WriteLine("AUTO_TRASPONDER={0}", AUTO_TRASPONDER.ToString());
                 sw.WriteLine("IVAO_FP_URL={0}", IVAO_FP_URL);
                 sw.WriteLine("CURRENT_CHECKLIST={0}", CURRENT_CHECKLIST);
+                sw.WriteLine("TTS_VOLUME={0}", TTS_VOLUME);
                 sw.Flush();
                 sw.Close();
 
@@ -202,6 +212,20 @@ namespace Castellari.IVaPS.Model
             set
             {
                 currentChecklist = value;
+            }
+        }
+
+        public static int TTS_VOLUME
+        {
+            get
+            {
+                return ttsVolume;
+            }
+            set
+            {
+                if (value < 0) ttsVolume = 0;
+                else if (value > 100) ttsVolume = 100;
+                else ttsVolume = value;
             }
         }
 
