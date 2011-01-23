@@ -180,6 +180,9 @@
     <EmbeddedResource Include="View\UBThrottle.resx">
       <DependentUpon>UBThrottle.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\UBTimer.resx">
+      <DependentUpon>UBTimer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\UtilityBar.resx">
       <DependentUpon>UtilityBar.cs</DependentUpon>
     </EmbeddedResource>
@@ -354,6 +357,12 @@
     </Compile>
     <Compile Include="View\UBThrottle.Designer.cs">
       <DependentUpon>UBThrottle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBTimer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBTimer.Designer.cs">
+      <DependentUpon>UBTimer.cs</DependentUpon>
     </Compile>
     <Compile Include="View\UtilityBar.cs">
       <SubType>Form</SubType>

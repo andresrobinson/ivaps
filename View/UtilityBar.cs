@@ -36,6 +36,7 @@ namespace Castellari.IVaPS.View
                 new UBNav2(),
                 new UBADF(),
                 new UBThrottle(),
+                new UBTimer(),
                 mb
             };
 
