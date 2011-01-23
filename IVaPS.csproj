@@ -138,6 +138,9 @@
     <EmbeddedResource Include="View\MapForm.resx">
       <DependentUpon>MapForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="View\NotesForm.resx">
+      <DependentUpon>NotesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\UBNav1Status.resx">
       <DependentUpon>UBNav1Status.cs</DependentUpon>
     </EmbeddedResource>
@@ -176,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\UBNav2.resx">
       <DependentUpon>UBNav2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\UBNotes.resx">
+      <DependentUpon>UBNotes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\UBThrottle.resx">
       <DependentUpon>UBThrottle.cs</DependentUpon>
@@ -274,6 +280,12 @@
     <Compile Include="View\MapForm.Designer.cs">
       <DependentUpon>MapForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\NotesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\NotesForm.Designer.cs">
+      <DependentUpon>NotesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\UBNav1Status.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -351,6 +363,12 @@
     </Compile>
     <Compile Include="View\UBNav2.Designer.cs">
       <DependentUpon>UBNav2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\UBNotes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\UBNotes.Designer.cs">
+      <DependentUpon>UBNotes.cs</DependentUpon>
     </Compile>
     <Compile Include="View\UBThrottle.cs">
       <SubType>UserControl</SubType>
