@@ -94,7 +94,7 @@
             // txt_vaid
             // 
             this.txt_vaid.Location = new System.Drawing.Point(131, 37);
-            this.txt_vaid.MaxLength = 4;
+            this.txt_vaid.MaxLength = 5;
             this.txt_vaid.Name = "txt_vaid";
             this.txt_vaid.Size = new System.Drawing.Size(46, 20);
             this.txt_vaid.TabIndex = 2;
