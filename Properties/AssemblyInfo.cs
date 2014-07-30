@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("www.castellari.bo.it")]
 [assembly: AssemblyProduct("IVaPS")]
-[assembly: AssemblyCopyright("Copyright ©  2011 (License GPL v2)")]
+[assembly: AssemblyCopyright("Copyright ©  2014 (License GPL v2)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // È possibile specificare tutti i valori oppure impostare valori predefiniti per i numeri relativi alla revisione e alla build 
 // utilizzando l'asterisco (*) come descritto di seguito:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.9.*")]
-[assembly: AssemblyFileVersion("1.1.9.*")]
+[assembly: AssemblyVersion("1.1.10.*")]
+[assembly: AssemblyFileVersion("1.1.10.*")]

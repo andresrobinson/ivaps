@@ -114,6 +114,11 @@ namespace Castellari.IVaPS.View
             controller.ShowHideChecklistSelection();
         }
 
+        private void hk_nextChecklist_Pressed(object sender, EventArgs e)
+        {
+            controller.NextChecklistSelection();
+        }
+
         private void hk_map_Pressed(object sender, EventArgs e)
         {
             controller.ShowHideMaps();

@@ -37,6 +37,7 @@
             this.hk_position = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.hk_speeds = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.hk_checklist = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
+            this.hk_nextchklst = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.hk_map = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.hk_pauseresumespeak = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
             this.utilbar_select = new Castellari.IVaPS.HotKeys.SystemHotkey(this.components);
@@ -101,6 +102,11 @@
             this.hk_checklist.Shortcut = System.Windows.Forms.Shortcut.Ctrl1;
             this.hk_checklist.Pressed += new System.EventHandler(this.hk_checklist_Pressed);
             // 
+            // hk_checklist
+            // 
+            this.hk_nextchklst.Shortcut = System.Windows.Forms.Shortcut.Ctrl6;
+            this.hk_nextchklst.Pressed += new System.EventHandler(this.hk_nextChecklist_Pressed);
+            // 
             // hk_map
             // 
             this.hk_map.Shortcut = System.Windows.Forms.Shortcut.Ctrl2;
@@ -158,7 +164,7 @@
         private Castellari.IVaPS.HotKeys.SystemHotkey utilbar_select;
         private Castellari.IVaPS.HotKeys.SystemHotkey utilbar_up;
         private Castellari.IVaPS.HotKeys.SystemHotkey utilbar_down;
-
+        private Castellari.IVaPS.HotKeys.SystemHotkey hk_nextchklst;
     }
 }
 

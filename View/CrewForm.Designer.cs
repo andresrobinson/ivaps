@@ -90,9 +90,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(13, 173);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(235, 13);
+            this.label7.Size = new System.Drawing.Size(142, 13);
             this.label7.TabIndex = 6;
-            this.label7.Text = "Stop current speaking: CTRL+1 during speaking";
+            this.label7.Text = "Read next section CTRL + 6";
             // 
             // label6
             // 
@@ -108,9 +108,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(13, 104);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(165, 13);
+            this.label8.Size = new System.Drawing.Size(265, 13);
             this.label8.TabIndex = 8;
-            this.label8.Text = "Stop/Resume speaking: CTRL+3";
+            this.label8.Text = "Stop/Resume speaking, read current section: CTRL+3";
             // 
             // CrewForm
             // 

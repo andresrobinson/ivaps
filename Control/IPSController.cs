@@ -65,6 +65,10 @@ namespace Castellari.IVaPS.Control
         /// Engine interno di TTS
         /// </summary>
         private ChecklistSpeaker checklistSpeaker = null;
+        /// <summary>
+        /// I/O pointer citato in issue 103, contiente l'ultima fase letta, negativo se mai letto nulla dal TTS
+        /// </summary>
+        private int lastPhaseNumber = -1;
 
         /// <summary>
         /// Costruttore. Richiede un riferimento alla vista principale per poter
@@ -436,28 +440,6 @@ namespace Castellari.IVaPS.Control
             checklistSpeaker.ReadPosition(status.CurrentPosition);
         }
 
-        public void ShowHideChecklistSelection()
-        {
-            if (checklistSpeaker.IsCurrentlySpeaking() || checklistSpeaker.IsCurrentlyPaused())//issue 66, 77
-            {
-                checklistSpeaker.StopSpeaking();
-                Thread.Sleep(200);
-                checklistSpeaker.Speak("canceled");
-                return;
-            }
-
-            //metodo creato per issue 68
-            if (checklistSelectionForm == null)
-            {
-                checklistSelectionForm = new TransparentChoiseForm();
-                LoadChecklistPhase();
-                checklistSelectionForm.SelectedEvent += new TransparentChoiseForm.SelectedIndexHandler(this.SpeekChecklistPhase);
-            }
-            checklistSelectionForm.ChooseTitle = "Chose checklist phase to be readed:";
-            checklistSelectionForm.Visible = !checklistSelectionForm.Visible;
-            if (checklistSelectionForm.Visible) checklistSelectionForm.Activate();
-        }
-
         public void ShowHideMaps()//creato per issue 71
         {
             if (imageViewer == null)
@@ -507,10 +489,13 @@ namespace Castellari.IVaPS.Control
 
         public void SpeekChecklistPhase(int phaseNumber)
         {
-            checklistSelectionForm.Visible = false;
+            if(checklistSelectionForm!=null) checklistSelectionForm.Visible = false;
             Checklist chklst = ChecklistReader.ReadChecklist(IPSConfiguration.CURRENT_CHECKLIST);
-            if(chklst != null)
+            if (chklst != null)
+            {
+                lastPhaseNumber = phaseNumber;
                 checklistSpeaker.ReadPhase(chklst.Phases[phaseNumber]);
+            }
             else
                 checklistSpeaker.ReadPhase(null);
         }
@@ -528,12 +513,56 @@ namespace Castellari.IVaPS.Control
             }
         }
 
+        public void NextChecklistSelection()
+        {
+            //CTRL+6 pressed issue 103
+            if (checklistSpeaker.IsCurrentlySpeaking() || checklistSpeaker.IsCurrentlyPaused())
+            {
+                checklistSpeaker.StopSpeaking();
+                Thread.Sleep(200);
+                ReadNextCheck();
+            }
+            else
+            {
+                ReadNextCheck();
+            }
+        }
+
+        public void ShowHideChecklistSelection()
+        {
+            //CTRL+1 pressed
+            if (checklistSpeaker.IsCurrentlySpeaking() || checklistSpeaker.IsCurrentlyPaused())//issue 66, 77
+            {
+                checklistSpeaker.StopSpeaking();
+                Thread.Sleep(200);
+                checklistSpeaker.Speak("canceled");
+                return;
+            }
+
+            //metodo creato per issue 68
+            if (checklistSelectionForm == null)
+            {
+                checklistSelectionForm = new TransparentChoiseForm();
+                LoadChecklistPhase();
+                checklistSelectionForm.SelectedEvent += new TransparentChoiseForm.SelectedIndexHandler(this.SpeekChecklistPhase);
+            }
+            checklistSelectionForm.ChooseTitle = "Chose checklist phase to be readed:";
+            checklistSelectionForm.Visible = !checklistSelectionForm.Visible;
+            if (checklistSelectionForm.Visible) checklistSelectionForm.Activate();
+        }
+
         public void PauseResumeSpeaking()
         {
+            //CTRL+3 pressed
             if (checklistSpeaker.IsCurrentlySpeaking())
                 checklistSpeaker.PauseSpeaking();
             else
-                checklistSpeaker.ResumeSpeaking();
+                if (checklistSpeaker.IsCurrentlyPaused())
+                    checklistSpeaker.ResumeSpeaking();
+                else
+                {
+                    ReadNextCheck();
+                }
         }
 
         public delegate void PositionEventHandler(AircraftPosition pos);
@@ -558,5 +587,27 @@ namespace Castellari.IVaPS.Control
             }
             checklistSelectionForm.AvailableChooses = phases;
         }
+
+        private void ReadNextCheck()
+        {
+            if (lastPhaseNumber < 0)
+            {
+                //è la prima volta
+                SpeekChecklistPhase(0);
+            }
+            else
+            {
+                //non è la prima volta. IL try mi protegge dall'overflow del contatore se ho finito le fasi ricomincio dalla prima
+                try
+                {
+                    SpeekChecklistPhase(lastPhaseNumber + 1);
+                }
+                catch
+                {
+                    SpeekChecklistPhase(0);
+                }
+            }
+        }
+
     }
 }
