@@ -93,9 +93,14 @@ namespace Castellari.IVaPS.BLogic
             backgroundSpeaker.AddInSpeakingBuffer(toBeSpeeked.ToString(), phase.PhaseName + " checklist completed");
             #endregion
 
+            if (backgroundThread != null && backgroundThread.IsAlive)
+            {
+                backgroundThread.Abort();
+            }
 
             backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
             backgroundThread.Start();
+
         }
 
         /// <summary>
@@ -309,7 +314,7 @@ namespace Castellari.IVaPS.BLogic
                 {
                     voice.SpeakSsml(toBeSpeeked.ToString());
                 }
-                catch (Exception ex)
+                catch
                 {
                     //noop
                 }

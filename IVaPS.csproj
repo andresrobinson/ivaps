@@ -72,6 +72,7 @@
     <Compile Include="BLogic\ImageLoader.cs" />
     <Compile Include="BLogic\IPSUtils.cs" />
     <Compile Include="BLogic\LogUtil.cs" />
+    <Compile Include="BLogic\VoiceCommandRecognizer.cs" />
     <Compile Include="Control\IPSController.cs" />
     <Compile Include="HotKeys\SystemHotkey.cs">
       <SubType>Component</SubType>

@@ -23,6 +23,7 @@ namespace Castellari.IVaPS.View
     public partial class MainForm : Form
     {
         private IPSController controller;
+        private DateTime lastPauseSpeakingPressed = DateTime.Now;
 
         public MainForm()
         {
@@ -126,7 +127,20 @@ namespace Castellari.IVaPS.View
 
         private void hk_pauseresumespeak_Pressed(object sender, EventArgs e)
         {
-            controller.PauseResumeSpeaking();
+            //se la pressione è singola, mi comporto regolarmente, in due ravvicinate mi comporto esattamente come per CTRL+6, utile inserendo nel Joystick il pulsante
+            //mappato su CTRL+3
+            DateTime now = DateTime.Now;
+            long deltaT = -1;
+            deltaT = now.Ticks - lastPauseSpeakingPressed.Ticks;
+            if ((deltaT) < 25000000)//pari a 250ms
+            {
+                controller.NextChecklistSelection();
+            }
+            else
+            {
+                controller.PauseResumeSpeaking();
+            }
+            lastPauseSpeakingPressed = now;
         }
 
         private void utilbar_select_Pressed(object sender, EventArgs e)

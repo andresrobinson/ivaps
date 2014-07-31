@@ -66,6 +66,10 @@ namespace Castellari.IVaPS.Control
         /// </summary>
         private ChecklistSpeaker checklistSpeaker = null;
         /// <summary>
+        /// Engine interno di STT
+        /// </summary>
+        private VoiceCommandRecognizer voiceRecognizer = null;
+        /// <summary>
         /// I/O pointer citato in issue 103, contiente l'ultima fase letta, negativo se mai letto nulla dal TTS
         /// </summary>
         private int lastPhaseNumber = -1;
@@ -88,9 +92,11 @@ namespace Castellari.IVaPS.Control
             status = new FlightStatus();
             checklistSpeaker = new ChecklistSpeaker();
             checklistSpeaker.Controller = this;
+            //voiceRecognizer = new VoiceCommandRecognizer();
+            //voiceRecognizer.Controller = this;
+
             utilBar = new UtilityBar();
             viewMainForm.mainPanel.SetStatus(status);
-            
 
             try
             {
@@ -516,16 +522,16 @@ namespace Castellari.IVaPS.Control
         public void NextChecklistSelection()
         {
             //CTRL+6 pressed issue 103
-            if (checklistSpeaker.IsCurrentlySpeaking() || checklistSpeaker.IsCurrentlyPaused())
+            if (checklistSpeaker.IsCurrentlySpeaking())
             {
                 checklistSpeaker.StopSpeaking();
-                Thread.Sleep(200);
-                ReadNextCheck();
+                while (checklistSpeaker.IsCurrentlySpeaking())
+                {
+                    Thread.Sleep(200);
+                }
             }
-            else
-            {
-                ReadNextCheck();
-            }
+            
+            ReadNextCheck();            
         }
 
         public void ShowHideChecklistSelection()
