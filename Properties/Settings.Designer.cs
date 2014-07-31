@@ -22,17 +22,5 @@ namespace Castellari.IVaPS.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FEDE_DEBUG {
-            get {
-                return ((bool)(this["FEDE_DEBUG"]));
-            }
-            set {
-                this["FEDE_DEBUG"] = value;
-            }
-        }
     }
 }

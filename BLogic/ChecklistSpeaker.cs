@@ -300,7 +300,6 @@ namespace Castellari.IVaPS.BLogic
             private void RealRead(StringBuilder content, int volume)
             {
                 if (voice.State == SynthesizerState.Speaking) return;
-
                 voice.Volume = volume;
                 StringBuilder toBeSpeeked = new StringBuilder(SSML_HEADER);
                 toBeSpeeked.Append(content);
