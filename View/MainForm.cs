@@ -78,6 +78,7 @@ namespace Castellari.IVaPS.View
             //issue 
             if (MessageBox.Show("Are you sure you want to exit?", "Confirm exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
             {
+                controller.StopSpeaking();
                 e.Cancel = true;
             }
         }

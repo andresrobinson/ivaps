@@ -521,7 +521,7 @@ namespace Castellari.IVaPS.Control
 
         public void NextChecklistSelection()
         {
-            //CTRL+6 pressed issue 103
+            //CTRL+6 or duble CTRL+3 pressed issue 103
             if (checklistSpeaker.IsCurrentlySpeaking())
             {
                 checklistSpeaker.StopSpeaking();
@@ -530,8 +530,13 @@ namespace Castellari.IVaPS.Control
                     Thread.Sleep(200);
                 }
             }
-            
+
             ReadNextCheck();            
+        }
+
+        public void StopSpeaking()
+        {
+            checklistSpeaker.StopSpeaking();
         }
 
         public void ShowHideChecklistSelection()
