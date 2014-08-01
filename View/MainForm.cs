@@ -17,13 +17,18 @@ using System.Windows.Forms;
 
 using Castellari.IVaPS.Control;
 using Castellari.IVaPS.BLogic;
+using System.Threading;
 
 namespace Castellari.IVaPS.View
 {
     public partial class MainForm : Form
     {
+        private const int MILLISECOND_DOUBLE_CLICK_INTERVAL = 350;
+
         private IPSController controller;
-        private DateTime lastPauseSpeakingPressed = DateTime.Now;
+        private DateTime lastPauseSpeakingPressed = DateTime.MinValue;
+        private bool thereIsAFirstPausePressed = false;
+        static readonly object obj = new object();
 
         public MainForm()
         {
@@ -127,20 +132,55 @@ namespace Castellari.IVaPS.View
 
         private void hk_pauseresumespeak_Pressed(object sender, EventArgs e)
         {
-            //se la pressione è singola, mi comporto regolarmente, in due ravvicinate mi comporto esattamente come per CTRL+6, utile inserendo nel Joystick il pulsante
             //mappato su CTRL+3
+            //se la pressione è singola, mi comporto regolarmente, in due ravvicinate mi comporto esattamente come per CTRL+6, utile inserendo nel Joystick il pulsante
             DateTime now = DateTime.Now;
-            long deltaT = -1;
-            deltaT = now.Ticks - lastPauseSpeakingPressed.Ticks;
-            if ((deltaT) < 25000000)//pari a 250ms
+            long deltaT = now.Ticks - lastPauseSpeakingPressed.Ticks;
+            if (thereIsAFirstPausePressed && (deltaT) < (10000*MILLISECOND_DOUBLE_CLICK_INTERVAL))
             {
-                controller.NextChecklistSelection();
+                //e la seconda pressione e si tratta di un doppio click
+                lock (obj)
+                {
+                    controller.NextChecklistSelection();
+                    thereIsAFirstPausePressed = false;
+                    lastPauseSpeakingPressed = DateTime.MinValue;
+                }
             }
             else
             {
-                controller.PauseResumeSpeaking();
+                //è la prima pressione o una seconda pressione fuori dall'intervallo "di sensibilità"
+                thereIsAFirstPausePressed = true;
+                lastPauseSpeakingPressed = DateTime.Now;
+                //così metto in pausa "a latere" per attendere il tempo previsto, per issue 106
+                Thread temp = new Thread(delegate()
+                    {
+                        Thread.Sleep(MILLISECOND_DOUBLE_CLICK_INTERVAL);
+                        lock (obj)
+                        {
+                            if (thereIsAFirstPausePressed)
+                            {
+                                //vuol dire che nessuno nel frattempo ha fatto un secondo click
+                                thereIsAFirstPausePressed = false;
+                                controller.PauseResumeSpeaking();
+                            }
+                        }
+                    });
+                temp.Start();   
             }
-            lastPauseSpeakingPressed = now;
+
+
+
+            //long deltaT = -1;
+            //deltaT = now.Ticks - lastPauseSpeakingPressed.Ticks;
+            //if ((deltaT) < 25000000)//pari a 250ms
+            //{
+            //    controller.NextChecklistSelection();
+            //}
+            //else
+            //{
+            //    controller.PauseResumeSpeaking();
+            //}
+            //lastPauseSpeakingPressed = now;
         }
 
         private void utilbar_select_Pressed(object sender, EventArgs e)
