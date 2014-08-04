@@ -57,6 +57,7 @@ namespace Castellari.IVaPS.BLogic
                 string s = "Checklist phase unavailable, select it on config section";
                 backgroundSpeaker.AddInSpeakingBuffer(s,s);
                 backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+                backgroundThread.IsBackground = true;//issue 107
                 backgroundThread.Start();
                 return;
             }
@@ -99,6 +100,7 @@ namespace Castellari.IVaPS.BLogic
             }
 
             backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+            backgroundThread.IsBackground = true;//issue 107
             backgroundThread.Start();
 
         }
@@ -116,6 +118,7 @@ namespace Castellari.IVaPS.BLogic
                 string s = "Checklist unavailable, select it on config section";
                 backgroundSpeaker.AddInSpeakingBuffer(s, s);
                 backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+                backgroundThread.IsBackground = true;//issue 107
                 backgroundThread.Start();
                 return;
             }
@@ -160,6 +163,7 @@ namespace Castellari.IVaPS.BLogic
             toBeSpeeked = new StringBuilder();
 
             backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+            backgroundThread.IsBackground = true;//issue 107
             backgroundThread.Start();
         }
 
@@ -187,7 +191,7 @@ namespace Castellari.IVaPS.BLogic
                 backgroundSpeaker.AddInSpeakingBuffer("Position unknown", "Position unknown");
                 backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
             }
-            
+            backgroundThread.IsBackground = true;//issue 107
             backgroundThread.Start();
         }
 
@@ -202,6 +206,7 @@ namespace Castellari.IVaPS.BLogic
             backgroundSpeaker.AddInSpeakingBuffer(message, message);
             
             backgroundThread = new Thread(new ThreadStart(backgroundSpeaker.Run));
+            backgroundThread.IsBackground = true;//issue 107
             backgroundThread.Start();
         }
 
