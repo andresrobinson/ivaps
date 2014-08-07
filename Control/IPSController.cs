@@ -521,17 +521,25 @@ namespace Castellari.IVaPS.Control
 
         public void NextChecklistSelection()
         {
-            //CTRL+6 or duble CTRL+3 pressed issue 103
-            if (checklistSpeaker.IsCurrentlySpeaking())
-            {
-                checklistSpeaker.StopSpeaking();
-                while (checklistSpeaker.IsCurrentlySpeaking())
-                {
-                    Thread.Sleep(200);
-                }
-            }
-
+            //duble CTRL+3 pressed issue 103
+            StopAndWaitReader();
             ReadNextCheck();            
+        }
+
+        public void RepeatCurrentChecklistSelection()
+        {
+            //CTRL+6  pressed issue 108
+            StopAndWaitReader();
+            lastPhaseNumber -= 1;
+            ReadNextCheck();     
+        }
+
+        public void PreviousChecklistSelection()
+        {
+            //duble CTRL+6 pressed issue 103
+            StopAndWaitReader();
+            lastPhaseNumber -= 2;
+            ReadNextCheck();
         }
 
         public void StopSpeaking()
@@ -620,5 +628,16 @@ namespace Castellari.IVaPS.Control
             }
         }
 
+        private void StopAndWaitReader()
+        {
+            if (checklistSpeaker.IsCurrentlySpeaking())
+            {
+                checklistSpeaker.StopSpeaking();
+                while (checklistSpeaker.IsCurrentlySpeaking())
+                {
+                    Thread.Sleep(200);
+                }
+            }
+        }
     }
 }

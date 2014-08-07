@@ -26,8 +26,10 @@ namespace Castellari.IVaPS.View
         private const int MILLISECOND_DOUBLE_CLICK_INTERVAL = 350;
 
         private IPSController controller;
+        private DateTime lastBackSpeakingPressed = DateTime.MinValue;
         private DateTime lastPauseSpeakingPressed = DateTime.MinValue;
         private bool thereIsAFirstPausePressed = false;
+        private bool thereIsAFirstBackPressed = false;
         static readonly object obj = new object();
 
         public MainForm()
@@ -123,7 +125,41 @@ namespace Castellari.IVaPS.View
 
         private void hk_nextChecklist_Pressed(object sender, EventArgs e)
         {
-            controller.NextChecklistSelection();
+            //mappato su CTRL+6
+            //se la pressione è singola, mi comporto regolarmente, in due ravvicinate leggo la lista successiva
+            DateTime now = DateTime.Now;
+            long deltaT = now.Ticks - lastBackSpeakingPressed.Ticks;
+            if (thereIsAFirstBackPressed && (deltaT) < (10000*MILLISECOND_DOUBLE_CLICK_INTERVAL))
+            {
+                //e la seconda pressione e si tratta di un doppio click
+                lock (obj)
+                {
+                    controller.PreviousChecklistSelection();
+                    thereIsAFirstBackPressed = false;
+                    lastBackSpeakingPressed = DateTime.MinValue;
+                }
+            }
+            else
+            {
+                //è la prima pressione o una seconda pressione fuori dall'intervallo "di sensibilità"
+                thereIsAFirstBackPressed = true;
+                lastBackSpeakingPressed = DateTime.Now;
+                //così metto in pausa "a latere" per attendere il tempo previsto, per issue 106
+                Thread temp = new Thread(delegate()
+                    {
+                        Thread.Sleep(MILLISECOND_DOUBLE_CLICK_INTERVAL);
+                        lock (obj)
+                        {
+                            if (thereIsAFirstBackPressed)
+                            {
+                                //vuol dire che nessuno nel frattempo ha fatto un secondo click
+                                thereIsAFirstBackPressed = false;
+                                controller.RepeatCurrentChecklistSelection();
+                            }
+                        }
+                    });
+                temp.Start();   
+            }
         }
 
         private void hk_map_Pressed(object sender, EventArgs e)
@@ -134,7 +170,7 @@ namespace Castellari.IVaPS.View
         private void hk_pauseresumespeak_Pressed(object sender, EventArgs e)
         {
             //mappato su CTRL+3
-            //se la pressione è singola, mi comporto regolarmente, in due ravvicinate mi comporto esattamente come per CTRL+6, utile inserendo nel Joystick il pulsante
+            //se la pressione è singola, mi comporto regolarmente, in due ravvicinate leggo la lista successiva
             DateTime now = DateTime.Now;
             long deltaT = now.Ticks - lastPauseSpeakingPressed.Ticks;
             if (thereIsAFirstPausePressed && (deltaT) < (10000*MILLISECOND_DOUBLE_CLICK_INTERVAL))
@@ -168,20 +204,6 @@ namespace Castellari.IVaPS.View
                     });
                 temp.Start();   
             }
-
-
-
-            //long deltaT = -1;
-            //deltaT = now.Ticks - lastPauseSpeakingPressed.Ticks;
-            //if ((deltaT) < 25000000)//pari a 250ms
-            //{
-            //    controller.NextChecklistSelection();
-            //}
-            //else
-            //{
-            //    controller.PauseResumeSpeaking();
-            //}
-            //lastPauseSpeakingPressed = now;
         }
 
         private void utilbar_select_Pressed(object sender, EventArgs e)
