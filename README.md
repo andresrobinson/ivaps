@@ -1,20 +1,20 @@
-IVaPS    "IVAO Virtual Airlines Pirep Sender"
+The original project have been developed by Federico Castellari on https://code.google.com/p/ivaps/
+After Google announced Google Code Shutdown (scheduled for 25th August 2015) I imported the project to GitHub so It's Source Code, Downloads, Wiki, and Bugs History stays available. 
 
-------------------------------------------------------------------------------------------------
+
+IVaPS    "IVAO Virtual Airlines Pirep Sender"
+===============================================================================================
 
 Project Developed by Federico Castellari (OVT0505)
+------------------------------------------------------------------------------------------------
 
-===============================================================================================
 
 This software intends to help all those who fly on IVAO in a Virtual Airlines, and want an easy 
 and light tool to pre-fill PIREP after flights
 
 IVaPS (Ivao Virtual Airlines Pirep Sender) do this using FSUIPC for interact with FS9 and FSX
 
-Developed in C#, requires Microsoft .NET Framework >2.0 to run correctly and FSUIPC library 
-installed in Flight Simulator
-===============================================================================================
-
+Developed in C#, requires Microsoft .NET Framework >2.0 to run correctly and FSUIPC library installed in Flight Simulator
 
 
 Setup:
