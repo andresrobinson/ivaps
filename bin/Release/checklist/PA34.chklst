@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<aircraft icao="PA34" Vr="66 knots" Vapp="97 knots" Vf0="129 knots" Vldg="87 knots" Vne="195 knots" Vs="61 knots" >
+  <phase desc="Pre Flight">
+    <chklstItem desc="Track IR, Sound and O V T log" value="started" />
+    <chklstItem desc="departure, arrival and enroute maps" value="on board"  />
+    <chklstItem desc="A T I S" value="verify whether and verify available A T C" delay="3" />
+	<chklstItem desc="Parking brakes" value="engaged" />
+	<chklstItem desc="Trasponder" value="verify in standby" />
+    <chklstItem desc="if A T C available" value="radio check" />	
+  </phase>
+  <phase desc="Before start up">
+    <chklstItem desc="Avionics Master Switch" value="verify off" />
+    <chklstItem desc="Mixture Controls" value="verify idle and cutoff" />
+    <chklstItem desc="Ignition Switches" value="verify off" />
+    <chklstItem desc="Battery Switch" value="on, check landing lights 3 greens" />
+	<chklstItem desc="Avionics Master Switch" value="on, verify gauges on" />
+	<chklstItem desc="D M A gauge" value="on" />
+	<chklstItem desc="Navigation lights" value="on" />
+    <chklstItem desc="Cowl Flaps" value="open" />
+    <chklstItem desc="Trim Indicators" value="verify neutral" />
+    <chklstItem desc="Parking Brake" value="set" />
+    <chklstItem desc="Radios" value="verify off" />
+    <chklstItem desc="Alternate Air" value="off" />
+    <chklstItem desc="Alternators" value="on" />
+    <chklstItem desc="Cowl Flaps" value="open" />
+  </phase>
+  <phase desc="Start up">
+    <chklstItem desc="Mixture" value="rich" />
+    <chklstItem desc="Throttle" value="50%" />
+    <chklstItem desc="Propeller" value="full forward" />
+    <chklstItem desc="Master Switch" value="on" />
+    <chklstItem desc="Ignition Switches" value="on" />
+    <chklstItem desc="Starting left engine: starter" value="engage" />
+    <chklstItem desc="Oil Pressure" value="check" />
+    <chklstItem desc="Alternator" value="verify charging" />
+    <chklstItem desc="Starting right engine: starter" value="engage" />
+    <chklstItem desc="Oil Pressure" value="check" />
+    <chklstItem desc="Alternator" value="verify charging" />
+    <chklstItem desc="Warm up engines" value="Throttles between 1000 to 1200 RPM" />
+    <chklstItem desc="All gauges" value="verify on" />
+  </phase>
+  <phase desc="Before taxi">
+    <chklstItem desc="Altimeter" value="set to local Q N H" />
+    <chklstItem desc="Attitude Indicator" value="set" />
+    <chklstItem desc="Radios and avionics" value="set fot takeoff" />
+    <chklstItem desc="Mixture and propeller" value="verify" />
+    <chklstItem desc="Alternate Air" value="verify off" />
+    <chklstItem desc="Pitot heat" value="on" />
+	<chklstItem desc="Taxi and landing lights" value="on" />
+    <chklstItem desc="Request taxi clerance" value="" />
+  </phase>
+  <phase desc="Takeoff">
+    <chklstItem desc="taxi light" value="off" />
+    <chklstItem desc="strobe light" value="on" />
+    <chklstItem desc="trasponder" value="switch to charlie mode" />
+    <chklstItem desc="Flaps" value="up or 25 degrees in short field takeoff" />
+    <chklstItem desc="Takeoff speed" value="between 66 an 71 knots, 61 in short field takeoff" />
+    <chklstItem desc="After leaving ground" value="" />
+    <chklstItem desc="accelerate to" value="89 knots or 76 for best climb angle" />
+    <chklstItem desc="gears" value="up" />
+  </phase>
+  <phase desc="After takeoff climb">
+    <chklstItem desc="Propeller" value="2575 R P M" />
+    <chklstItem desc="Manifold Pressure" value="less then 40 inch" />
+    <chklstItem desc="Best angle climb speed" value="76 knots" />
+    <chklstItem desc="Best rate of climb speed" value="89 knots" />
+    <chklstItem desc="Cowl flaps" value="as required" />
+  </phase>
+  <phase desc="Cruse climb">
+    <chklstItem desc="Landing lights" value="off" />
+    <chklstItem desc="Mixture" value="full rich" />
+    <chklstItem desc="Propeller" value="2450 RPM" />
+    <chklstItem desc="Manifold Pressure" value="31.5 inch" />
+    <chklstItem desc="Climb Speed" value="102 knots" />
+    <chklstItem desc="Cowl flaps" value="as required" />
+  </phase>  
+  <phase desc="Cruise">
+    <chklstItem desc="Power" value="set" />
+	<chklstItem desc="Attitude" value="set" />
+	<chklstItem desc="Trim" value="set" />
+    <chklstItem desc="Cowl Flaps" value="closed" />
+    <chklstItem desc="Mixture" value="adjust" />
+    <chklstItem desc="Engine gauges" value="monitor" />
+  </phase>  
+  <phase desc="Descent">
+    <chklstItem desc="Cowl Flaps" value="closed" />
+    <chklstItem desc="Mixture" value="enrich with descent" />
+    <chklstItem desc="Throttle" value="cruise settings" />
+  </phase>
+  <phase desc="Approach">
+    <chklstItem desc="Landing lights" value="on" />
+    <chklstItem desc="Propellers" value="reduce to 2250 R P M" />
+    <chklstItem desc="at 129 knots" value="gears down" />
+    <chklstItem desc="Mixture" value="full rich" />
+	<chklstItem desc="Entering downwind leg or intercepting localizer" value="speed reduce to 98 knots" />
+	<chklstItem desc="Flaps" value="as required" />
+  </phase>
+  <phase desc="Landing">
+	<chklstItem desc="Landing gears" value="verify down, 3 green" />
+	<chklstItem desc="On final leg" value="speed reduce to 87 knots" />
+	<chklstItem desc="Flaps" value="as required" />
+  </phase>
+  <phase desc="Taxi to ramp">
+    <chklstItem desc="Clear of runway" value="" />
+	<chklstItem desc="Taxi light" value="on" />
+    <chklstItem desc="Flaps" value="retract" />
+    <chklstItem desc="Cowl Flaps" value="open" />
+    <chklstItem desc="Alternate Air" value="off" />
+  </phase>
+  <phase desc="Shutdown">
+    <chklstItem desc="Parking Brake" value="on" />
+    <chklstItem desc="Mixture" value="cutoff" />
+	<chklstItem desc="All light" value="off" />
+    <chklstItem desc="Magnetos Switches" value="off" />
+    <chklstItem desc="Master Switch" value="off" />
+    <chklstItem desc="O V T Log pirep" value="send" delay="5"/>
+    <chklstItem desc="Virtual Airline pirep" value="send" />
+	<chklstItem desc="If needed, tour pirep" value="send" />
+  </phase>
+</aircraft>

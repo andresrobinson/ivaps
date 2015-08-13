@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<aircraft icao="P180" Vr="115 knots" Vapp="140 knots" Vf0="170 knots" Vldg="115 knots" Vne="403 knots" Vs="97 knots" >
+  <phase desc="Pre-flight">
+	<chklstItem desc="Cabin Door" value="Closed" />
+	<chklstItem desc="Parking Brake" value="CHECK and SET" />
+	<chklstItem desc="Electrical Switches" value="CHECK all OFF" />
+	<chklstItem desc="Condition Levers" value="CUTOFF" />
+	<chklstItem desc="Fuel Valves" value="CUTOFF" />
+	<chklstItem desc="Pitot Heat" value="OFF" />
+	<chklstItem desc="Battery Master" value="ON" />
+	<chklstItem desc="Avionics Master" value="ON" />
+	<chklstItem desc="Weather radar" value="OFF" />
+	<chklstItem desc="Landing Gear" value="Verify DOWN and GREEN" />
+	<chklstItem desc="Annunciators" value="Verify ON" />
+	<chklstItem desc="Navigation Light" value="ON" />
+	<chklstItem desc="Window Heat" value="ON" />
+	<chklstItem desc="Contact A T I S" value="requesting clearance"/>
+  </phase>
+  <phase desc="Flight Preparation">
+	<chklstItem desc="Transponder" value="SET and verify in standby" />
+	<chklstItem desc="Altimeter" value="SET to local Q N H" />
+	<chklstItem desc="Navigation radio 1 and 2" value="SET for departure" />
+	<chklstItem desc="OBS knob 1 and 2" value="SET for departure" />
+	<chklstItem desc="Pressurization" value="SET cruise altitude" />
+	<chklstItem desc="Flightplan" value="LOADED" />
+	<chklstItem desc="Autopilot" value="Set vertical speed, heading and altitude" />
+	<chklstItem desc="Fuel Quantity" value="CHECK" />
+	<chklstItem desc="Trim" value="RESET to 0" />
+	<chklstItem desc="Engines Power" value="CHECK IDLE" />
+	<chklstItem desc="Bleed Air" value="OFF" />
+	<chklstItem desc="Request startup clearance" value="" />
+  </phase>
+  <phase desc="Engine start up">
+	<chklstItem desc="Parking Brake" value="CHECK and SET" />
+	<chklstItem desc="Engine 1 start: fuel cutoff number 1" value="CHECK OPEN" />
+	<chklstItem desc="Fuel Pump number 1" value="engage" />
+	<chklstItem desc="Igniter number 1" value="ON (auto)" />
+	<chklstItem desc="Starter number 1" value="Hold until N G reaches 13%" />
+	<chklstItem desc="ITT, oil pressure and RPM number 1" value="CHECK INCREASING" />
+	<chklstItem desc="Engine 1 Power" value="CHECK IDLE" />
+	<chklstItem desc="Condition Lever number 1" value="to FLIGHT IDLE position" />
+	<chklstItem desc="ITT 1" value="CHECK BELOW 750 °" />
+	<chklstItem desc="Fuel Flow" value="CHECK between 200 and 300" />
+	<chklstItem desc="Generator number 1" value="ON" />
+	<chklstItem desc="Fuel Pump number 1" value="OFF" />
+	<chklstItem desc="Engine 2 start: fuel cutoff number 2" value="CHECK OPEN" />
+	<chklstItem desc="Fuel Pump number 2" value="engage" />
+	<chklstItem desc="Igniter number 2" value="ON (auto)" />
+	<chklstItem desc="Starter number 2" value="Hold until NG reaches 13%" />
+	<chklstItem desc="ITT, oil pressure and RPM number 2" value="CHECK INCREASING" />
+	<chklstItem desc="Engine 2 Power" value="CHECK IDLE" />
+	<chklstItem desc="Condition Lever number 2" value="to FLIGHT IDLE position" />
+	<chklstItem desc="ITT 2" value="CHECK BELOW 750 °" />
+	<chklstItem desc="Fuel Flow" value="CHECK between 200 and 300" />
+	<chklstItem desc="Generator number 2" value="ON" />
+	<chklstItem desc="Fuel Pump number 2" value="OFF" />
+  </phase>
+  <phase desc="Pre-Taxi">
+	<chklstItem desc="Condition Levers" value="GROUND IDLE" />
+	<chklstItem desc="Fuel Flow" value="CHECK Normal" />
+	<chklstItem desc="ITT 2" value="CHECK BELOW 750 °" />
+	<chklstItem desc="Generators" value="BOTH ON" />
+	<chklstItem desc="Hyd. Pressure" value="CHECK NORM" />
+	<chklstItem desc="Fuel Pumps" value="CHECK MAIN (auto)" />
+	<chklstItem desc="Bleed Air" value="CHECK Left, Right, BOTH" />
+	<chklstItem desc="Pressurization" value="CHECK cruise ALT" />
+	<chklstItem desc="Bus Tie" value="ON" />
+  </phase>
+  <phase desc="Taxi">
+	<chklstItem desc="Parking Brake" value="OFF" />
+	<chklstItem desc="Flaps" value="TAKEOFF" />
+	<chklstItem desc="Ice Detect" value="ON" />
+	<chklstItem desc="Brakes" value="CHECK" />
+	<chklstItem desc="Propeller Feathering" value="CHECK" />
+	<chklstItem desc="Propeller Reverse" value="CHECK" />
+	<chklstItem desc="Navigation radio and instruments" value="CHECK AND SET" />
+	<chklstItem desc="Weather Radar" value="ON" />
+	<chklstItem desc="Yaw Damper" value="ON" />
+  </phase>
+  <phase desc="Engine run-up">
+	<chklstItem desc="Brakes" value="ON and HOLD" />
+	<chklstItem desc="Power Levers" value="IDLE" />
+	<chklstItem desc="Condition Levers" value="MAX R P M" />
+	<chklstItem desc="Propeller Sync" value="OFF AND ON (auto)" />
+	<chklstItem desc="Propeller Governing" value="CHECK minimums R P M" />
+	<chklstItem desc="Auto-feather" value="CHECK ON" />	
+  </phase>
+  <phase desc="Takeoff">
+	<chklstItem desc="Flaps" value="CHECK TAKEOFF" />	
+	<chklstItem desc="Elevator Trim" value="TAKEOFF (adjust to give up elevator trim for take-off)" />	
+	<chklstItem desc="Condition Levers" value="Full forward" />	
+	<chklstItem desc="Power Levers" value="Full forward" />	
+	<chklstItem desc="Rotate at " value="115 knots" />	
+  </phase>
+  <phase desc="Climb">
+	<chklstItem desc="Taxi Lights" value="OFF" />
+	<chklstItem desc="Landing Lights" value="OFF" />
+	<chklstItem desc="Auto feather" value="OFF" />
+	<chklstItem desc="Gears" value="UP" />
+	<chklstItem desc="Flaps" value="UP" />
+	<chklstItem desc="Autopilot" value="engage" />
+	<chklstItem desc="Window Heat" value="CHECK ON" />
+	<chklstItem desc="Bleed Air" value="CHECK Left, Right, BOTH" />
+	<chklstItem desc="Pressurization" value="CHECK cruise altitude" />
+	<chklstItem desc="Airspeed" value="Check" />
+	<chklstItem desc="Ignition" value="OFF" />
+	<chklstItem desc="Altimeter" value="SET" />
+	<chklstItem desc="Beacon lights" value="OFF" />
+	<chklstItem desc="Propeller Setting" value="AS NEEDED" />
+  </phase>
+  <phase desc="Cruise">
+	<chklstItem desc="Engine parameters and annunciators" value="readouts regularly" />	
+	<chklstItem desc="Weather and anticollision radar" value="check" />
+	<chklstItem desc="Anti-ice" value="as required" />
+  </phase>
+  <phase desc="Approach">
+	<chklstItem desc="Ignition" value="ON" />
+	<chklstItem desc="Beacon lights" value="ON" />
+	<chklstItem desc="Window Heat" value="CHECK ON" />
+	<chklstItem desc="Fuel Tanks Trim" value="CHECK" />
+	<chklstItem desc="A T I S" value="CHECKED" />
+	<chklstItem desc="Instruments" value="CHECKED" />
+	<chklstItem desc="Anti Ice" value="AS NEEDED" />
+	<chklstItem desc="Navigation displays" value="SET approach mode" />
+	<chklstItem desc="Airspeed" value="Check" />
+	<chklstItem desc="Fuel Pumps" value="CHECK" />
+	<chklstItem desc="Fuel Crossfeed" value="CHECK OFF" />
+	<chklstItem desc="Decision height" value="SET" />
+	<chklstItem desc="Airspeed" value="reduce to 180 knots" />
+	<chklstItem desc="Below 180 knots: gears" value="DOWN, verify 3 GREEN" />
+	<chklstItem desc="Below 170 knots: flaps" value="to middle position" />
+  </phase>
+  <phase desc="Landing">
+	<chklstItem desc="Below 150 knots: flaps" value="full down" />
+	<chklstItem desc="Gears" value="CHECK 3 GREEN" />
+	<chklstItem desc="Condition Levers" value="CHECK maximums RPM" />
+	<chklstItem desc="Autopilot" value="DISENGAGE" />
+	<chklstItem desc="After touchdown: flaps" value="UP" />
+	<chklstItem desc="Throttles" value="REVERSE THRUST" />
+	<chklstItem desc="Until 50kts indicated" />
+	<chklstItem desc="Brakes" value="AS REQUIRED" />
+  </phase>
+  <phase desc="Taxi to ramp">
+	<chklstItem desc="Engines Power" value="IDLE" />
+	<chklstItem desc="Weather radar" value="OFF" />
+	<chklstItem desc="Transponder" value="standby" />
+	<chklstItem desc="Pitot Heat" value="OFF" />
+	<chklstItem desc="Beacon lights" value="CHECK ON" />
+	<chklstItem desc="Navigation lights" value="GROUND" />
+	<chklstItem desc="Landing Lights" value="OFF" />
+	<chklstItem desc="Taxi Lights" value="ON" />
+	<chklstItem desc="Condition Levers" value="GROUND IDLE" />
+	<chklstItem desc="Flight Director" value="OFF" />
+  </phase>
+  <phase desc="Parking">
+	<chklstItem desc="Parking Brake" value="SET" />
+	<chklstItem desc="Anti Ice" value="OFF" />
+	<chklstItem desc="Igniters" value="OFF" />
+	<chklstItem desc="Avionics master" value="OFF" />
+	<chklstItem desc="Inverters" value="OFF" />
+	<chklstItem desc="Engines Power" value="CHECK IDLE" />
+	<chklstItem desc="Bleed Air" value="OFF" />
+	<chklstItem desc="Fuel Pumps" value="OFF" />
+	<chklstItem desc="Generators" value="OFF" />
+	<chklstItem desc="Condition Levers" value="CUTOFF" />	
+	<chklstItem desc="Battery" value="off" />
+  </phase>
+</aircraft>
+
+
+

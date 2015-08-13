@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<aircraft icao="DH8C" Vr="between 135 and 145 knots" Vapp="144 knots" Vf0="163 knots" Vldg="135 knots" Vne="0.50 Mach" Vs="103 knots" >
+	<phase desc="Pre Flight">
+		<chklstItem desc="Free track" value="started" />
+		<chklstItem desc="O V T log" value="started" />
+		<chklstItem desc="Departure, arrival and enroute maps" value="on board" />
+		<chklstItem desc="Check available ATC" />
+		<chklstItem desc="Check Weather" />
+	</phase>
+	<phase desc="Before engine starting">
+		<chklstItem desc="Parking brakes" value="set" />
+		<chklstItem desc="Thrust levers" value="verify idle" />
+		<chklstItem desc="Propeller controls" value="full forward" />
+		<chklstItem desc="Fuel quantity" value="check" />
+		<chklstItem desc="Anti-ice" value="as required" />
+		<chklstItem desc="Request IFR clerance" value="" />
+	</phase>
+	<phase desc="Engine starting">
+		<chklstItem desc="Altimeter" value="set to local QNH" />
+		<chklstItem desc="Battery switch" value="on" />
+		<chklstItem desc="Avionics master switch" value="on" />
+		<chklstItem desc="Beacon lights" value="on" />
+		<chklstItem desc="Propeller area" value="verify clear" />
+		<chklstItem desc="Fuel flow" value="switch on by pressing control and shift and F 4" />
+		<chklstItem desc="Navigation lights" value="on" />
+		<chklstItem desc="Right ignition and engine start switch" value="press and hold until engine starts" />
+		<chklstItem desc="Right engine parameters" value="monitor" />
+		<chklstItem desc="Right fuel pressure low annunciator" value="Extinguished" />
+		<chklstItem desc="Right oil pressure low annunciator" value="Extinguished" />
+		<chklstItem desc="Right generator" value="on" />
+		<chklstItem desc="Left ignition and engine start switch" value="press and hold until engine starts" />
+		<chklstItem desc="Left engine parameters" value="monitor" />
+		<chklstItem desc="Left fuel pressure low annunciator" value="Extinguished" />
+		<chklstItem desc="Left oil pressure low annunciator" value="Extinguished" />
+		<chklstItem desc="Left generator" value="on" />
+	</phase>
+	<phase desc="Before taxi">
+		<chklstItem desc="Transponder" value="set and verify in standby mode" />
+		<chklstItem desc="Verify on sharts assigned departure sequence" value="" />
+		<chklstItem desc="Avionics" value="check and set according with assigned star"  />
+		<chklstItem desc="Autopilot heading" value="set and activate" />
+		<chklstItem desc="Autopilot altitude" value="set and activate" />
+		<chklstItem desc="Propeller synchrophaser" value="arm" />
+		<chklstItem desc="Anti-ice" value="as required" />
+		<chklstItem desc="Fuel quantity and engines instruments" value="check" />
+		<chklstItem desc="Annunciator lights" value="Extinguished or considered" />
+		<chklstItem desc="Taxi lights" value="on" />
+		<chklstItem desc="Ground panel" value="open and set" />
+		<chklstItem desc="Request taxi clarence" value="" />
+	</phase>
+	<phase desc="During taxi, before takeoff">
+		<chklstItem desc="Flaps" value="down to 15 degreeds" />
+		<chklstItem desc="TCAS" value="engage" />
+		<chklstItem desc="Confirm rotate speed" value="between 135 and 145 knots" />
+	</phase>
+	<phase desc="Takeoff">
+		<chklstItem desc="Landing lights" value="on" />
+		<chklstItem desc="Strobe lights" value="on" />
+		<chklstItem desc="Taxi lights" value="off" />
+		<chklstItem desc="Transponder" value="switch to Charlie mode" />
+		<chklstItem desc="Verify assigned departure sequence" value="" />
+		<chklstItem desc="Flaps" value="Verify to 15 degreeds" />
+		<chklstItem desc="Throttle" value="incrase to full then release brakes" />
+		<chklstItem desc="Rotate at" value="140 knots" />
+		<chklstItem desc="At positive climb rate" value="retract gears" />
+		<chklstItem desc="At 145 knots" value="retract flaps" />
+		<chklstItem desc="Climb at" value="150 knots" />
+	</phase>
+	<phase desc="Climb-out">
+		<chklstItem desc="Set throttle to" value="90%" />
+		<chklstItem desc="Propellers" value="reduce to 1,000 RPM" />
+		<chklstItem desc="Landing lights" value="off" />
+		<chklstItem desc="Autopilot" value="engage when ready" />
+		<chklstItem desc="At transition altitude" value="set altimeter to 2 9 9 2" />
+		<chklstItem desc="FMC mode" value="when ready switch to GPS" />
+	</phase>
+	<phase desc="Cruise">
+		<chklstItem desc="Propeller synchrophaser" value="off" />
+		<chklstItem desc="Altimeter" value="verify 2 9 9 2" />
+		<chklstItem desc="Autopilot" value="verify engaged" />
+		<chklstItem desc="FMC mode" value="verify GPS" />
+		<chklstItem desc="Cruise speed at flight level 1 7 0" value="242 knots" />
+		<chklstItem desc="Cruise speed at flight level 2 0 0" value="232 knots" />
+		<chklstItem desc="Cruise speed at flight level 2 5 0" value="212 knots" />
+	</phase>
+	<phase desc="Descent">
+		<chklstItem desc="Check available ATC" />
+		<chklstItem desc="Check Weather" />
+		<chklstItem desc="Request descent clerance" value="" />
+		<chklstItem desc="Propeller synchrophaser" value="on" />
+		<chklstItem desc="Avionics and radios" value="set for approach" />
+		<chklstItem desc="FMC mode" value="switch to navigation" />
+		<chklstItem desc="At transition level" value="set altimeter to local QNH" />
+	</phase>
+	<phase desc="Approach">
+		<chklstItem desc="FMC mode" value="verify on navigation" />
+		<chklstItem desc="Auto spoilers" value="verify armed" />
+		<chklstItem desc="Remember landing speed" value="138 knots" />
+		<chklstItem desc="Landing lights" value="on" />
+		<chklstItem desc="Propeller controls" value="full forward" />
+		<chklstItem desc="Autopilot" value="if needed mantain only altitude mode" />
+		<chklstItem desc="Speed" value="begin reduce" />
+		<chklstItem desc="At 163 knots" value="flaps down to 5" />
+		<chklstItem desc="At 150 knots" value="flaps to 15 degrees and gears down" />
+	</phase>
+	<phase desc="Intercepting localizer, landing">
+		<chklstItem desc="Autopilot" value="off" />
+		<chklstItem desc="Reduce speed at 138 knots" value="flaps down to 35 degrees" />
+		<chklstItem desc="Landing gears" value="verify 3 greens" />
+		<chklstItem desc="Airspeed" value="verify 138 knots" />
+		<chklstItem desc="Auto spoilers" value="verify armed" />
+		<chklstItem desc="Request landing clerance" value="" />
+	</phase>
+	<phase desc="After landing">
+		<chklstItem desc="Anti ice" value="off" />
+		<chklstItem desc="Flaps" value="fully up" />
+		<chklstItem desc="Trasponder" value="switch to standby mode" />
+		<chklstItem desc="Taxi lights" value="on" />
+		<chklstItem desc="Landing lights" value="off" />
+		<chklstItem desc="Ground panel" value="open and set taxi speed" />
+	</phase>
+	<phase desc="Shutdown and securing">
+		<chklstItem desc="Parking brakes" value="engaged" />
+		<chklstItem desc="Lights" value="all off" />
+		<chklstItem desc="Battery" value="off" />
+		<chklstItem desc="Engines" value="off" />
+		<chklstItem desc="Generator" value="off" />
+	</phase>
+	<phase desc="After shutdown">
+		<chklstItem desc="O V T Log pirep" value="send" delay="10"/>
+		<chklstItem desc="Virtual Airline pirep" value="send" delay="10"/>
+		<chklstItem desc="If needed, tour pirep" value="send" />
+	</phase>
+</aircraft>
